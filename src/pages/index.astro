@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const bookNotes = (await getCollection('book-notes')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<BaseLayout title="Stefan Coburn">
+  <div class="hero">
+    <img
+      src="/images/profile.jpg"
+      alt="Stefan Coburn"
+      class="hero-photo"
+      width="160"
+      height="160"
+    />
+    <div class="hero-text">
+      <h1>Hi, I'm Stefan</h1>
+      <p>
+        Welcome to my place on the internet. I'm an engineer, beginner pianist,
+        volunteer firefighter, and pragmatic optimist. I explore technology,
+        society, and the good life.
+      </p>
+    </div>
+  </div>
+
+  <h2 class="section-heading">Book Notes</h2>
+  <ul class="post-list">
+    {bookNotes.map((note) => (
+      <li>
+        <a href={`/book-notes/${note.id}`}>{note.data.title}</a>
+        <span class="post-date">{new Date(note.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Stefan Coburn — engineer, firefighter, pragmatic optimist." } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="site-title">Stefan Coburn</a>
+      <nav>
+        <a href="/book-notes">Book Notes</a>
+        <a href="/quotes">Quotes</a>
+        <a href="/about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://x.com/stefancoburn" target="_blank" rel="noopener">X</a>
+        <a href="https://linkedin.com/in/stefancoburn" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://t.me/stefancoburn" target="_blank" rel="noopener">Telegram</a>
+      </div>
+      <p>&copy; {new Date().getFullYear()} Stefan Coburn</p>
+    </div>
+  </footer>
+</body>
+</html>

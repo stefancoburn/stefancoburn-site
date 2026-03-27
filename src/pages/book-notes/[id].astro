@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const bookNotes = await getCollection('book-notes');
+  return bookNotes.map((note) => ({
+    params: { id: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+const dateStr = new Date(note.data.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${note.data.title} - Stefan Coburn`} description={note.data.description}>
+  <article>
+    <div class="article-header">
+      <h1>{note.data.title}</h1>
+      <p class="article-meta">{dateStr}</p>
+    </div>
+    <div class="article-content">
+      <Content />
+    </div>
+  </article>
+  <p style="margin-top: 3rem;">
+    <a href="/book-notes">&larr; All Book Notes</a>
+  </p>
+</BaseLayout>
