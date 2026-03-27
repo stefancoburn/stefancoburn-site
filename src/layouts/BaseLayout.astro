@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
   title: string;
@@ -44,5 +45,6 @@ const { title, description = "Stefan Coburn — engineer, firefighter, pragmatic
       <p>&copy; {new Date().getFullYear()} Stefan Coburn</p>
     </div>
   </footer>
+  <SpeedInsights />
 </body>
 </html>
