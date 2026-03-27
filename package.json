@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "astro": "^5.7.0",
-    "@vercel/speed-insights": "^1.0.0"
+    "@vercel/speed-insights": "^1.0.0",
+    "@vercel/analytics": "^1.0.0"
   }
 }
