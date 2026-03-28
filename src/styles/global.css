@@ -142,6 +142,13 @@ main {
   color: var(--color-accent);
 }
 
+.colophon {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: var(--color-border);
+  letter-spacing: 0.02em;
+}
+
 /* Homepage hero */
 .hero {
   display: flex;
@@ -195,12 +202,22 @@ main {
 
 .post-list li {
   margin-bottom: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.post-list li:hover {
+  transform: translateX(4px);
 }
 
 .post-list a {
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.post-list a:hover {
+  color: var(--color-accent);
 }
 
 .post-date {
