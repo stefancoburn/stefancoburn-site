@@ -9,6 +9,8 @@ interface Props {
 }
 
 const { title, description = "Stefan Coburn — engineer, firefighter, pragmatic optimist." } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, 'https://stefancoburn.com');
+const currentPath = Astro.url.pathname;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -18,16 +20,34 @@ const { title, description = "Stefan Coburn — engineer, firefighter, pragmatic
   <meta name="description" content={description} />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href={canonicalURL.href} />
+  <link rel="alternate" type="application/rss+xml" title="Stefan Coburn" href="/rss.xml" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL.href} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://stefancoburn.com/images/profile.jpg" />
+  <meta property="og:site_name" content="Stefan Coburn" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@stefancoburn" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://stefancoburn.com/images/profile.jpg" />
 </head>
 <body>
   <header class="site-header">
     <div class="container">
       <nav>
-        <a href="/book-notes">Book Notes</a>
-        <a href="/essays">Essays</a>
-        <a href="/quotes">Quotes</a>
-        <a href="/about">About</a>
-        <a href="/">Home</a>
+        <a href="/book-notes" class={currentPath.startsWith('/book-notes') ? 'active' : ''}>Book Notes</a>
+        <a href="/essays" class={currentPath.startsWith('/essays') ? 'active' : ''}>Essays</a>
+        <a href="/quotes" class={currentPath.startsWith('/quotes') ? 'active' : ''}>Quotes</a>
+        <a href="/now" class={currentPath.startsWith('/now') ? 'active' : ''}>Now</a>
+        <a href="/about" class={currentPath.startsWith('/about') ? 'active' : ''}>About</a>
+        <a href="/" class={currentPath === '/' ? 'active' : ''}>Home</a>
       </nav>
     </div>
   </header>

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page Not Found - Stefan Coburn">
+  <div class="not-found">
+    <h1>404</h1>
+    <p>This page doesn't exist — but there's plenty that does.</p>
+    <div class="not-found-links">
+      <a href="/">Go Home</a>
+      <a href="/book-notes">Book Notes</a>
+      <a href="/essays">Essays</a>
+      <a href="/quotes">Quotes</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding: 4rem 0;
+  }
+  .not-found h1 {
+    font-size: 5rem;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+  .not-found p {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .not-found-links a {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+  }
+</style>

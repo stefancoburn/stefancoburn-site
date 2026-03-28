@@ -17,13 +17,16 @@ const dateStr = new Date(essay.data.date).toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+const body = essay.body || '';
+const words = body.split(/\s+/).length;
+const readingTime = Math.max(1, Math.ceil(words / 250));
 ---
 
 <BaseLayout title={`${essay.data.title} - Stefan Coburn`} description={essay.data.description}>
   <article>
     <div class="article-header">
       <h1>{essay.data.title}</h1>
-      <p class="article-meta">{dateStr}</p>
+      <p class="article-meta">{dateStr} &middot; {readingTime} min read</p>
     </div>
     <div class="article-content">
       <Content />

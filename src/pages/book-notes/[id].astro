@@ -11,19 +11,22 @@ export async function getStaticPaths() {
 }
 
 const { note } = Astro.props;
-const { Content } = await render(note);
+const { Content, remarkPluginFrontmatter } = await render(note);
 const dateStr = new Date(note.data.date).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+const body = note.body || '';
+const words = body.split(/\s+/).length;
+const readingTime = Math.max(1, Math.ceil(words / 250));
 ---
 
 <BaseLayout title={`${note.data.title} - Stefan Coburn`} description={note.data.description}>
   <article>
     <div class="article-header">
       <h1>{note.data.title}</h1>
-      <p class="article-meta">{dateStr}</p>
+      <p class="article-meta">{dateStr} &middot; {readingTime} min read</p>
     </div>
     <div class="article-content">
       <Content />

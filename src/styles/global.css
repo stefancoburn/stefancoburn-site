@@ -102,6 +102,22 @@ nav a:hover {
   color: var(--color-accent);
 }
 
+nav a.active {
+  color: var(--color-accent);
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 2px;
+}
+
+/* Page transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+main {
+  animation: fadeIn 0.3s ease-out;
+}
+
 /* Footer */
 .site-footer {
   margin-top: 4rem;
