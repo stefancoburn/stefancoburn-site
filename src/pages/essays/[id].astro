@@ -22,7 +22,7 @@ const words = body.split(/\s+/).length;
 const readingTime = Math.max(1, Math.ceil(words / 250));
 ---
 
-<BaseLayout title={`${essay.data.title} - Stefan Coburn`} description={essay.data.description}>
+<BaseLayout title={`${essay.data.title} - Stefan Coburn`} description={essay.data.description} ogImage={`/og/essays/${essay.id}.png`}>
   <article>
     <div class="article-header">
       <h1>{essay.data.title}</h1>
