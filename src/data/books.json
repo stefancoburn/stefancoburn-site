@@ -1224,7 +1224,7 @@
     "title": "Snow Crash",
     "author": "Neal Stephenson",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 2.5,
     "slug": "snow-crash",
@@ -1234,7 +1234,7 @@
     "title": "The Brothers Karamazov",
     "author": "Fyodor Dostoevsky",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 4.5,
     "slug": "the-brothers-karamazov",
@@ -1244,7 +1244,7 @@
     "title": "Battlefield Earth",
     "author": "L. Ron Hubbard",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 2.0,
     "slug": "battlefield-earth",
@@ -1254,7 +1254,7 @@
     "title": "Origin",
     "author": "Dan Brown",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 2.0,
     "slug": "origin",
@@ -1264,7 +1264,7 @@
     "title": "The Kite Runner",
     "author": "Khaled Hosseini",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 1.5,
     "slug": "the-kite-runner",
@@ -1274,7 +1274,7 @@
     "title": "Corsair",
     "author": "Henrik Sorensen",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 2.5,
     "slug": "corsair",
@@ -1324,7 +1324,7 @@
     "title": "There Is No AntiMemtics Division",
     "author": "Qntm",
     "genres": [
-      "Science Fiction"
+      "Sci-fi"
     ],
     "rating": 4.5,
     "slug": "there-is-no-antimemtics-division",
@@ -1365,7 +1365,7 @@
     "title": "Ender's Game",
     "author": "Orson Scott Card",
     "genres": [
-      "Science Fiction"
+      "Sci-fi"
     ],
     "rating": 5.0,
     "slug": "ender-s-game",
@@ -1407,7 +1407,7 @@
     "title": "Paths of Glory",
     "author": "Jeffrey Archer",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 3.0,
     "slug": "paths-of-glory",
@@ -1491,7 +1491,7 @@
     "author": "C. S. Lewis",
     "genres": [
       "Religion",
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 5.0,
     "slug": "the-great-divorce",
@@ -1501,7 +1501,7 @@
     "title": "Dune",
     "author": "Frank Herbert",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 2.5,
     "slug": "dune",
@@ -1521,7 +1521,7 @@
     "title": "The Hobbit",
     "author": "J. R. R. Tolkien",
     "genres": [
-      "Fiction (Fantasy)"
+      "Fantasy"
     ],
     "rating": 2.0,
     "slug": "the-hobbit",
@@ -1553,7 +1553,7 @@
     "title": "We Spread",
     "author": "Iain Reid",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 2.0,
     "slug": "we-spread",
@@ -1688,7 +1688,7 @@
     "title": "Dark Age",
     "author": "Pierce Brown",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 2.5,
     "slug": "dark-age",
@@ -1698,7 +1698,7 @@
     "title": "Iron Gold",
     "author": "Pierce Brown",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 3.0,
     "slug": "iron-gold",
@@ -1749,7 +1749,7 @@
     "title": "Piranesi",
     "author": "Susanna Clarke",
     "genres": [
-      "Fiction (Fantasy)"
+      "Fantasy"
     ],
     "rating": 1.5,
     "slug": "piranesi",
@@ -1759,7 +1759,7 @@
     "title": "Accelerando",
     "author": "Charles Stross",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 1.5,
     "slug": "accelerando",
@@ -1862,7 +1862,7 @@
     "title": "The Walk",
     "author": "Richard Paul Evans",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 1.0,
     "slug": "the-walk",
@@ -1872,7 +1872,7 @@
     "title": "Morning Star",
     "author": "Pierce Brown",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 4.0,
     "slug": "morning-star",
@@ -1882,7 +1882,7 @@
     "title": "Golden Son",
     "author": "Pierce Brown",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 3.5,
     "slug": "golden-son",
@@ -1924,7 +1924,7 @@
     "title": "Red Rising",
     "author": "Pierce Brown",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 3.0,
     "slug": "red-rising",
@@ -1955,7 +1955,7 @@
     "title": "The Stranger",
     "author": "Albert Camus",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 1.0,
     "slug": "the-stranger",
@@ -1965,7 +1965,7 @@
     "title": "Star Maker",
     "author": "Olaf Stapledon",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 2.0,
     "slug": "star-maker",
@@ -1975,7 +1975,7 @@
     "title": "The Moon Is a Harsh Mistress",
     "author": "Robert A. Heinlein",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 4.5,
     "slug": "the-moon-is-a-harsh-mistress",
@@ -2047,7 +2047,7 @@
     "title": "Starship Troopers",
     "author": "Robert A. Heinlein",
     "genres": [
-      "Fiction (Sci-fi)"
+      "Sci-fi"
     ],
     "rating": 4.0,
     "slug": "starship-troopers",
@@ -2078,7 +2078,7 @@
     "title": "Gates of Fire",
     "author": "Steven Pressfield",
     "genres": [
-      "Fiction (General)",
+      "Fiction",
       "History"
     ],
     "rating": 4.0,
@@ -2131,7 +2131,7 @@
     "title": "The Road",
     "author": "Cormac McCarthy",
     "genres": [
-      "Fiction (General)"
+      "Fiction"
     ],
     "rating": 4.5,
     "slug": "the-road",
