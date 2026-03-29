@@ -46,6 +46,7 @@ const currentPath = Astro.url.pathname;
   <header class="site-header">
     <div class="container">
       <nav>
+        <a href="/bookshelf" class={currentPath.startsWith('/bookshelf') ? 'active' : ''}>Bookshelf</a>
         <a href="/book-notes" class={currentPath.startsWith('/book-notes') ? 'active' : ''}>Book Notes</a>
         <a href="/essays" class={currentPath.startsWith('/essays') ? 'active' : ''}>Essays</a>
         <a href="/quotes" class={currentPath.startsWith('/quotes') ? 'active' : ''}>Quotes</a>

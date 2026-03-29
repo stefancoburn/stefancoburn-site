@@ -1,0 +1,2140 @@
+[
+  {
+    "title": "The Feynman Lectures on Physics (Vols. 1\u20133)",
+    "author": "Richard Feynman",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.75,
+    "slug": "the-feynman-lectures-on-physics-vols-1-3",
+    "hasCover": true
+  },
+  {
+    "title": "Feynman's Tips on Physics",
+    "author": "Richard Feynman",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "feynman-s-tips-on-physics",
+    "hasCover": true
+  },
+  {
+    "title": "Six Easy Pieces",
+    "author": "Richard Feynman",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "six-easy-pieces",
+    "hasCover": true
+  },
+  {
+    "title": "The Character of Physical Law",
+    "author": "Richard Feynman",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.25,
+    "slug": "the-character-of-physical-law",
+    "hasCover": true
+  },
+  {
+    "title": "Feynman's Lost Lectures",
+    "author": "David L. Goodstein & Judith R. Goodstein",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.75,
+    "slug": "feynman-s-lost-lectures",
+    "hasCover": true
+  },
+  {
+    "title": "The Meaning of It All",
+    "author": "Richard Feynman",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 4.5,
+    "slug": "the-meaning-of-it-all",
+    "hasCover": true
+  },
+  {
+    "title": "The Elegant Universe",
+    "author": "Brian Greene",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.75,
+    "slug": "the-elegant-universe",
+    "hasCover": true
+  },
+  {
+    "title": "Infinite Powers",
+    "author": "Steven Strogatz",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "infinite-powers",
+    "hasCover": true
+  },
+  {
+    "title": "Prime Numbers and the Riemann Hypothesis",
+    "author": "Barry Mazur & William Stein",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.5,
+    "slug": "prime-numbers-and-the-riemann-hypothesis",
+    "hasCover": true
+  },
+  {
+    "title": "Zero: The Biography of a Dangerous Idea",
+    "author": "Charles Seife",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "zero-the-biography-of-a-dangerous-idea",
+    "hasCover": true
+  },
+  {
+    "title": "A Concise History of Mathematics",
+    "author": "Dirk J. Struik",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "a-concise-history-of-mathematics",
+    "hasCover": true
+  },
+  {
+    "title": "Is God a Mathematician?",
+    "author": "Mario Livio",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 3.25,
+    "slug": "is-god-a-mathematician",
+    "hasCover": true
+  },
+  {
+    "title": "Physics from Finance",
+    "author": "Jacob Schwichtenberg",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.25,
+    "slug": "physics-from-finance",
+    "hasCover": true
+  },
+  {
+    "title": "Professor Stewart's Cabinet of Mathematical Curiosities",
+    "author": "Ian Stewart",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3,
+    "slug": "professor-stewart-s-cabinet-of-mathematical-curiosities",
+    "hasCover": true
+  },
+  {
+    "title": "Fermat's Last Theorem",
+    "author": "Simon Singh",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.75,
+    "slug": "fermat-s-last-theorem",
+    "hasCover": true
+  },
+  {
+    "title": "Prime Obsession",
+    "author": "John Derbyshire",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.5,
+    "slug": "prime-obsession",
+    "hasCover": true
+  },
+  {
+    "title": "The Way Things Work",
+    "author": "David Macaulay",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "the-way-things-work",
+    "hasCover": true
+  },
+  {
+    "title": "The Body",
+    "author": "Bill Bryson",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.75,
+    "slug": "the-body",
+    "hasCover": true
+  },
+  {
+    "title": "The Gene",
+    "author": "Siddhartha Mukherjee",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "the-gene",
+    "hasCover": true
+  },
+  {
+    "title": "Outlive",
+    "author": "Peter Attia",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.25,
+    "slug": "outlive",
+    "hasCover": true
+  },
+  {
+    "title": "The Mosquito",
+    "author": "Timothy C. Winegard",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 3.25,
+    "slug": "the-mosquito",
+    "hasCover": true
+  },
+  {
+    "title": "Factfulness",
+    "author": "Hans Rosling",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.75,
+    "slug": "factfulness",
+    "hasCover": true
+  },
+  {
+    "title": "How the World Really Works",
+    "author": "Vaclav Smil",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.25,
+    "slug": "how-the-world-really-works",
+    "hasCover": true
+  },
+  {
+    "title": "The Shallows",
+    "author": "Nicholas Carr",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.75,
+    "slug": "the-shallows",
+    "hasCover": true
+  },
+  {
+    "title": "Material World",
+    "author": "Ed Conway",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "material-world",
+    "hasCover": true
+  },
+  {
+    "title": "Nuclear War: A Scenario",
+    "author": "Annie Jacobsen",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 4.5,
+    "slug": "nuclear-war-a-scenario",
+    "hasCover": true
+  },
+  {
+    "title": "Industrial Megaprojects",
+    "author": "Edward Merrow",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.25,
+    "slug": "industrial-megaprojects",
+    "hasCover": false
+  },
+  {
+    "title": "Blueprint",
+    "author": "Nicholas Christakis",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3,
+    "slug": "blueprint",
+    "hasCover": true
+  },
+  {
+    "title": "A Concise Guide to Macroeconomics",
+    "author": "David A. Moss",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "a-concise-guide-to-macroeconomics",
+    "hasCover": true
+  },
+  {
+    "title": "A History of Knowledge",
+    "author": "Charles Van Doren",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 3,
+    "slug": "a-history-of-knowledge",
+    "hasCover": true
+  },
+  {
+    "title": "The Demon-Haunted World",
+    "author": "Carl Sagan",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-demon-haunted-world",
+    "hasCover": true
+  },
+  {
+    "title": "Map and Territory",
+    "author": "Eliezer Yudkowsky",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "map-and-territory",
+    "hasCover": true
+  },
+  {
+    "title": "How to Actually Change Your Mind",
+    "author": "Eliezer Yudkowsky",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "how-to-actually-change-your-mind",
+    "hasCover": true
+  },
+  {
+    "title": "Inadequate Equilibria",
+    "author": "Eliezer Yudkowsky",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.75,
+    "slug": "inadequate-equilibria",
+    "hasCover": true
+  },
+  {
+    "title": "A Conflict of Visions",
+    "author": "Thomas Sowell",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.5,
+    "slug": "a-conflict-of-visions",
+    "hasCover": true
+  },
+  {
+    "title": "The Rational Optimist",
+    "author": "Matt Ridley",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-rational-optimist",
+    "hasCover": true
+  },
+  {
+    "title": "Same as Ever",
+    "author": "Morgan Housel",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.25,
+    "slug": "same-as-ever",
+    "hasCover": true
+  },
+  {
+    "title": "The Subtle Art of Not Giving a F*ck",
+    "author": "Mark Manson",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "the-subtle-art-of-not-giving-a-f-ck",
+    "hasCover": true
+  },
+  {
+    "title": "Poor Charlie's Almanack",
+    "author": "Charlie Munger (ed. Peter Kaufman)",
+    "genres": [
+      "Philosophy",
+      "Biography"
+    ],
+    "rating": 3.75,
+    "slug": "poor-charlie-s-almanack",
+    "hasCover": true
+  },
+  {
+    "title": "Stubborn Attachments",
+    "author": "Tyler Cowen",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "stubborn-attachments",
+    "hasCover": true
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "atomic-habits",
+    "hasCover": true
+  },
+  {
+    "title": "Eat That Frog!",
+    "author": "Brian Tracy",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "eat-that-frog",
+    "hasCover": true
+  },
+  {
+    "title": "Never Split the Difference",
+    "author": "Chris Voss",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.75,
+    "slug": "never-split-the-difference",
+    "hasCover": true
+  },
+  {
+    "title": "The Art of Seduction",
+    "author": "Robert Greene",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-art-of-seduction",
+    "hasCover": true
+  },
+  {
+    "title": "Mastery",
+    "author": "Robert Greene",
+    "genres": [
+      "Philosophy",
+      "Biography"
+    ],
+    "rating": 4,
+    "slug": "mastery",
+    "hasCover": true
+  },
+  {
+    "title": "The 48 Laws of Power",
+    "author": "Robert Greene",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-48-laws-of-power",
+    "hasCover": true
+  },
+  {
+    "title": "The Score",
+    "author": "C. Thi Nguyen",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.75,
+    "slug": "the-score",
+    "hasCover": true
+  },
+  {
+    "title": "Cowboy Ethics",
+    "author": "James P. Owen",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "cowboy-ethics",
+    "hasCover": true
+  },
+  {
+    "title": "How Will You Measure Your Life?",
+    "author": "Clayton Christensen",
+    "genres": [
+      "Philosophy",
+      "Religion"
+    ],
+    "rating": 4.75,
+    "slug": "how-will-you-measure-your-life",
+    "hasCover": true
+  },
+  {
+    "title": "Calming Your Anxious Mind",
+    "author": "Jeffrey Brantley",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "calming-your-anxious-mind",
+    "hasCover": true
+  },
+  {
+    "title": "Stolen Focus",
+    "author": "Johann Hari",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 3.75,
+    "slug": "stolen-focus",
+    "hasCover": true
+  },
+  {
+    "title": "The Comfort Crisis",
+    "author": "Michael Easter",
+    "genres": [
+      "Philosophy",
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "the-comfort-crisis",
+    "hasCover": true
+  },
+  {
+    "title": "Murder Your Darlings",
+    "author": "Roy Peter Clark",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "murder-your-darlings",
+    "hasCover": true
+  },
+  {
+    "title": "Bird by Bird",
+    "author": "Anne Lamott",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "bird-by-bird",
+    "hasCover": true
+  },
+  {
+    "title": "The Art of Doing Science and Engineering",
+    "author": "Richard W. Hamming",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 4.25,
+    "slug": "the-art-of-doing-science-and-engineering",
+    "hasCover": true
+  },
+  {
+    "title": "An Elegant Puzzle",
+    "author": "Will Larson",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "an-elegant-puzzle",
+    "hasCover": true
+  },
+  {
+    "title": "The Revolt of the Public",
+    "author": "Martin Gurri",
+    "genres": [
+      "History",
+      "Philosophy"
+    ],
+    "rating": 4.5,
+    "slug": "the-revolt-of-the-public",
+    "hasCover": true
+  },
+  {
+    "title": "The Meritocracy Trap",
+    "author": "Daniel Markovits",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "the-meritocracy-trap",
+    "hasCover": true
+  },
+  {
+    "title": "Life at the Bottom",
+    "author": "Theodore Dalrymple",
+    "genres": [
+      "Philosophy",
+      "History"
+    ],
+    "rating": 4.25,
+    "slug": "life-at-the-bottom",
+    "hasCover": true
+  },
+  {
+    "title": "The War on the West",
+    "author": "Douglas Murray",
+    "genres": [
+      "History",
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-war-on-the-west",
+    "hasCover": true
+  },
+  {
+    "title": "Washington: A Life",
+    "author": "Ron Chernow",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 4.25,
+    "slug": "washington-a-life",
+    "hasCover": true
+  },
+  {
+    "title": "Alexander Hamilton",
+    "author": "Ron Chernow",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 4,
+    "slug": "alexander-hamilton",
+    "hasCover": true
+  },
+  {
+    "title": "The Gulag Archipelago (Vol. 2)",
+    "author": "Aleksandr Solzhenitsyn",
+    "genres": [
+      "History"
+    ],
+    "rating": 4.25,
+    "slug": "the-gulag-archipelago-vol-2",
+    "hasCover": true
+  },
+  {
+    "title": "The Federalist Papers",
+    "author": "Hamilton, Madison & Jay",
+    "genres": [
+      "History",
+      "Philosophy"
+    ],
+    "rating": 5,
+    "slug": "the-federalist-papers",
+    "hasCover": true
+  },
+  {
+    "title": "The First World War",
+    "author": "Hew Strachan",
+    "genres": [
+      "History"
+    ],
+    "rating": 3.25,
+    "slug": "the-first-world-war",
+    "hasCover": true
+  },
+  {
+    "title": "The New Silk Roads",
+    "author": "Peter Frankopan",
+    "genres": [
+      "History"
+    ],
+    "rating": 2.75,
+    "slug": "the-new-silk-roads",
+    "hasCover": true
+  },
+  {
+    "title": "The Box",
+    "author": "Marc Levinson",
+    "genres": [
+      "History"
+    ],
+    "rating": 4.5,
+    "slug": "the-box",
+    "hasCover": true
+  },
+  {
+    "title": "GPS Declassified",
+    "author": "Richard Easton & Eric Frazier",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 3,
+    "slug": "gps-declassified",
+    "hasCover": false
+  },
+  {
+    "title": "Superabundance",
+    "author": "Marian Tupy & Gale Pooley",
+    "genres": [
+      "Science",
+      "History"
+    ],
+    "rating": 5,
+    "slug": "superabundance",
+    "hasCover": true
+  },
+  {
+    "title": "False Alarm",
+    "author": "Bjorn Lomborg",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.75,
+    "slug": "false-alarm",
+    "hasCover": true
+  },
+  {
+    "title": "The Idea Factory",
+    "author": "Jon Gertner",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "the-idea-factory",
+    "hasCover": true
+  },
+  {
+    "title": "Chip War",
+    "author": "Chris Miller",
+    "genres": [
+      "History"
+    ],
+    "rating": 4,
+    "slug": "chip-war",
+    "hasCover": true
+  },
+  {
+    "title": "Freedom's Forge",
+    "author": "Arthur Herman",
+    "genres": [
+      "History"
+    ],
+    "rating": 4.25,
+    "slug": "freedom-s-forge",
+    "hasCover": true
+  },
+  {
+    "title": "The Ancient City",
+    "author": "Fustel de Coulanges",
+    "genres": [
+      "History"
+    ],
+    "rating": 5,
+    "slug": "the-ancient-city",
+    "hasCover": true
+  },
+  {
+    "title": "Salt: A World History",
+    "author": "Mark Kurlansky",
+    "genres": [
+      "History"
+    ],
+    "rating": 4,
+    "slug": "salt-a-world-history",
+    "hasCover": true
+  },
+  {
+    "title": "The Big Score",
+    "author": "Michael S. Malone",
+    "genres": [
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "the-big-score",
+    "hasCover": true
+  },
+  {
+    "title": "Producing Prosperity",
+    "author": "Gary Pisano & Willy Shih",
+    "genres": [
+      "Science",
+      "History"
+    ],
+    "rating": 3.5,
+    "slug": "producing-prosperity",
+    "hasCover": true
+  },
+  {
+    "title": "American Spring",
+    "author": "Walter Borneman",
+    "genres": [
+      "History"
+    ],
+    "rating": 3,
+    "slug": "american-spring",
+    "hasCover": true
+  },
+  {
+    "title": "Joseph Smith: Rough Stone Rolling",
+    "author": "Richard Lyman Bushman",
+    "genres": [
+      "Biography",
+      "Religion"
+    ],
+    "rating": 4,
+    "slug": "joseph-smith-rough-stone-rolling",
+    "hasCover": true
+  },
+  {
+    "title": "Leonardo da Vinci",
+    "author": "Walter Isaacson",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 4,
+    "slug": "leonardo-da-vinci",
+    "hasCover": true
+  },
+  {
+    "title": "Porter Rockwell: A Biography",
+    "author": "Richard Lloyd Dewey",
+    "genres": [
+      "Biography",
+      "Religion"
+    ],
+    "rating": 3.5,
+    "slug": "porter-rockwell-a-biography",
+    "hasCover": true
+  },
+  {
+    "title": "Endurance",
+    "author": "Scott Kelly",
+    "genres": [
+      "Biography",
+      "Science"
+    ],
+    "rating": 3,
+    "slug": "endurance",
+    "hasCover": true
+  },
+  {
+    "title": "Unbroken",
+    "author": "Laura Hillenbrand",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 4,
+    "slug": "unbroken",
+    "hasCover": true
+  },
+  {
+    "title": "Bad Blood",
+    "author": "John Carreyrou",
+    "genres": [
+      "Biography",
+      "Science"
+    ],
+    "rating": 3.25,
+    "slug": "bad-blood",
+    "hasCover": true
+  },
+  {
+    "title": "A Higher Loyalty",
+    "author": "James Comey",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 2.75,
+    "slug": "a-higher-loyalty",
+    "hasCover": true
+  },
+  {
+    "title": "The Last Republicans",
+    "author": "Mark K. Updegrove",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 2.75,
+    "slug": "the-last-republicans",
+    "hasCover": true
+  },
+  {
+    "title": "The Wager",
+    "author": "David Grann",
+    "genres": [
+      "History",
+      "Biography"
+    ],
+    "rating": 4.75,
+    "slug": "the-wager",
+    "hasCover": true
+  },
+  {
+    "title": "The Everything Store",
+    "author": "Brad Stone",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 3.75,
+    "slug": "the-everything-store",
+    "hasCover": true
+  },
+  {
+    "title": "The Forgotten Highlander",
+    "author": "Alistair Urquhart",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 3.5,
+    "slug": "the-forgotten-highlander",
+    "hasCover": true
+  },
+  {
+    "title": "How to Build a Car",
+    "author": "Adrian Newey",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 4.25,
+    "slug": "how-to-build-a-car",
+    "hasCover": true
+  },
+  {
+    "title": "When Breath Becomes Air",
+    "author": "Paul Kalanithi",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 5,
+    "slug": "when-breath-becomes-air",
+    "hasCover": true
+  },
+  {
+    "title": "Elder Statesman: A Biography of J. Reuben Clark",
+    "author": "D. Michael Quinn",
+    "genres": [
+      "Biography",
+      "Religion"
+    ],
+    "rating": 4,
+    "slug": "elder-statesman-a-biography-of-j-reuben-clark",
+    "hasCover": true
+  },
+  {
+    "title": "In the Hands of the Lord: The Life of Dallin H. Oaks",
+    "author": "Richard E. Turley Jr. et al.",
+    "genres": [
+      "Biography",
+      "Religion"
+    ],
+    "rating": 4,
+    "slug": "in-the-hands-of-the-lord-the-life-of-dallin-h-oaks",
+    "hasCover": false
+  },
+  {
+    "title": "Saints, Vol. 1: The Standard of Truth",
+    "author": "The Church of Jesus Christ of Latter-day Saints",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 4.5,
+    "slug": "saints-vol-1-the-standard-of-truth",
+    "hasCover": true
+  },
+  {
+    "title": "Saints, Vol. 2: No Unhallowed Hand",
+    "author": "The Church of Jesus Christ of Latter-day Saints",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 4,
+    "slug": "saints-vol-2-no-unhallowed-hand",
+    "hasCover": true
+  },
+  {
+    "title": "Saints, Vol. 3: Boldly, Nobly, and Independent",
+    "author": "The Church of Jesus Christ of Latter-day Saints",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "saints-vol-3-boldly-nobly-and-independent",
+    "hasCover": false
+  },
+  {
+    "title": "Saints, Vol. 4: Sounding in Every Ear",
+    "author": "The Church of Jesus Christ of Latter-day Saints",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "saints-vol-4-sounding-in-every-ear",
+    "hasCover": false
+  },
+  {
+    "title": "Jesus the Christ",
+    "author": "James E. Talmage",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 4.75,
+    "slug": "jesus-the-christ",
+    "hasCover": true
+  },
+  {
+    "title": "The Infinite Atonement",
+    "author": "Tad R. Callister",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.75,
+    "slug": "the-infinite-atonement",
+    "hasCover": true
+  },
+  {
+    "title": "The Miracle of Forgiveness",
+    "author": "Spencer W. Kimball",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.25,
+    "slug": "the-miracle-of-forgiveness",
+    "hasCover": true
+  },
+  {
+    "title": "The Case for Christ",
+    "author": "Lee Strobel",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3,
+    "slug": "the-case-for-christ",
+    "hasCover": true
+  },
+  {
+    "title": "Our Day Star Rising",
+    "author": "Jeffrey R. Holland",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.5,
+    "slug": "our-day-star-rising",
+    "hasCover": true
+  },
+  {
+    "title": "The Divine Gift of Forgiveness",
+    "author": "Neil L. Andersen",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3,
+    "slug": "the-divine-gift-of-forgiveness",
+    "hasCover": true
+  },
+  {
+    "title": "Purity of Heart",
+    "author": "Vaughn J. Featherstone",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3,
+    "slug": "purity-of-heart",
+    "hasCover": true
+  },
+  {
+    "title": "The Power of Everyday Missionaries",
+    "author": "Clayton M. Christensen",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.25,
+    "slug": "the-power-of-everyday-missionaries",
+    "hasCover": true
+  },
+  {
+    "title": "All Things New",
+    "author": "Fiona & Terryl Givens",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.75,
+    "slug": "all-things-new",
+    "hasCover": true
+  },
+  {
+    "title": "The Book of Mormon (Godwin's Illustrated Edition)",
+    "author": "Godwin",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 4.75,
+    "slug": "the-book-of-mormon-godwin-s-illustrated-edition",
+    "hasCover": true
+  },
+  {
+    "title": "The Doctrines and the Mysteries",
+    "author": "Godwin",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 4,
+    "slug": "the-doctrines-and-the-mysteries",
+    "hasCover": true
+  },
+  {
+    "title": "The Doctrine and Covenants",
+    "author": "LDS Scripture",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 5,
+    "slug": "the-doctrine-and-covenants",
+    "hasCover": true
+  },
+  {
+    "title": "The Pearl of Great Price",
+    "author": "LDS Scripture",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 5,
+    "slug": "the-pearl-of-great-price",
+    "hasCover": true
+  },
+  {
+    "title": "Holy Bible (King James Version)",
+    "author": "Various",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 5,
+    "slug": "holy-bible-king-james-version",
+    "hasCover": true
+  },
+  {
+    "title": "The New Testament: A Translation for Latter-day Saints",
+    "author": "Thomas Wayment",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 5,
+    "slug": "the-new-testament-a-translation-for-latter-day-saints",
+    "hasCover": true
+  },
+  {
+    "title": "The Joseph Smith Papers, Journals Vol. 1",
+    "author": "LDS Church Historians",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "the-joseph-smith-papers-journals-vol-1",
+    "hasCover": false
+  },
+  {
+    "title": "The Joseph Smith Papers, Journals Vol. 2",
+    "author": "LDS Church Historians",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "the-joseph-smith-papers-journals-vol-2",
+    "hasCover": false
+  },
+  {
+    "title": "The Second Coming of the Lord",
+    "author": "Gerald N. Lund",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.5,
+    "slug": "the-second-coming-of-the-lord",
+    "hasCover": true
+  },
+  {
+    "title": "God Will Prevail",
+    "author": "Kerry Muhlestein",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 4.25,
+    "slug": "god-will-prevail",
+    "hasCover": false
+  },
+  {
+    "title": "The Temple",
+    "author": "Ed J. Pinegar",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3.75,
+    "slug": "the-temple",
+    "hasCover": true
+  },
+  {
+    "title": "Infinite in All Directions",
+    "author": "Freeman Dyson",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": 4.75,
+    "slug": "infinite-in-all-directions",
+    "hasCover": true
+  },
+  {
+    "title": "Snow Crash",
+    "author": "Neal Stephenson",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 3.75,
+    "slug": "snow-crash",
+    "hasCover": true
+  },
+  {
+    "title": "The Brothers Karamazov",
+    "author": "Fyodor Dostoevsky",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 4.75,
+    "slug": "the-brothers-karamazov",
+    "hasCover": true
+  },
+  {
+    "title": "Battlefield Earth",
+    "author": "L. Ron Hubbard",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 3.5,
+    "slug": "battlefield-earth",
+    "hasCover": true
+  },
+  {
+    "title": "Origin",
+    "author": "Dan Brown",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 3.5,
+    "slug": "origin",
+    "hasCover": true
+  },
+  {
+    "title": "The Kite Runner",
+    "author": "Khaled Hosseini",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 3.25,
+    "slug": "the-kite-runner",
+    "hasCover": true
+  },
+  {
+    "title": "Corsair",
+    "author": "Henrik Sorensen",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 3.75,
+    "slug": "corsair",
+    "hasCover": true
+  },
+  {
+    "title": "The Year of Magical Thinking",
+    "author": "Joan Didion",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 3.5,
+    "slug": "the-year-of-magical-thinking",
+    "hasCover": true
+  },
+  {
+    "title": "The Scaling Era: An Oral History of AI 2019-2025",
+    "author": "Dwarkesh Patel",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.25,
+    "slug": "the-scaling-era-an-oral-history-of-ai-2019-2025",
+    "hasCover": false
+  },
+  {
+    "title": "Boom",
+    "author": "Hobart",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "boom",
+    "hasCover": true
+  },
+  {
+    "title": "The Origins of Efficiency",
+    "author": "Potter",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.25,
+    "slug": "the-origins-of-efficiency",
+    "hasCover": false
+  },
+  {
+    "title": "There Is No AntiMemtics Division",
+    "author": "Qntm",
+    "genres": [
+      "Science Fiction"
+    ],
+    "rating": 4.75,
+    "slug": "there-is-no-antimemtics-division",
+    "hasCover": false
+  },
+  {
+    "title": "Why Fish Don't Exist",
+    "author": "Lulu Miller",
+    "genres": [
+      "Science",
+      "Biography"
+    ],
+    "rating": 3.5,
+    "slug": "why-fish-don-t-exist",
+    "hasCover": true
+  },
+  {
+    "title": "Zero to One",
+    "author": "Peter Thiel",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.25,
+    "slug": "zero-to-one",
+    "hasCover": true
+  },
+  {
+    "title": "Devil Take The Hindmost",
+    "author": "Edward Chancellor",
+    "genres": [
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "devil-take-the-hindmost",
+    "hasCover": true
+  },
+  {
+    "title": "Ender's Game",
+    "author": "Orson Scott Card",
+    "genres": [
+      "Science Fiction"
+    ],
+    "rating": 5,
+    "slug": "ender-s-game",
+    "hasCover": true
+  },
+  {
+    "title": "Deep Survival",
+    "author": "Laurence Gonzales",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4.5,
+    "slug": "deep-survival",
+    "hasCover": true
+  },
+  {
+    "title": "Energy and Civilization",
+    "author": "Vaclav Smil",
+    "genres": [
+      "Science",
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "energy-and-civilization",
+    "hasCover": true
+  },
+  {
+    "title": "The Case Against Education",
+    "author": "Bryan Caplan",
+    "genres": [
+      "Philosophy",
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "the-case-against-education",
+    "hasCover": true
+  },
+  {
+    "title": "Paths of Glory",
+    "author": "Jeffrey Archer",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 4,
+    "slug": "paths-of-glory",
+    "hasCover": true
+  },
+  {
+    "title": "Seven Miracles That Saved America",
+    "author": "Chris Stewart & Ted Stewart",
+    "genres": [
+      "Religion",
+      "History"
+    ],
+    "rating": 4.5,
+    "slug": "seven-miracles-that-saved-america",
+    "hasCover": true
+  },
+  {
+    "title": "Of Boys and Men",
+    "author": "Richard V. Reeves",
+    "genres": [
+      "Philosophy",
+      "Science"
+    ],
+    "rating": 3.75,
+    "slug": "of-boys-and-men",
+    "hasCover": true
+  },
+  {
+    "title": "Why We Sleep",
+    "author": "Matthew Walker",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "why-we-sleep",
+    "hasCover": true
+  },
+  {
+    "title": "Raising an Emotionally Intelligent Child",
+    "author": "John Gottman",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "raising-an-emotionally-intelligent-child",
+    "hasCover": true
+  },
+  {
+    "title": "A Short History of Nearly Everything",
+    "author": "Bill Bryson",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "a-short-history-of-nearly-everything",
+    "hasCover": true
+  },
+  {
+    "title": "Anxious for Nothing",
+    "author": "Max Lucado",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 3,
+    "slug": "anxious-for-nothing",
+    "hasCover": true
+  },
+  {
+    "title": "The Accidental Superpower",
+    "author": "Peter Zeihan",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "the-accidental-superpower",
+    "hasCover": true
+  },
+  {
+    "title": "The Great Divorce",
+    "author": "C. S. Lewis",
+    "genres": [
+      "Religion",
+      "Fiction (General)"
+    ],
+    "rating": 5,
+    "slug": "the-great-divorce",
+    "hasCover": true
+  },
+  {
+    "title": "Dune",
+    "author": "Frank Herbert",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 3.75,
+    "slug": "dune",
+    "hasCover": true
+  },
+  {
+    "title": "The New New Thing",
+    "author": "Michael Lewis",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 3,
+    "slug": "the-new-new-thing",
+    "hasCover": true
+  },
+  {
+    "title": "The Hobbit",
+    "author": "J. R. R. Tolkien",
+    "genres": [
+      "Fiction (Fantasy)"
+    ],
+    "rating": 3.5,
+    "slug": "the-hobbit",
+    "hasCover": true
+  },
+  {
+    "title": "Endurance: Shackleton's Incredible Voyage",
+    "author": "Alfred Lansing",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 5,
+    "slug": "endurance-shackleton-s-incredible-voyage",
+    "hasCover": true
+  },
+  {
+    "title": "Bibi: My Story",
+    "author": "Benjamin Netanyahu",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 3.5,
+    "slug": "bibi-my-story",
+    "hasCover": true
+  },
+  {
+    "title": "We Spread",
+    "author": "Iain Reid",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 3.5,
+    "slug": "we-spread",
+    "hasCover": true
+  },
+  {
+    "title": "Hunt, Gather, Parent",
+    "author": "Michaeleen Doucleff",
+    "genres": [
+      "Philosophy",
+      "Science"
+    ],
+    "rating": 3,
+    "slug": "hunt-gather-parent",
+    "hasCover": true
+  },
+  {
+    "title": "Good Inside",
+    "author": "Becky Kennedy",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.25,
+    "slug": "good-inside",
+    "hasCover": true
+  },
+  {
+    "title": "Leadership Is Language",
+    "author": "L. David Marquet",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "leadership-is-language",
+    "hasCover": false
+  },
+  {
+    "title": "Hate Inc.",
+    "author": "Matt Taibbi",
+    "genres": [
+      "Philosophy",
+      "History"
+    ],
+    "rating": 3.5,
+    "slug": "hate-inc",
+    "hasCover": true
+  },
+  {
+    "title": "Secrets of Sand Hill Road",
+    "author": "Scott Kupor",
+    "genres": [
+      "Science"
+    ],
+    "rating": 3.25,
+    "slug": "secrets-of-sand-hill-road",
+    "hasCover": true
+  },
+  {
+    "title": "Wanting",
+    "author": "Luke Burgis",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.25,
+    "slug": "wanting",
+    "hasCover": true
+  },
+  {
+    "title": "The End of the World Is Just the Beginning",
+    "author": "Peter Zeihan",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "the-end-of-the-world-is-just-the-beginning",
+    "hasCover": true
+  },
+  {
+    "title": "Papillon",
+    "author": "Henri Charri\u00e8re",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 3.75,
+    "slug": "papillon",
+    "hasCover": true
+  },
+  {
+    "title": "Inventing a Nation",
+    "author": "Gore Vidal",
+    "genres": [
+      "History"
+    ],
+    "rating": 4.25,
+    "slug": "inventing-a-nation",
+    "hasCover": true
+  },
+  {
+    "title": "Out of the Silence",
+    "author": "Eduardo Strauch",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 4.75,
+    "slug": "out-of-the-silence",
+    "hasCover": true
+  },
+  {
+    "title": "A River in Darkness",
+    "author": "Masaji Ishikawa",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 4.75,
+    "slug": "a-river-in-darkness",
+    "hasCover": true
+  },
+  {
+    "title": "Turn the Ship Around!",
+    "author": "L. David Marquet",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.25,
+    "slug": "turn-the-ship-around",
+    "hasCover": true
+  },
+  {
+    "title": "Dark Age",
+    "author": "Pierce Brown",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 3.75,
+    "slug": "dark-age",
+    "hasCover": true
+  },
+  {
+    "title": "Iron Gold",
+    "author": "Pierce Brown",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 4,
+    "slug": "iron-gold",
+    "hasCover": true
+  },
+  {
+    "title": "A Little History of the World",
+    "author": "E. H. Gombrich",
+    "genres": [
+      "History"
+    ],
+    "rating": 4.5,
+    "slug": "a-little-history-of-the-world",
+    "hasCover": true
+  },
+  {
+    "title": "Sam Walton: Made in America",
+    "author": "Sam Walton & John Huey",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 3.75,
+    "slug": "sam-walton-made-in-america",
+    "hasCover": true
+  },
+  {
+    "title": "The 50th Law",
+    "author": "50 Cent & Robert Greene",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "the-50th-law",
+    "hasCover": true
+  },
+  {
+    "title": "The Cost of Discipleship",
+    "author": "Dietrich Bonhoeffer",
+    "genres": [
+      "Religion",
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-cost-of-discipleship",
+    "hasCover": true
+  },
+  {
+    "title": "Piranesi",
+    "author": "Susanna Clarke",
+    "genres": [
+      "Fiction (Fantasy)"
+    ],
+    "rating": 3.25,
+    "slug": "piranesi",
+    "hasCover": true
+  },
+  {
+    "title": "Accelerando",
+    "author": "Charles Stross",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 3.25,
+    "slug": "accelerando",
+    "hasCover": true
+  },
+  {
+    "title": "Against the Machine",
+    "author": "Paul Kingsnorth",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3,
+    "slug": "against-the-machine",
+    "hasCover": true
+  },
+  {
+    "title": "The Talent Code",
+    "author": "Daniel Coyle",
+    "genres": [
+      "Philosophy",
+      "Science"
+    ],
+    "rating": 2.5,
+    "slug": "the-talent-code",
+    "hasCover": true
+  },
+  {
+    "title": "Discourses and Selected Writings",
+    "author": "Epictetus",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.75,
+    "slug": "discourses-and-selected-writings",
+    "hasCover": true
+  },
+  {
+    "title": "Unscripted",
+    "author": "James B. Stewart & Rachel Abrams",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 3.25,
+    "slug": "unscripted",
+    "hasCover": true
+  },
+  {
+    "title": "DisneyWar",
+    "author": "James B. Stewart",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 3,
+    "slug": "disneywar",
+    "hasCover": true
+  },
+  {
+    "title": "Founding Brothers",
+    "author": "Joseph J. Ellis",
+    "genres": [
+      "History"
+    ],
+    "rating": 4.25,
+    "slug": "founding-brothers",
+    "hasCover": true
+  },
+  {
+    "title": "Broken Money",
+    "author": "Lyn Alden",
+    "genres": [
+      "Science",
+      "History"
+    ],
+    "rating": 3.5,
+    "slug": "broken-money",
+    "hasCover": true
+  },
+  {
+    "title": "The World for Sale",
+    "author": "Javier Blas & Jack Farchy",
+    "genres": [
+      "History"
+    ],
+    "rating": 3.25,
+    "slug": "the-world-for-sale",
+    "hasCover": true
+  },
+  {
+    "title": "Choosing Glory",
+    "author": "Lili Anderson",
+    "genres": [
+      "Religion"
+    ],
+    "rating": 4,
+    "slug": "choosing-glory",
+    "hasCover": true
+  },
+  {
+    "title": "The Walk",
+    "author": "Richard Paul Evans",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 3,
+    "slug": "the-walk",
+    "hasCover": true
+  },
+  {
+    "title": "Morning Star",
+    "author": "Pierce Brown",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 4.5,
+    "slug": "morning-star",
+    "hasCover": true
+  },
+  {
+    "title": "Golden Son",
+    "author": "Pierce Brown",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 4.25,
+    "slug": "golden-son",
+    "hasCover": true
+  },
+  {
+    "title": "Autocracy, Inc.",
+    "author": "Anne Applebaum",
+    "genres": [
+      "History",
+      "Philosophy"
+    ],
+    "rating": 3.5,
+    "slug": "autocracy-inc",
+    "hasCover": true
+  },
+  {
+    "title": "Bloodlands",
+    "author": "Timothy Snyder",
+    "genres": [
+      "History"
+    ],
+    "rating": 3,
+    "slug": "bloodlands",
+    "hasCover": true
+  },
+  {
+    "title": "About Face",
+    "author": "David H. Hackworth",
+    "genres": [
+      "Biography",
+      "History"
+    ],
+    "rating": 3,
+    "slug": "about-face",
+    "hasCover": true
+  },
+  {
+    "title": "Red Rising",
+    "author": "Pierce Brown",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 4,
+    "slug": "red-rising",
+    "hasCover": true
+  },
+  {
+    "title": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.75,
+    "slug": "the-psychology-of-money",
+    "hasCover": true
+  },
+  {
+    "title": "On the Edge",
+    "author": "Nate Silver",
+    "genres": [
+      "Philosophy",
+      "Science"
+    ],
+    "rating": 3.5,
+    "slug": "on-the-edge",
+    "hasCover": true
+  },
+  {
+    "title": "The Stranger",
+    "author": "Albert Camus",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 3,
+    "slug": "the-stranger",
+    "hasCover": true
+  },
+  {
+    "title": "Star Maker",
+    "author": "Olaf Stapledon",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 3.5,
+    "slug": "star-maker",
+    "hasCover": true
+  },
+  {
+    "title": "The Moon Is a Harsh Mistress",
+    "author": "Robert A. Heinlein",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 4.75,
+    "slug": "the-moon-is-a-harsh-mistress",
+    "hasCover": true
+  },
+  {
+    "title": "Storyworthy",
+    "author": "Matthew Dicks",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 3.25,
+    "slug": "storyworthy",
+    "hasCover": true
+  },
+  {
+    "title": "Six Not-So-Easy Pieces",
+    "author": "Richard Feynman",
+    "genres": [
+      "Science"
+    ],
+    "rating": 4,
+    "slug": "six-not-so-easy-pieces",
+    "hasCover": true
+  },
+  {
+    "title": "The Managerial Revolution",
+    "author": "James Burnham",
+    "genres": [
+      "Philosophy",
+      "History"
+    ],
+    "rating": 3.25,
+    "slug": "the-managerial-revolution",
+    "hasCover": true
+  },
+  {
+    "title": "The Closing of the American Mind",
+    "author": "Allan Bloom",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-closing-of-the-american-mind",
+    "hasCover": true
+  },
+  {
+    "title": "The Coddling of the American Mind",
+    "author": "Greg Lukianoff & Jonathan Haidt",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4,
+    "slug": "the-coddling-of-the-american-mind",
+    "hasCover": true
+  },
+  {
+    "title": "The Machiavellians",
+    "author": "James Burnham",
+    "genres": [
+      "Philosophy",
+      "History"
+    ],
+    "rating": 3.5,
+    "slug": "the-machiavellians",
+    "hasCover": true
+  },
+  {
+    "title": "Starship Troopers",
+    "author": "Robert A. Heinlein",
+    "genres": [
+      "Fiction (Sci-fi)"
+    ],
+    "rating": 4.5,
+    "slug": "starship-troopers",
+    "hasCover": true
+  },
+  {
+    "title": "Can't Hurt Me",
+    "author": "David Goggins",
+    "genres": [
+      "Biography",
+      "Philosophy"
+    ],
+    "rating": 2.75,
+    "slug": "can-t-hurt-me",
+    "hasCover": true
+  },
+  {
+    "title": "The British Are Coming",
+    "author": "Rick Atkinson",
+    "genres": [
+      "History"
+    ],
+    "rating": 3.75,
+    "slug": "the-british-are-coming",
+    "hasCover": true
+  },
+  {
+    "title": "Gates of Fire",
+    "author": "Steven Pressfield",
+    "genres": [
+      "Fiction (General)",
+      "History"
+    ],
+    "rating": 4.5,
+    "slug": "gates-of-fire",
+    "hasCover": true
+  },
+  {
+    "title": "The Last Lecture",
+    "author": "Randy Pausch",
+    "genres": [
+      "Biography",
+      "Philosophy"
+    ],
+    "rating": 4.75,
+    "slug": "the-last-lecture",
+    "hasCover": true
+  },
+  {
+    "title": "Elon Musk",
+    "author": "Walter Isaacson",
+    "genres": [
+      "Biography"
+    ],
+    "rating": 4,
+    "slug": "elon-musk",
+    "hasCover": true
+  },
+  {
+    "title": "David O. McKay and the Rise of Modern Mormonism",
+    "author": "Gregory A. Prince & Wm. Robert Wright",
+    "genres": [
+      "Biography",
+      "Religion"
+    ],
+    "rating": 4.5,
+    "slug": "david-o-mckay-and-the-rise-of-modern-mormonism",
+    "hasCover": true
+  },
+  {
+    "title": "The War of Art",
+    "author": "Steven Pressfield",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": 4.25,
+    "slug": "the-war-of-art",
+    "hasCover": true
+  },
+  {
+    "title": "The Road",
+    "author": "Cormac McCarthy",
+    "genres": [
+      "Fiction (General)"
+    ],
+    "rating": 4.75,
+    "slug": "the-road",
+    "hasCover": true
+  }
+]
