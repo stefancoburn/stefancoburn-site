@@ -1,6 +1,6 @@
 [
   {
-    "title": "The Feynman Lectures on Physics (Vols. 1\u20133)",
+    "title": "The Feynman Lectures on Physics (Vols. 1–3)",
     "author": "Richard Feynman",
     "genres": [
       "Science"
@@ -15,7 +15,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "feynman-s-tips-on-physics",
     "hasCover": true
   },
@@ -25,7 +25,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "six-easy-pieces",
     "hasCover": true
   },
@@ -56,7 +56,7 @@
       "Science",
       "Philosophy"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "the-meaning-of-it-all",
     "hasCover": true
   },
@@ -76,7 +76,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "infinite-powers",
     "hasCover": true
   },
@@ -86,7 +86,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "prime-numbers-and-the-riemann-hypothesis",
     "hasCover": true
   },
@@ -96,7 +96,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "zero-the-biography-of-a-dangerous-idea",
     "hasCover": true
   },
@@ -106,7 +106,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "a-concise-history-of-mathematics",
     "hasCover": true
   },
@@ -137,7 +137,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "professor-stewart-s-cabinet-of-mathematical-curiosities",
     "hasCover": true
   },
@@ -157,7 +157,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "prime-obsession",
     "hasCover": true
   },
@@ -167,7 +167,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-way-things-work",
     "hasCover": true
   },
@@ -187,7 +187,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-gene",
     "hasCover": true
   },
@@ -248,7 +248,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "material-world",
     "hasCover": true
   },
@@ -259,7 +259,7 @@
       "History",
       "Science"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "nuclear-war-a-scenario",
     "hasCover": true
   },
@@ -271,7 +271,7 @@
     ],
     "rating": 1.5,
     "slug": "industrial-megaprojects",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Blueprint",
@@ -279,7 +279,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "blueprint",
     "hasCover": true
   },
@@ -289,7 +289,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "a-concise-guide-to-macroeconomics",
     "hasCover": true
   },
@@ -300,7 +300,7 @@
       "History",
       "Science"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "a-history-of-knowledge",
     "hasCover": true
   },
@@ -311,7 +311,7 @@
       "Science",
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-demon-haunted-world",
     "hasCover": true
   },
@@ -321,7 +321,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "map-and-territory",
     "hasCover": true
   },
@@ -331,7 +331,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "how-to-actually-change-your-mind",
     "hasCover": true
   },
@@ -351,7 +351,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "a-conflict-of-visions",
     "hasCover": true
   },
@@ -362,7 +362,7 @@
       "Science",
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-rational-optimist",
     "hasCover": true
   },
@@ -382,7 +382,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "the-subtle-art-of-not-giving-a-f-ck",
     "hasCover": true
   },
@@ -403,7 +403,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "stubborn-attachments",
     "hasCover": true
   },
@@ -413,7 +413,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "atomic-habits",
     "hasCover": true
   },
@@ -423,7 +423,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "eat-that-frog",
     "hasCover": true
   },
@@ -443,7 +443,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-art-of-seduction",
     "hasCover": true
   },
@@ -454,7 +454,7 @@
       "Philosophy",
       "Biography"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "mastery",
     "hasCover": true
   },
@@ -464,7 +464,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-48-laws-of-power",
     "hasCover": true
   },
@@ -484,7 +484,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "cowboy-ethics",
     "hasCover": true
   },
@@ -505,7 +505,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "calming-your-anxious-mind",
     "hasCover": true
   },
@@ -527,7 +527,7 @@
       "Philosophy",
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-comfort-crisis",
     "hasCover": true
   },
@@ -537,7 +537,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "murder-your-darlings",
     "hasCover": true
   },
@@ -547,7 +547,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "bird-by-bird",
     "hasCover": true
   },
@@ -568,7 +568,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "an-elegant-puzzle",
     "hasCover": true
   },
@@ -579,7 +579,7 @@
       "History",
       "Philosophy"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "the-revolt-of-the-public",
     "hasCover": true
   },
@@ -589,7 +589,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-meritocracy-trap",
     "hasCover": true
   },
@@ -611,7 +611,7 @@
       "History",
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-war-on-the-west",
     "hasCover": true
   },
@@ -633,7 +633,7 @@
       "Biography",
       "History"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "alexander-hamilton",
     "hasCover": true
   },
@@ -654,7 +654,7 @@
       "History",
       "Philosophy"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "the-federalist-papers",
     "hasCover": true
   },
@@ -684,7 +684,7 @@
     "genres": [
       "History"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "the-box",
     "hasCover": true
   },
@@ -695,9 +695,9 @@
       "History",
       "Science"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "gps-declassified",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Superabundance",
@@ -706,7 +706,7 @@
       "Science",
       "History"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "superabundance",
     "hasCover": true
   },
@@ -727,7 +727,7 @@
       "History",
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-idea-factory",
     "hasCover": true
   },
@@ -737,7 +737,7 @@
     "genres": [
       "History"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "chip-war",
     "hasCover": true
   },
@@ -757,7 +757,7 @@
     "genres": [
       "History"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "the-ancient-city",
     "hasCover": true
   },
@@ -767,7 +767,7 @@
     "genres": [
       "History"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "salt-a-world-history",
     "hasCover": true
   },
@@ -788,7 +788,7 @@
       "Science",
       "History"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "producing-prosperity",
     "hasCover": true
   },
@@ -798,7 +798,7 @@
     "genres": [
       "History"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "american-spring",
     "hasCover": true
   },
@@ -809,7 +809,7 @@
       "Biography",
       "Religion"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "joseph-smith-rough-stone-rolling",
     "hasCover": true
   },
@@ -819,7 +819,7 @@
     "genres": [
       "Biography"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "leonardo-da-vinci",
     "hasCover": true
   },
@@ -830,7 +830,7 @@
       "Biography",
       "Religion"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "porter-rockwell-a-biography",
     "hasCover": true
   },
@@ -841,7 +841,7 @@
       "Biography",
       "Science"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "endurance",
     "hasCover": true
   },
@@ -852,7 +852,7 @@
       "Biography",
       "History"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "unbroken",
     "hasCover": true
   },
@@ -917,7 +917,7 @@
       "Biography",
       "History"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-forgotten-highlander",
     "hasCover": true
   },
@@ -937,7 +937,7 @@
     "genres": [
       "Biography"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "when-breath-becomes-air",
     "hasCover": true
   },
@@ -948,7 +948,7 @@
       "Biography",
       "Religion"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "elder-statesman-a-biography-of-j-reuben-clark",
     "hasCover": true
   },
@@ -959,9 +959,9 @@
       "Biography",
       "Religion"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "in-the-hands-of-the-lord-the-life-of-dallin-h-oaks",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Saints, Vol. 1: The Standard of Truth",
@@ -970,7 +970,7 @@
       "Religion",
       "History"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "saints-vol-1-the-standard-of-truth",
     "hasCover": true
   },
@@ -981,7 +981,7 @@
       "Religion",
       "History"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "saints-vol-2-no-unhallowed-hand",
     "hasCover": true
   },
@@ -994,7 +994,7 @@
     ],
     "rating": 2.5,
     "slug": "saints-vol-3-boldly-nobly-and-independent",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Saints, Vol. 4: Sounding in Every Ear",
@@ -1005,7 +1005,7 @@
     ],
     "rating": 2.5,
     "slug": "saints-vol-4-sounding-in-every-ear",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Jesus the Christ",
@@ -1043,7 +1043,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "the-case-for-christ",
     "hasCover": true
   },
@@ -1053,7 +1053,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "our-day-star-rising",
     "hasCover": true
   },
@@ -1063,7 +1063,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "the-divine-gift-of-forgiveness",
     "hasCover": true
   },
@@ -1073,7 +1073,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "purity-of-heart",
     "hasCover": true
   },
@@ -1113,7 +1113,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-doctrines-and-the-mysteries",
     "hasCover": true
   },
@@ -1123,7 +1123,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "the-doctrine-and-covenants",
     "hasCover": true
   },
@@ -1133,7 +1133,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "the-pearl-of-great-price",
     "hasCover": true
   },
@@ -1143,7 +1143,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "holy-bible-king-james-version",
     "hasCover": true
   },
@@ -1153,7 +1153,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "the-new-testament-a-translation-for-latter-day-saints",
     "hasCover": true
   },
@@ -1166,7 +1166,7 @@
     ],
     "rating": 2.5,
     "slug": "the-joseph-smith-papers-journals-vol-1",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "The Joseph Smith Papers, Journals Vol. 2",
@@ -1177,7 +1177,7 @@
     ],
     "rating": 2.5,
     "slug": "the-joseph-smith-papers-journals-vol-2",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "The Second Coming of the Lord",
@@ -1185,7 +1185,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-second-coming-of-the-lord",
     "hasCover": true
   },
@@ -1197,7 +1197,7 @@
     ],
     "rating": 3.5,
     "slug": "god-will-prevail",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "The Temple",
@@ -1246,7 +1246,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "battlefield-earth",
     "hasCover": true
   },
@@ -1256,7 +1256,7 @@
     "genres": [
       "Fiction"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "origin",
     "hasCover": true
   },
@@ -1286,7 +1286,7 @@
     "genres": [
       "Biography"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-year-of-magical-thinking",
     "hasCover": true
   },
@@ -1298,7 +1298,7 @@
     ],
     "rating": 3.5,
     "slug": "the-scaling-era-an-oral-history-of-ai-2019-2025",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Boom",
@@ -1306,7 +1306,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "boom",
     "hasCover": true
   },
@@ -1318,7 +1318,7 @@
     ],
     "rating": 3.5,
     "slug": "the-origins-of-efficiency",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "There Is No AntiMemtics Division",
@@ -1328,7 +1328,7 @@
     ],
     "rating": 4.5,
     "slug": "there-is-no-antimemtics-division",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Why Fish Don't Exist",
@@ -1337,7 +1337,7 @@
       "Science",
       "Biography"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "why-fish-don-t-exist",
     "hasCover": true
   },
@@ -1367,7 +1367,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "ender-s-game",
     "hasCover": true
   },
@@ -1377,7 +1377,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "deep-survival",
     "hasCover": true
   },
@@ -1399,7 +1399,7 @@
       "Philosophy",
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-case-against-education",
     "hasCover": true
   },
@@ -1409,7 +1409,7 @@
     "genres": [
       "Fiction"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "paths-of-glory",
     "hasCover": true
   },
@@ -1420,7 +1420,7 @@
       "Religion",
       "History"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "seven-miracles-that-saved-america",
     "hasCover": true
   },
@@ -1441,7 +1441,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "why-we-sleep",
     "hasCover": true
   },
@@ -1451,7 +1451,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "raising-an-emotionally-intelligent-child",
     "hasCover": true
   },
@@ -1461,7 +1461,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "a-short-history-of-nearly-everything",
     "hasCover": true
   },
@@ -1471,7 +1471,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "anxious-for-nothing",
     "hasCover": true
   },
@@ -1482,7 +1482,7 @@
       "History",
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-accidental-superpower",
     "hasCover": true
   },
@@ -1493,7 +1493,7 @@
       "Religion",
       "Fiction"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "the-great-divorce",
     "hasCover": true
   },
@@ -1513,7 +1513,7 @@
     "genres": [
       "Biography"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "the-new-new-thing",
     "hasCover": true
   },
@@ -1523,7 +1523,7 @@
     "genres": [
       "Fantasy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-hobbit",
     "hasCover": true
   },
@@ -1534,7 +1534,7 @@
       "Biography",
       "History"
     ],
-    "rating": 5.0,
+    "rating": 5,
     "slug": "endurance-shackleton-s-incredible-voyage",
     "hasCover": true
   },
@@ -1545,7 +1545,7 @@
       "Biography",
       "History"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "bibi-my-story",
     "hasCover": true
   },
@@ -1555,7 +1555,7 @@
     "genres": [
       "Fiction"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "we-spread",
     "hasCover": true
   },
@@ -1566,7 +1566,7 @@
       "Philosophy",
       "Science"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "hunt-gather-parent",
     "hasCover": true
   },
@@ -1586,9 +1586,9 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "leadership-is-language",
-    "hasCover": false
+    "hasCover": true
   },
   {
     "title": "Hate Inc.",
@@ -1597,7 +1597,7 @@
       "Philosophy",
       "History"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "hate-inc",
     "hasCover": true
   },
@@ -1628,13 +1628,13 @@
       "History",
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-end-of-the-world-is-just-the-beginning",
     "hasCover": true
   },
   {
     "title": "Papillon",
-    "author": "Henri Charri\u00e8re",
+    "author": "Henri Charrière",
     "genres": [
       "Biography"
     ],
@@ -1700,7 +1700,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "iron-gold",
     "hasCover": true
   },
@@ -1710,7 +1710,7 @@
     "genres": [
       "History"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "a-little-history-of-the-world",
     "hasCover": true
   },
@@ -1730,7 +1730,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-50th-law",
     "hasCover": true
   },
@@ -1741,7 +1741,7 @@
       "Religion",
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-cost-of-discipleship",
     "hasCover": true
   },
@@ -1771,7 +1771,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "against-the-machine",
     "hasCover": true
   },
@@ -1813,7 +1813,7 @@
       "Biography",
       "History"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "disneywar",
     "hasCover": true
   },
@@ -1834,7 +1834,7 @@
       "Science",
       "History"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "broken-money",
     "hasCover": true
   },
@@ -1854,7 +1854,7 @@
     "genres": [
       "Religion"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "choosing-glory",
     "hasCover": true
   },
@@ -1864,7 +1864,7 @@
     "genres": [
       "Fiction"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "the-walk",
     "hasCover": true
   },
@@ -1874,7 +1874,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "morning-star",
     "hasCover": true
   },
@@ -1895,7 +1895,7 @@
       "History",
       "Philosophy"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "autocracy-inc",
     "hasCover": true
   },
@@ -1905,7 +1905,7 @@
     "genres": [
       "History"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "bloodlands",
     "hasCover": true
   },
@@ -1916,7 +1916,7 @@
       "Biography",
       "History"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "about-face",
     "hasCover": true
   },
@@ -1926,7 +1926,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "red-rising",
     "hasCover": true
   },
@@ -1947,7 +1947,7 @@
       "Philosophy",
       "Science"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "on-the-edge",
     "hasCover": true
   },
@@ -1957,7 +1957,7 @@
     "genres": [
       "Fiction"
     ],
-    "rating": 1.0,
+    "rating": 1,
     "slug": "the-stranger",
     "hasCover": true
   },
@@ -1967,7 +1967,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "star-maker",
     "hasCover": true
   },
@@ -1997,7 +1997,7 @@
     "genres": [
       "Science"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "six-not-so-easy-pieces",
     "hasCover": true
   },
@@ -2018,7 +2018,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-closing-of-the-american-mind",
     "hasCover": true
   },
@@ -2028,7 +2028,7 @@
     "genres": [
       "Philosophy"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "the-coddling-of-the-american-mind",
     "hasCover": true
   },
@@ -2039,7 +2039,7 @@
       "Philosophy",
       "History"
     ],
-    "rating": 2.0,
+    "rating": 2,
     "slug": "the-machiavellians",
     "hasCover": true
   },
@@ -2049,7 +2049,7 @@
     "genres": [
       "Sci-fi"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "starship-troopers",
     "hasCover": true
   },
@@ -2081,7 +2081,7 @@
       "Fiction",
       "History"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "gates-of-fire",
     "hasCover": true
   },
@@ -2102,7 +2102,7 @@
     "genres": [
       "Biography"
     ],
-    "rating": 3.0,
+    "rating": 3,
     "slug": "elon-musk",
     "hasCover": true
   },
@@ -2113,7 +2113,7 @@
       "Biography",
       "Religion"
     ],
-    "rating": 4.0,
+    "rating": 4,
     "slug": "david-o-mckay-and-the-rise-of-modern-mormonism",
     "hasCover": true
   },
@@ -2135,6 +2135,69 @@
     ],
     "rating": 4.5,
     "slug": "the-road",
+    "hasCover": true
+  },
+  {
+    "title": "Death Be Not Proud",
+    "author": "John Gunther",
+    "genres": [
+      "Biography"
+    ],
+    "rating": null,
+    "slug": "death-be-not-proud",
+    "hasCover": true
+  },
+  {
+    "title": "Kill Chain",
+    "author": "Andrew Cockburn",
+    "genres": [
+      "History",
+      "Science"
+    ],
+    "rating": null,
+    "slug": "kill-chain",
+    "hasCover": true
+  },
+  {
+    "title": "The Case for Nukes",
+    "author": "Robert Zubrin",
+    "genres": [
+      "Science",
+      "Philosophy"
+    ],
+    "rating": null,
+    "slug": "the-case-for-nukes",
+    "hasCover": true
+  },
+  {
+    "title": "The True Believer",
+    "author": "Eric Hoffer",
+    "genres": [
+      "Philosophy",
+      "History"
+    ],
+    "rating": null,
+    "slug": "the-true-believer",
+    "hasCover": true
+  },
+  {
+    "title": "Dark and Magical Places",
+    "author": "Christopher Kemp",
+    "genres": [
+      "Science"
+    ],
+    "rating": null,
+    "slug": "dark-and-magical-places",
+    "hasCover": true
+  },
+  {
+    "title": "1929",
+    "author": "Andrew Ross Sorkin",
+    "genres": [
+      "History"
+    ],
+    "rating": null,
+    "slug": "1929",
     "hasCover": true
   }
 ]
