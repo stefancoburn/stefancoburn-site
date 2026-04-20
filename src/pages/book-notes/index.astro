@@ -6,22 +6,27 @@ const bookNotes = (await getCollection('book-notes')).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 ---
+<BaseLayout title="Book Notes — Stefan Coburn" ogImage="/og/book-notes.png" active="book-notes">
+  <main class="container">
+    <div class="page-title">
+      <div>
+        <div class="eyebrow">Reviews & reflections</div>
+        <h1>Book<br><em>notes.</em></h1>
+      </div>
+    </div>
+    <p class="page-intro">Notes on books that deserved a second pass. Sparse at the moment — the bar for writing one is <em>"I'd recommend this in person."</em></p>
 
-<BaseLayout title="Book Notes - Stefan Coburn" ogImage="/og/book-notes.png">
-  <h1>Book Notes</h1>
-  <p style="color: var(--color-text-muted); margin-bottom: 2rem;">
-    Notes and reflections on books I've read.
-  </p>
-
-  <ul class="post-list">
-    {bookNotes.map((note) => (
-      <li>
-        <a href={`/book-notes/${note.id}`}>{note.data.title}</a>
-        {note.data.description && (
-          <span class="post-date">{note.data.description}</span>
-        )}
-        <span class="post-date">{new Date(note.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-      </li>
-    ))}
-  </ul>
+    <div class="index-list">
+      {bookNotes.map((note, i) => (
+        <a href={`/book-notes/${note.id}`} class="index-row">
+          <div class="num">{String(i + 1).padStart(3, '0')}</div>
+          <div>
+            <div class="title">{note.data.title}</div>
+            {note.data.description && <div class="desc">{note.data.description}</div>}
+          </div>
+          <div class="d">{new Date(note.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</div>
+        </a>
+      ))}
+    </div>
+  </main>
 </BaseLayout>

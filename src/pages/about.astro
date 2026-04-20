@@ -5,26 +5,35 @@ const timeline = [
   { year: "1988", title: "Born to Lisa and Kevin Coburn", text: "The greatest privilege is being born to loving parents who are committed to each other. My father graduated from BYU and entered the Air Force becoming a C-130 pilot. My mother put her considerable talents into managing the home, raising six children, and serving in different capacities within the community." },
   { year: "1999", title: "Moving to Georgia", text: "My father's service in the Air Force would take our family from Utah to Mississippi and Arkansas back to Utah and then to Idaho before ultimately settling down in Georgia in 1998. Over these many moves, I would gain 2 brothers and 3 sisters. I call Georgia home. It is where I lived from ages 9 to 18." },
   { year: "2007", title: "Graduating HS and off to BYU", text: "My youth was spent hiking, reading, trying to grok quantum mechanics, building a homemade tesla coil, and just hanging out with friends — building a spud gun, making thermite, and testing the effects of dry ice bombs in swimming pools. I would go to BYU to study Chemical Engineering." },
-  { year: "2008–2010", title: "Missionary in Brazil", text: "Taking time off from college, I spent two years in southern Brazil preaching and teaching about Jesus Christ as a missionary for The Church of Jesus Christ of Latter-Day Saints. I love the Brazilian people. I have many cherished friends and memories from my time spent in Santa Catarina, Brazil." },
-  { year: "2013–2015", title: "ExxonMobil", text: "I spent my time at ExxonMobil crawling through distillation towers and increasing unit throughput. This was a time of soaring profits for steamcracking due to cheap natural gas from the relatively nascent US fracking boom. I was responsible for the cold end of the plant that separated and purified plastics feedstocks, ethylene and propylene." },
-  { year: "2015–2017", title: "Harvard Business School", text: "After studying chemical engineering, business school was walk in the park. I was thrilled to be learning how to decipher a balance sheet and analyze a statement of cash flows. While my classmates were anxiously chasing the big consulting firms or investment banking offers, I wanted to chase a job that would be 8-year Stefan proud. I was fortunate to land an internship at Jeff Bezos's Blue Origin." },
-  { year: "2017–2019", title: "Blue Origin", text: "It was a privilege to cut my teeth doing corporate strategy and business development at Blue Origin. I led the effort to pursue and ultimately win a major contract with the US Air Force for military launch services. I worked with amazing colleagues like Bret Alexander and Erika Wagner. I found my zone of excellence straddling the worlds of engineering and sales/strategy." },
+  { year: "2008", title: "Missionary in Brazil", text: "Taking time off from college, I spent two years in southern Brazil preaching and teaching about Jesus Christ as a missionary for The Church of Jesus Christ of Latter-Day Saints. I love the Brazilian people. I have many cherished friends and memories from my time spent in Santa Catarina, Brazil." },
+  { year: "2013", title: "ExxonMobil", text: "I spent my time at ExxonMobil crawling through distillation towers and increasing unit throughput. This was a time of soaring profits for steamcracking due to cheap natural gas from the relatively nascent US fracking boom. I was responsible for the cold end of the plant that separated and purified plastics feedstocks, ethylene and propylene." },
+  { year: "2015", title: "Harvard Business School", text: "After studying chemical engineering, business school was walk in the park. I was thrilled to be learning how to decipher a balance sheet and analyze a statement of cash flows. While my classmates were anxiously chasing the big consulting firms or investment banking offers, I wanted to chase a job that would be 8-year Stefan proud. I was fortunate to land an internship at Jeff Bezos's Blue Origin." },
+  { year: "2017", title: "Blue Origin", text: "It was a privilege to cut my teeth doing corporate strategy and business development at Blue Origin. I led the effort to pursue and ultimately win a major contract with the US Air Force for military launch services. I worked with amazing colleagues like Bret Alexander and Erika Wagner. I found my zone of excellence straddling the worlds of engineering and sales/strategy." },
   { year: "2018", title: "Married the love of my life", text: "All decisions pale in importance to the decision to marry my amazing wife, Alyssa. We may have met via a dating app. We may have dated long-distance. But despite challenges of circumstance, I was able to use my powers of charisma and persuasion to convince her that doing life together was a worthwhile prospect. She is my rock. She keeps me grounded. Marrying her is my all-time greatest feat." },
-  { year: "2019–2023", title: "Adranos", text: "I was fortunate to meet Chris Stoker and Brielle Terry, the two co-founders of Adranos, a company developing novel solid rocket motor propellant and manufacturing capabilities. This was before \"defense tech\" was cool, before the war in Ukraine broke out, before the conflict in Gaza. We were able to build a greenfield manufacturing site in Indiana and establish operations in a 500-acre complex in southern Mississippi. The company delivered much needed innovation and capability to a ossified, risk averse, and fragile industrial base for missiles and munitions. In 2023, the company was acquired by Anduril Industries." },
-  { year: "2024–2025", title: "Stay-at-home Dad, firefighter, teacher", text: "In early 2024, I left Anduril. I had sacrificed much time and energy in company building, and it was time to invest in family and community. My wife, Alyssa, enrolled at Purdue in an accelerated nursing degree program. Stay-at-home dad became my new day job. I had been volunteering with the local fire department. I became EMT and firefighter certified in the state of Indiana. Purdue afforded me the opportunity to teach a \"High Tech Entrepreneurship\" course to engineering undergrads." },
+  { year: "2019", title: "Adranos", text: "I was fortunate to meet Chris Stoker and Brielle Terry, the two co-founders of Adranos, a company developing novel solid rocket motor propellant and manufacturing capabilities. This was before \"defense tech\" was cool, before the war in Ukraine broke out, before the conflict in Gaza. We were able to build a greenfield manufacturing site in Indiana and establish operations in a 500-acre complex in southern Mississippi. The company delivered much needed innovation and capability to an ossified, risk-averse, and fragile industrial base. In 2023, the company was acquired by Anduril Industries." },
+  { year: "2024", title: "Stay-at-home dad, firefighter, teacher", text: "In early 2024, I left Anduril. I had sacrificed much time and energy in company building, and it was time to invest in family and community. My wife Alyssa enrolled at Purdue in an accelerated nursing degree program. Stay-at-home dad became my new day job. I had been volunteering with the local fire department. I became EMT and firefighter certified in the state of Indiana. Purdue afforded me the opportunity to teach a \"High Tech Entrepreneurship\" course to engineering undergrads." },
 ];
 ---
-
-<BaseLayout title="About Me - Stefan Coburn" ogImage="/og/about.png">
-  <h1>About Me</h1>
-
-  <div style="margin-top: 2rem;">
-    {timeline.map((entry) => (
-      <div class="timeline-entry">
-        <div class="timeline-year">{entry.year}</div>
-        <div class="timeline-title">{entry.title}</div>
-        <p>{entry.text}</p>
+<BaseLayout title="About — Stefan Coburn" ogImage="/og/about.png" active="about">
+  <main class="container">
+    <div class="about-hero">
+      <div>
+        <div class="eyebrow">A life in chapters</div>
+        <div class="page-title"><div><h1>About<em>.</em></h1></div></div>
+        <p class="about-lead">An engineer who went to business school, a strategist who ended up a stay-at-home dad, a corporate guy who became a volunteer firefighter. The through-line is <em>showing up for the things that matter.</em></p>
       </div>
-    ))}
-  </div>
+    </div>
+
+    <section class="timeline">
+      {timeline.map(entry => (
+        <div class="tl-entry">
+          <div class="tl-year">{entry.year}</div>
+          <div class="tl-body">
+            <h3>{entry.title}</h3>
+            <p>{entry.text}</p>
+          </div>
+        </div>
+      ))}
+    </section>
+  </main>
 </BaseLayout>

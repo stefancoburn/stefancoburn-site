@@ -6,22 +6,31 @@ const essays = (await getCollection('essays')).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 ---
+<BaseLayout title="Essays — Stefan Coburn" ogImage="/og/essays.png" active="essays">
+  <main class="container">
+    <div class="page-title">
+      <div>
+        <div class="eyebrow">Long-form</div>
+        <h1>Essays<em>.</em></h1>
+      </div>
+    </div>
+    <p class="page-intro">Thoughts on technology, society, and the good life.</p>
 
-<BaseLayout title="Essays - Stefan Coburn" ogImage="/og/essays.png">
-  <h1>Essays</h1>
-  <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Thoughts on technology, society, and the good life.</p>
-
-  {essays.length > 0 ? (
-    <ul class="post-list">
-      {essays.map((essay) => (
-        <li>
-          <a href={`/essays/${essay.id}`}>{essay.data.title}</a>
-          {essay.data.description && <span class="post-description">{essay.data.description}</span>}
-          <span class="post-date">{new Date(essay.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p style="color: var(--color-text-muted); font-style: italic;">Coming soon.</p>
-  )}
+    {essays.length > 0 ? (
+      <div class="index-list">
+        {essays.map((essay, i) => (
+          <a href={`/essays/${essay.id}`} class="index-row">
+            <div class="num">{String(i + 1).padStart(3, '0')}</div>
+            <div>
+              <div class="title">{essay.data.title}</div>
+              {essay.data.description && <div class="desc">{essay.data.description}</div>}
+            </div>
+            <div class="d">{new Date(essay.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p style="color:var(--muted);font-style:italic;font-family:var(--display);font-size:18px;margin-top:40px">Coming soon.</p>
+    )}
+  </main>
 </BaseLayout>

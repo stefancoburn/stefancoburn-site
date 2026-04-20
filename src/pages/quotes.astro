@@ -3,13 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const quotes = [
   { text: "Not to be occupied and not to exist are one and the same thing for a man.", author: "Voltaire" },
-  { text: "The world will never starve for want of wonders, but for want of wonder. We should endeavor to wonder at the permanent thing, not the mere exception. We should be startled by the sun, and not by the eclipse. We should wonder less at the earthquake, and wonder more at the earth.", author: "G.K. Chesterton" },
+  { text: "The world will never starve for want of wonders, but for want of wonder. We should endeavor to wonder at the permanent thing, not the mere exception. We should be startled by the sun, and not by the eclipse. We should wonder less at the earthquake, and wonder more at the earth.", author: "G.K. Chesterton", small: true },
   { text: "So what is left worth living for? This alone: justice in thought, goodness in action, speech that cannot deceive, and a disposition glad of whatever comes.", author: "Marcus Aurelius" },
   { text: "Do what you can, with what you got, where you are.", author: "Teddy Roosevelt" },
-  { text: "Our resources are growing, not shrinking, because resources are defined by human creativity. In fact, there are no such things as 'natural resources.' There are only natural raw materials. It is human ingenuity that turns natural raw materials into resources.", author: "Robert Zubrin" },
+  { text: "Our resources are growing, not shrinking, because resources are defined by human creativity. In fact, there are no such things as 'natural resources.' There are only natural raw materials. It is human ingenuity that turns natural raw materials into resources.", author: "Robert Zubrin", small: true },
   { text: "Where your fear is, there your task is.", author: "Carl Jung" },
-  { text: "The Lord seeks creators, not destroyers. For he who creates good thereby destroys evil. And he who sets out to destroy evil will quickly forget about building up good and turn into a villain.", author: "Nikolai Velimirovich" },
-  { text: "The line separating good and evil passes not through states, nor between classes, nor between political parties either — but right through every human heart — and through all human hearts. This line shifts. Inside us, it oscillates with the years. And even within hearts overwhelmed by evil, one small bridgehead of good is retained.", author: "Aleksandr Solzhenitsyn" },
+  { text: "The Lord seeks creators, not destroyers. For he who creates good thereby destroys evil. And he who sets out to destroy evil will quickly forget about building up good and turn into a villain.", author: "Nikolai Velimirovich", small: true },
+  { text: "The line separating good and evil passes not through states, nor between classes, nor between political parties either — but right through every human heart — and through all human hearts. This line shifts. Inside us, it oscillates with the years. And even within hearts overwhelmed by evil, one small bridgehead of good is retained.", author: "Aleksandr Solzhenitsyn", small: true },
   { text: "Some poor, phoneless fool is probably sitting next to a waterfall somewhere totally unaware of how angry and scared he's supposed to be.", author: "Duncan Trussell" },
   { text: "To be somebody or to do something. In life there is often a roll call. That's when you will have to make a decision. To be or to do? Which way will you go?", author: "John Boyd" },
   { text: "The only people who achieve much are those who want knowledge so badly that they seek it while the conditions are still unfavorable. Favorable conditions never come.", author: "C.S. Lewis" },
@@ -18,17 +18,24 @@ const quotes = [
   { text: "The big question about how people behave is whether they've got an Inner Scorecard or an Outer Scorecard. It helps if you can be satisfied with an Inner Scorecard.", author: "Warren Buffett" },
 ];
 ---
-
-<BaseLayout title="Quotes - Stefan Coburn" ogImage="/og/quotes.png">
-  <h1>Quotes</h1>
-  <p style="color: var(--color-text-muted); margin-bottom: 2rem;">
-    Words that have shaped my thinking.
-  </p>
-
-  {quotes.map((q) => (
-    <div class="quote-card">
-      <p>"{q.text}"</p>
-      <cite>— {q.author}</cite>
+<BaseLayout title="Quotes — Stefan Coburn" ogImage="/og/quotes.png" active="quotes">
+  <main class="container">
+    <div class="page-title">
+      <div>
+        <div class="eyebrow">Words that stuck</div>
+        <h1>Quotes<em>.</em></h1>
+      </div>
     </div>
-  ))}
+    <p class="page-intro">A commonplace book. The sentences I keep returning to — on courage, attention, and what a good life looks like.</p>
+
+    <section class="quote-stack quote-article">
+      {quotes.map(q => (
+        <div class="q">
+          <span class="q-mark">&ldquo;</span>
+          <p class={q.small ? 'q-text small' : 'q-text'}>{q.text}</p>
+          <div class="q-attr">{q.author}</div>
+        </div>
+      ))}
+    </section>
+  </main>
 </BaseLayout>

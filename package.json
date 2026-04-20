@@ -10,6 +10,8 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.0.0",
+    "@fontsource/lato": "^5.2.7",
+    "@fontsource/newsreader": "^5.2.10",
     "@vercel/analytics": "^1.0.0",
     "@vercel/speed-insights": "^1.0.0",
     "astro": "^5.7.0",
