@@ -1,4 +1,11 @@
 ---
+import '@fontsource/newsreader/400.css';
+import '@fontsource/newsreader/500.css';
+import '@fontsource/newsreader/600.css';
+import '@fontsource/newsreader/400-italic.css';
+import '@fontsource/lato/400.css';
+import '@fontsource/lato/700.css';
+import '@fontsource/lato/900.css';
 import '../styles/global.css';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import Analytics from '@vercel/analytics/astro';
@@ -7,12 +14,20 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  active?: 'home' | 'bookshelf' | 'book-notes' | 'essays' | 'quotes' | 'now' | 'about';
 }
 
-const { title, description = "Stefan Coburn — engineer, firefighter, pragmatic optimist.", ogImage } = Astro.props;
+const {
+  title,
+  description = "Stefan Coburn — engineer, firefighter, pragmatic optimist.",
+  ogImage,
+  active = 'home',
+} = Astro.props;
+
 const canonicalURL = new URL(Astro.url.pathname, 'https://stefancoburn.com');
-const ogImageURL = ogImage ? new URL(ogImage, 'https://stefancoburn.com').href : 'https://stefancoburn.com/og/home.png';
-const currentPath = Astro.url.pathname;
+const ogImageURL = ogImage
+  ? new URL(ogImage, 'https://stefancoburn.com').href
+  : 'https://stefancoburn.com/og/home.png';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -24,8 +39,6 @@ const currentPath = Astro.url.pathname;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="canonical" href={canonicalURL.href} />
   <link rel="alternate" type="application/rss+xml" title="Stefan Coburn" href="/rss.xml" />
-
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonicalURL.href} />
   <meta property="og:title" content={title} />
@@ -34,44 +47,43 @@ const currentPath = Astro.url.pathname;
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="Stefan Coburn" />
-
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@stefancoburn" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageURL} />
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <nav>
-        <a href="/bookshelf" class={currentPath.startsWith('/bookshelf') ? 'active' : ''}>Bookshelf</a>
-        <a href="/book-notes" class={currentPath.startsWith('/book-notes') ? 'active' : ''}>Book Notes</a>
-        <a href="/essays" class={currentPath.startsWith('/essays') ? 'active' : ''}>Essays</a>
-        <a href="/quotes" class={currentPath.startsWith('/quotes') ? 'active' : ''}>Quotes</a>
-        <a href="/now" class={currentPath.startsWith('/now') ? 'active' : ''}>Now</a>
-        <a href="/about" class={currentPath.startsWith('/about') ? 'active' : ''}>About</a>
-        <a href="/" class={currentPath === '/' ? 'active' : ''}>Home</a>
-      </nav>
-    </div>
+    <a href="/" class="brand">
+      <span class="brand-mark">sc</span>
+      <span class="brand-word">Stefan Coburn</span>
+    </a>
+    <nav class="site-nav">
+      <a href="/"            class={active === 'home'       ? 'active' : ''}>Home</a>
+      <a href="/bookshelf"   class={active === 'bookshelf'  ? 'active' : ''}>Bookshelf</a>
+      <a href="/book-notes"  class={active === 'book-notes' ? 'active' : ''}>Book Notes</a>
+      <a href="/essays"      class={active === 'essays'     ? 'active' : ''}>Essays</a>
+      <a href="/quotes"      class={active === 'quotes'     ? 'active' : ''}>Quotes</a>
+      <a href="/now"         class={active === 'now'        ? 'active' : ''}>Now</a>
+      <a href="/about"       class={active === 'about'      ? 'active' : ''}>About</a>
+    </nav>
   </header>
 
-  <main class="container">
-    <slot />
-  </main>
+  <slot />
 
   <footer class="site-footer">
-    <div class="container">
-      <div class="social-links">
+    <div class="footer-l">
+      <div class="footer-socials">
         <a href="https://x.com/stefancoburn" target="_blank" rel="noopener">X</a>
         <a href="https://linkedin.com/in/stefancoburn" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://t.me/stefancoburn" target="_blank" rel="noopener">Telegram</a>
+        <a href="/rss.xml">RSS</a>
       </div>
-      <p>&copy; {new Date().getFullYear()} Stefan Coburn</p>
-      <p class="colophon">Built with Astro, deployed on Vercel. Designed for clarity and calm.</p>
+      <div class="footer-mono">© {new Date().getFullYear()} Stefan Coburn · built with Astro · deployed on Vercel</div>
     </div>
+    <div class="footer-mono" style="text-align:right">Designed for clarity<br>and calm.</div>
   </footer>
+
   <SpeedInsights />
   <Analytics />
 </body>
