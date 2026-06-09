@@ -22,17 +22,13 @@ const words = body.split(/\s+/).length;
 const readingTime = Math.max(1, Math.ceil(words / 250));
 ---
 
-<BaseLayout title={`${note.data.title} - Stefan Coburn`} description={note.data.description} ogImage={`/og/book-notes/${note.id}.png`}>
-  <article>
-    <div class="article-header">
+<BaseLayout title={`${note.data.title} - Stefan Coburn`} description={note.data.description} ogImage={`/og/book-notes/${note.id}.png`} active="book-notes">
+  <main class="container">
+    <article class="prose">
       <h1>{note.data.title}</h1>
-      <p class="article-meta">{dateStr} &middot; {readingTime} min read</p>
-    </div>
-    <div class="article-content">
+      <p class="meta">{dateStr} &middot; {readingTime} min read</p>
       <Content />
-    </div>
-  </article>
-  <p style="margin-top: 3rem;">
-    <a href="/book-notes">&larr; All Book Notes</a>
-  </p>
+      <p class="back-link"><a href="/book-notes">&larr; All Book Notes</a></p>
+    </article>
+  </main>
 </BaseLayout>
