@@ -17,15 +17,17 @@ const essays = (await getCollection('essays')).sort(
     <p class="page-intro">Thoughts on technology, society, and the good life.</p>
 
     {essays.length > 0 ? (
-      <div class="index-list">
-        {essays.map((essay, i) => (
-          <a href={`/essays/${essay.id}`} class="index-row">
-            <div class="num">{String(i + 1).padStart(3, '0')}</div>
-            <div>
-              <div class="title">{essay.data.title}</div>
+      <div class="essay-timeline">
+        {essays.map((essay) => (
+          <a href={`/essays/${essay.id}`} class={`essay-entry ${essay.data.prominence}`}>
+            <span class="marker" aria-hidden="true"></span>
+            <div class="entry-card">
+              <div class="entry-head">
+                <span class="title">{essay.data.title}</span>
+                <span class="d">{new Date(essay.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              </div>
               {essay.data.description && <div class="desc">{essay.data.description}</div>}
             </div>
-            <div class="d">{new Date(essay.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</div>
           </a>
         ))}
       </div>
