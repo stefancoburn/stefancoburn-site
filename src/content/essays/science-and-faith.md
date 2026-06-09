@@ -1,0 +1,54 @@
+---
+title: "Science & Faith"
+date: "2026-06-09"
+description: "Why science and faith are not at war — and why learning both is a religious duty."
+prominence: normal
+---
+
+The story of the Tower of Babel can be read as a story of the pitfalls of human engineering and learning. The people sought to shortcut God—to reach heaven by their own intelligence and capability. But the wrong lesson to draw is that engineering toward greater knowledge and less suffering is morally objectionable. Quite the contrary: as disciples of Jesus Christ, we have a duty to acquire knowledge and a responsibility to use our intelligence to serve our fellows. Our birthright is to co-create the world we inhabit and over which we were given dominion. The true takeaway is that increases in secular knowledge must be coupled with increases in moral knowledge and righteousness before God. We ought to "seek learning, even by study and also by faith" (D&C 88:118).
+
+Many modern critics of religion rely entirely on a system of skepticism, experiment, and evidence colloquially called "science." But facts which exist outside the scientific method—love, purpose, righteousness—cannot be understood by those tools. The devout, for their part, sometimes push back against science when its findings seem to contradict an understanding of the world obtained through scripture or revelation. This happens with regularity: the motion of the planets, the age of the earth, the evolution of species. These dynamics have fostered an all-too-common understanding that science and faith are at war—a zero-sum battle for the right to explain the world around us. Too many people are told they must surrender their allegiance to faith or, conversely, turn away from their reliance on science. This is a false choice. Different truths may be preferentially obtained by different means, and knowledge of things both scientific and religious is critical to seek and acquire.
+
+For members of The Church of Jesus Christ of Latter-day Saints, the acquisition of knowledge is a religious duty. In revelation, God commanded Joseph Smith to learn of "all things that pertain to the kingdom of God, that are expedient for us to understand; of things both in heaven and in earth, and under the earth; things which have been, things which are, and things which must shortly come to pass" (D&C 88:78–79). To learn, in matters spiritual or secular, is to approach and better understand truth. And truth cannot contradict itself. There can be no enduring conflict between the truths of science and the truths of religion; all truth must be bound up in one great whole. God's modern-day prophets have consistently affirmed our sacred obligation to learn and to increase our intelligence across the diversity of mankind's fields of endeavor. This duty rests on a constellation of facts I would like to explore:
+
+1. God's nature is defined by his relationship to intelligence, or truth
+2. All intelligence or truth we acquire in this life persists with us
+3. There is no binary delineation between spiritual and secular knowledge
+4. Technology increases our dominion over the earth and our capacity for good (and evil)
+5. Technology is a tool we should wield to further the purposes of God
+
+## God's nature is defined by his relationship to intelligence, or truth
+
+God himself is defined, at least in part, by his relationship to knowledge: "The glory of God is intelligence, or in other words, light and truth" (D&C 93:36). Though we do not understand the exact mechanics of his divine and miraculous power, we believe he operates in accordance with eternal moral and physical law. The Latter-day Saint conception of God is not of a deity who conjured existence out of nothing. Rather, through his perfect understanding and mastery, he organized matter in the grand beginning of creation, in perfect alignment with the principles of righteousness. Proverbs teaches as much: "The Lord by wisdom hath founded the earth; by understanding hath he established the heavens. By his knowledge the depths are broken up, and the clouds drop down the dew" (Proverbs 3:19–20).
+
+Because God is defined in part by his relationship to knowledge, we can passionately and unabashedly seek knowledge and truth. Brigham Young boldly declared, "Our religion embraces chemistry; it embraces all the knowledge of the geologist, and then it goes a little further than their systems of argument, for the Lord Almighty, its author, is the greatest chemist there is." In that same spirit, the Church today offers courses on emotional resilience and personal finance, and supports education through the BYU–Pathway program.
+
+Because God is the source of all truth, we need not fear truth. His omnipotence flows from his omniscience. Brigham Young taught as much of scientific discovery: "In these respects we differ from the Christian world, for our religion will not clash with or contradict the facts of science in any particular." Scientific and technological truth poses no danger to God's church.
+
+## All intelligence or truth we acquire in this life persists with us
+
+The pursuit of knowledge by science and by faith provides a durable advantage to the inquirer. Our ability to bless the lives of others increases as our knowledge increases. To set a bone, construct a table, catch a fish, navigate the seas, sow a field, deliver a baby—each depends on a greater understanding of the laws of the world and the rules by which the elements, animals, plants, and humans operate. And Joseph Smith taught that this advantage outlasts mortality: "Whatever principle of intelligence we attain unto in this life, it will rise with us in the resurrection. And if a person gains more knowledge and intelligence in this life through his diligence and obedience than another, he will have so much the advantage in the world to come" (D&C 130:18–19).
+
+## There is no binary delineation between spiritual and secular knowledge
+
+It is a human bias to want to organize the world into clean categories. We want to impose order and boundaries upon the world—to declare that some things are spiritual knowledge while other facts are strictly secular. God makes no such distinction. In the Doctrine and Covenants, he reveals, "Wherefore, verily I say unto you that all things unto me are spiritual, and not at any time have I given unto you a law which was temporal" (D&C 29:34). There is no division between temporal and spiritual laws; all things are spiritual to God. Modern revelation likewise dissolves the distinction between matter and spirit: "There is no such thing as immaterial matter. All spirit is matter, but it is more fine or pure, and can only be discerned by purer eyes" (D&C 131:7–8). Spiritual reality is a more refined form of the same physical reality.
+
+For a concrete example, consider the gospel teaching on light. The light of Christ is a spiritual principle, but it is not merely figurative or symbolic—it is intimately tied up with actual physical light. Modern prophetic revelation teaches: "Which truth shineth. This is the light of Christ. As also he is in the sun, and the light of the sun, and the power thereof by which it was made. … And the light which shineth, which giveth you light, is through him who enlighteneth your eyes, which is the same light that quickeneth your understandings; which light proceedeth forth from the presence of God to fill the immensity of space" (D&C 88:7, 11–12).
+
+Because no such boundary exists, the Church—as the storehouse of truth—can accommodate all truth, wherever it is found. Brigham Young claimed this ground plainly: "If you can find a truth in heaven, earth or hell, it belongs to our doctrine. We believe it; it is ours; we claim it."
+
+## Technology increases our dominion over the earth and our capacity for good (and evil)
+
+Technology—and knowledge more generally—increases our capability to enact influence in the world. God gave Adam dominion over the earth in the garden, and we carry a charge to exercise that dominion righteously: to steward the earth and its resources to bless the lives of God's children. Our ability, collective and individual, to discharge this responsibility is limited by our ignorance and expanded by our knowledge.
+
+Knowledge is a multiplier on our ability to effectuate change in the world, but it does not inevitably bend us toward good deeds or toward sins against our fellows. Technologies are morally neutral; because they grant power, they enlarge our ability to do good or to enact evil. Greater knowledge can lead us to increased virtue or additional vice. In this world there are things "both to act and to be acted upon" (2 Nephi 2:14), and we are the former. We must remember that our agency is properly used to choose God and to choose good. The internet, for instance, can spread both good and evil: it can carry gospel messages and serve as a powerful tool of missionary work, or it can distribute evil material such as pornography. Like the conspiring men described in the Word of Wisdom, there are those who would use these technologies for ill—to increase their wealth and to cover the earth in sin. We must be a countervailing force.
+
+## Technology is a tool we should wield to further the purposes of God
+
+Although technology itself is neutral, God has imbued man with intelligence, creativity, and invention with the hope and intention that these advances further his purposes. The scriptures teach of the dispensation of the fulness of times—our dispensation, the last—in which all things will be gathered together in one. Technology is part of this restoration: many great and marvelous things, both spiritual and temporal, are to be gathered up and revealed in this final era. Prophets have pointed to radio, television, satellite communication, the printing press, computers, and the internet—and I might even add artificial intelligence—as specific fulfillments of this prophecy.
+
+> The divine purpose of technology is to hasten the work of salvation. The Lord expects you to use these great tools to take His work to the next level, to share the gospel in ways that are beyond my generation's wildest imagination. Where generations past influenced their neighbors and their town, you have the power through the Internet and social media to reach beyond borders and influence the whole world.
+>
+> —Brother Randall L. Ridd
+
+I would also include the reduction of suffering and the increase of human flourishing as objectives of technology that align with the plan of happiness. We have seen enormous reductions in infant mortality, massive alleviation of global poverty, broad increases in education, and much more—all mediated by advances in technology and science.
