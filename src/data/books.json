@@ -2199,5 +2199,25 @@
     "rating": null,
     "slug": "1929",
     "hasCover": true
+  },
+  {
+    "title": "The Count of Monte Cristo",
+    "author": "Alexandre Dumas",
+    "genres": [
+      "Fiction"
+    ],
+    "rating": null,
+    "slug": "the-count-of-monte-cristo",
+    "hasCover": true
+  },
+  {
+    "title": "The Score: How to Stop Playing Somebody Else's Game",
+    "author": "C. Thi Nguyen",
+    "genres": [
+      "Philosophy"
+    ],
+    "rating": null,
+    "slug": "the-score",
+    "hasCover": true
   }
 ]

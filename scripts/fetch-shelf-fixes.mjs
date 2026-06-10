@@ -12,10 +12,19 @@ mkdirSync(COVERS_DIR, { recursive: true });
 
 const fixes = [
   {
-    slug: 'kill-chain',
-    title: 'The Kill Chain (Christian Brose)',
+    slug: 'the-count-of-monte-cristo',
+    title: 'The Count of Monte Cristo (Penguin Classics)',
     urls: [
-      'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1576011429l/51338665.jpg',
+      'https://images.penguinrandomhouse.com/cover/9780140449266',
+      'https://covers.openlibrary.org/b/isbn/9780140449266-L.jpg',
+    ],
+  },
+  {
+    slug: 'the-score',
+    title: 'The Score (C. Thi Nguyen)',
+    urls: [
+      'https://images.penguinrandomhouse.com/cover/9780593655658',
+      'https://covers.openlibrary.org/b/isbn/9780593655658-L.jpg',
     ],
   },
 ];
