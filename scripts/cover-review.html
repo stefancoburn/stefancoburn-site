@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cover Review — stefancoburn.com</title>
+<style>
+  :root { --cream:#faf5ef; --accent:#d4764e; --muted:#b5ad9e; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system, sans-serif; background:var(--cream); margin:0; padding:24px; color:#2b2620; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .toolbar { display:flex; gap:10px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
+  input[type=search] { padding:8px 12px; border:1px solid #ddd2c4; border-radius:8px; font-size:14px; width:260px; background:#fff; }
+  button { padding:8px 14px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-size:14px; cursor:pointer; }
+  button.secondary { background:#e8e0d4; color:#2b2620; }
+  .count { font-size:13px; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:14px; }
+  .card { background:#fff; border-radius:10px; padding:10px; cursor:pointer; border:2px solid transparent; transition:border-color .15s; }
+  .card:hover { border-color:var(--accent); }
+  .card.fixed { border-color:#5a9e6f; }
+  .card img { width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:6px; background:#eee; display:block; }
+  .card .t { font-size:12px; font-weight:600; margin-top:6px; line-height:1.25; }
+  .card .a { font-size:11px; color:var(--muted); }
+  .badge { display:inline-block; font-size:10px; padding:1px 6px; border-radius:6px; background:#f0e9df; color:#8a8070; margin-top:4px; }
+  .badge.low { background:#f6dcd1; color:#a8542f; }
+  .badge.done { background:#dcefe2; color:#3c7a52; }
+  /* modal */
+  .overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:flex-start; justify-content:center; padding:40px 16px; overflow:auto; z-index:10; }
+  .overlay.open { display:flex; }
+  .modal { background:#fff; border-radius:14px; padding:22px; max-width:880px; width:100%; }
+  .modal h2 { margin:0 0 2px; font-size:17px; }
+  .modal .sub { margin-bottom:14px; }
+  .cands { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:12px; margin-top:12px; }
+  .cand { border:2px solid #eee; border-radius:8px; padding:8px; cursor:pointer; text-align:center; }
+  .cand:hover { border-color:var(--accent); }
+  .cand.selected { border-color:#5a9e6f; background:#f2faf4; }
+  .cand img { width:100%; aspect-ratio:2/3; object-fit:contain; background:#f7f3ec; border-radius:4px; }
+  .cand .meta { font-size:11px; color:var(--muted); margin-top:5px; line-height:1.3; }
+  .modal .actions { display:flex; gap:10px; margin-top:16px; justify-content:flex-end; }
+  .current-row { display:flex; gap:16px; align-items:flex-start; }
+  .current-row img { width:120px; border-radius:6px; }
+  .loading { color:var(--muted); font-size:13px; padding:20px 0; }
+</style>
+</head>
+<body>
+<h1>Cover Review</h1>
+<div class="sub">Click a book → pick the correct/better cover → Export fixes when done. Selections survive page reloads.</div>
+<div class="toolbar">
+  <input type="search" id="search" placeholder="Filter by title or author…">
+  <button class="secondary" id="sortLow">Sort: lowest-res first</button>
+  <button id="export">Export fixes (<span id="fixCount">0</span>)</button>
+  <button class="secondary" id="clear">Clear all selections</button>
+  <span class="count" id="count"></span>
+</div>
+<div class="grid" id="grid"></div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="mTitle"></h2>
+    <div class="sub" id="mAuthor"></div>
+    <div class="current-row">
+      <div><img id="mCurrent" alt="current cover"><div class="meta" style="font-size:11px;color:#b5ad9e;text-align:center;margin-top:4px;">current</div></div>
+      <div style="flex:1">
+        <strong style="font-size:13px">Replacement candidates</strong>
+        <div class="loading" id="mLoading">Searching Open Library &amp; Google Books…</div>
+        <div class="cands" id="mCands"></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="secondary" id="mRemove">Remove selection</button>
+      <button class="secondary" id="mClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let books = [];
+let fixes = JSON.parse(localStorage.getItem('coverFixes') || '{}'); // slug -> {url, source, googleId?}
+let current = null;
+
+const $ = (id) => document.getElementById(id);
+
+function saveFixes() {
+  localStorage.setItem('coverFixes', JSON.stringify(fixes));
+  $('fixCount').textContent = Object.keys(fixes).length;
+}
+
+function coverUrl(slug) { return `/public/images/covers/${slug}.jpg`; }
+
+function render(filter = '') {
+  const f = filter.toLowerCase();
+  const grid = $('grid');
+  grid.innerHTML = '';
+  let shown = 0;
+  for (const b of books) {
+    if (f && !(b.title.toLowerCase().includes(f) || b.author.toLowerCase().includes(f))) continue;
+    shown++;
+    const card = document.createElement('div');
+    card.className = 'card' + (fixes[b.slug] ? ' fixed' : '');
+    card.innerHTML = `<img loading="lazy" src="${coverUrl(b.slug)}" onerror="this.style.opacity=.2">
+      <div class="t">${b.title}</div><div class="a">${b.author}</div>
+      <span class="badge" data-slug="${b.slug}">…</span>${fixes[b.slug] ? '<span class="badge done">replacement picked</span>' : ''}`;
+    const img = card.querySelector('img');
+    const badge = card.querySelector('.badge');
+    img.onload = () => {
+      b._width = img.naturalWidth;
+      badge.textContent = img.naturalWidth + 'px';
+      if (img.naturalWidth < 300) badge.classList.add('low');
+    };
+    card.onclick = () => openModal(b);
+    grid.appendChild(card);
+  }
+  $('count').textContent = `${shown} books`;
+  saveFixes();
+}
+
+async function openModal(book) {
+  current = book;
+  $('mTitle').textContent = book.title;
+  $('mAuthor').textContent = book.author;
+  $('mCurrent').src = coverUrl(book.slug);
+  $('mCands').innerHTML = '';
+  $('mLoading').style.display = 'block';
+  $('overlay').classList.add('open');
+
+  const cands = [];
+  const cleanTitle = book.title.replace(/\(.*?\)/g, '').trim();
+  const q = encodeURIComponent(cleanTitle + ' ' + book.author);
+
+  // Open Library
+  try {
+    const r = await fetch(`https://openlibrary.org/search.json?q=${q}&limit=8&fields=title,author_name,cover_i,first_publish_year`);
+    const d = await r.json();
+    for (const doc of d.docs || []) {
+      if (doc.cover_i) cands.push({
+        preview: `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`,
+        url: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+        source: 'Open Library',
+        label: `${doc.title}${doc.first_publish_year ? ' (' + doc.first_publish_year + ')' : ''} — ${(doc.author_name||[]).slice(0,1)}`
+      });
+    }
+  } catch {}
+
+  // Google Books
+  try {
+    const r = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=8`);
+    const d = await r.json();
+    for (const item of d.items || []) {
+      const vi = item.volumeInfo || {};
+      if (vi.imageLinks) cands.push({
+        preview: `https://books.google.com/books/content?id=${item.id}&printsec=frontcover&img=1&zoom=1`,
+        googleId: item.id,
+        source: 'Google Books',
+        label: `${vi.title} — ${(vi.authors||[]).slice(0,1)}${vi.publishedDate ? ' (' + vi.publishedDate.slice(0,4) + ')' : ''}`
+      });
+    }
+  } catch {}
+
+  $('mLoading').style.display = 'none';
+  if (!cands.length) $('mCands').innerHTML = '<div class="loading">No candidates found. Try a different search on openlibrary.org and paste the cover URL manually into cover-fixes.json.</div>';
+
+  for (const c of cands) {
+    const el = document.createElement('div');
+    el.className = 'cand';
+    const sel = fixes[book.slug];
+    if (sel && ((c.url && sel.url === c.url) || (c.googleId && sel.googleId === c.googleId))) el.classList.add('selected');
+    el.innerHTML = `<img loading="lazy" src="${c.preview}" onerror="this.parentElement.style.display='none'">
+      <div class="meta"><strong>${c.source}</strong><br>${c.label}</div>`;
+    el.onclick = () => {
+      fixes[book.slug] = c.googleId ? { googleId: c.googleId, source: c.source } : { url: c.url, source: c.source };
+      saveFixes();
+      document.querySelectorAll('.cand').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      render($('search').value);
+    };
+    $('mCands').appendChild(el);
+  }
+}
+
+$('mClose').onclick = () => $('overlay').classList.remove('open');
+$('overlay').onclick = (e) => { if (e.target === $('overlay')) $('overlay').classList.remove('open'); };
+$('mRemove').onclick = () => { if (current) { delete fixes[current.slug]; saveFixes(); render($('search').value); $('overlay').classList.remove('open'); } };
+$('search').oninput = (e) => render(e.target.value);
+$('clear').onclick = () => { if (confirm('Clear all selections?')) { fixes = {}; saveFixes(); render($('search').value); } };
+$('sortLow').onclick = () => { books.sort((a,b) => (a._width||9999) - (b._width||9999)); render($('search').value); };
+
+$('export').onclick = () => {
+  const out = Object.entries(fixes).map(([slug, v]) => ({ slug, ...v }));
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cover-fixes.json';
+  a.click();
+};
+
+fetch('/src/data/books.json').then(r => r.json()).then(d => { books = d; render(); });
+</script>
+</body>
+</html>
