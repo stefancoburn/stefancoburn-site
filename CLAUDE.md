@@ -1,9 +1,5 @@
 # stefancoburn.com — Claude instructions
 
-## Folder access (read this first)
-
-The project root is `~/Documents/stefancoburn-site`. If the session's mounted folder is the empty "Personal Website" subfolder, immediately request access to `~/Documents/stefancoburn-site` instead — don't work in the empty folder.
-
 ## Publishing an essay
 
 When Stefan delivers an essay to publish, **always ask him for any of these he didn't supply**, then create the file in `src/content/essays/{slug}.md` with this frontmatter:
