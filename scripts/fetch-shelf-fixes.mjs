@@ -12,10 +12,10 @@ mkdirSync(COVERS_DIR, { recursive: true });
 
 const fixes = [
   {
-    slug: 'the-doctrine-and-covenants',
-    title: 'The Doctrine and Covenants (English, 297x475)',
+    slug: 'kill-chain',
+    title: 'The Kill Chain (Christian Brose)',
     urls: [
-      'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1431584156l/25535702.jpg',
+      'https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1576011429l/51338665.jpg',
     ],
   },
 ];

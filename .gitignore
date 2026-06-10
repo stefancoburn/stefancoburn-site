@@ -4,3 +4,4 @@ dist/
 .DS_Store
 covers-backup/
 cover-fixes.json
+publish.command
