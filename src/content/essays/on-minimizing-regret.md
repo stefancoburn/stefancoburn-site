@@ -29,6 +29,10 @@ But they are not universally signs to avoid a path. Often they are credible sign
 
 Do not choose the known over the unknown. Be willing to take a chance and step into the dark. Fear, uncertainty, and doubt are the emotions that accompany a call to adventure. All real adventures are uncertain, and count failure among their possible outcomes.
 
+> Where your fear is, there is your task.
+>
+> — Carl Jung
+
 When I was an engineer at ExxonMobil, I had already been granted admission to Harvard Business School on a deferred basis. When my two years were up, I got an email from the university asking whether it should expect my matriculation that fall.
 
 I enjoyed ExxonMobil. I knew my work well. I was a good engineer. I could envision, with a fair amount of certainty, the career trajectory ahead of me if I stayed.
