@@ -2201,6 +2201,16 @@
     "hasCover": true
   },
   {
+    "title": "The Machine Stops",
+    "author": "E. M. Forster",
+    "genres": [
+      "Fiction"
+    ],
+    "rating": null,
+    "slug": "the-machine-stops",
+    "hasCover": true
+  },
+  {
     "title": "The Count of Monte Cristo",
     "author": "Alexandre Dumas",
     "genres": [
