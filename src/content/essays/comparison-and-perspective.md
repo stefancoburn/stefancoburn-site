@@ -1,6 +1,6 @@
 ---
 title: "Comparison and Perspective"
-date: "2026-07-08"
+date: "2026-07-10"
 description: "Warnings and tactics for making sure comparison doesn't ruin your life."
 prominence: normal
 ---
