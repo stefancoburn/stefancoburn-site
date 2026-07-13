@@ -1,7 +1,7 @@
 ---
-title: Fear
-date: 2026-07-13
-description: On facing fear head-on — from rock walls to skydiving — and what it taught me about courage.
+title: "Fear"
+date: "2026-07-13"
+description: "On facing fear head-on — from rock walls to skydiving — and what it taught me about courage."
 prominence: normal
 ---
 
