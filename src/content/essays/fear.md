@@ -32,10 +32,10 @@ We got to the edge of the airplane, my feet inches from the sky below, as my ins
 <div class="photo-carousel" id="skydive-carousel" role="region" aria-roledescription="carousel" aria-label="Photos from my tandem skydive" tabindex="0">
   <div class="pc-viewport">
     <div class="pc-track">
-      <figure class="pc-slide"><img src="/images/essays/skydive-1-plane.jpg" alt="Inside the skydiving plane on the climb to altitude, with the cockpit visible through the doorway behind us." loading="lazy" width="1600" height="1065" /></figure>
-      <figure class="pc-slide"><img src="/images/essays/skydive-2-jump.jpg" alt="A skydiver leaping from the plane into open blue sky, high above a blanket of clouds." loading="lazy" width="1065" height="1600" /></figure>
-      <figure class="pc-slide"><img src="/images/essays/skydive-3-freefall.jpg" alt="Freefalling in tandem with my instructor above the clouds, thumbs up and grinning." loading="lazy" width="1600" height="1065" /></figure>
-      <figure class="pc-slide"><img src="/images/essays/skydive-4-landed.jpg" alt="Back on solid ground at the airfield in our blue jumpsuits after the jump." loading="lazy" width="1600" height="1065" /></figure>
+      <figure class="pc-slide"><img src="/images/essays/skydive-1-plane.jpg" alt="Inside the skydiving plane on the climb to altitude, with the cockpit visible through the doorway behind us." loading="lazy" width="1600" height="1065" /><figcaption>The look of existential dread as I asked myself, &ldquo;What have I done?&rdquo;</figcaption></figure>
+      <figure class="pc-slide"><img src="/images/essays/skydive-2-jump.jpg" alt="A skydiver leaping from the plane into open blue sky, high above a blanket of clouds." loading="lazy" width="1065" height="1600" /><figcaption>Seconds after being launched out of the plane, hurtling toward Earth with Mount Rainier in the background.</figcaption></figure>
+      <figure class="pc-slide"><img src="/images/essays/skydive-3-freefall.jpg" alt="Freefalling in tandem with my instructor above the clouds, thumbs up and grinning." loading="lazy" width="1600" height="1065" /><figcaption>This isn&rsquo;t so bad. Terminal velocity is amazing.</figcaption></figure>
+      <figure class="pc-slide"><img src="/images/essays/skydive-4-landed.jpg" alt="Back on solid ground at the airfield in our blue jumpsuits after the jump." loading="lazy" width="1600" height="1065" /><figcaption>Back on terra firma with my buddies, elated to have survived.</figcaption></figure>
     </div>
     <button type="button" class="pc-arrow pc-prev" aria-label="Previous photo">&#8249;</button>
     <button type="button" class="pc-arrow pc-next" aria-label="Next photo">&#8250;</button>
@@ -52,8 +52,9 @@ We got to the edge of the airplane, my feet inches from the sky below, as my ins
   .photo-carousel:focus { outline: 2px solid #d4764e; outline-offset: 3px; border-radius: 10px; }
   .pc-viewport { position: relative; overflow: hidden; border-radius: 8px; background: #efe7db; border: 1px solid rgba(0, 0, 0, 0.08); }
   .pc-track { display: flex; transition: transform 0.35s ease; }
-  .pc-slide { flex: 0 0 100%; margin: 0; aspect-ratio: 3 / 2; }
-  .pc-slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .pc-slide { flex: 0 0 100%; margin: 0; display: flex; flex-direction: column; }
+  .pc-slide img { width: 100%; aspect-ratio: 3 / 2; object-fit: contain; display: block; }
+  .pc-slide figcaption { margin-top: auto; padding: 0.7rem 3.5rem 0.9rem; text-align: center; font-size: 0.9rem; font-style: italic; line-height: 1.45; color: #7d7566; }
   .pc-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.15); background: rgba(250, 245, 239, 0.92); color: #d4764e; font-size: 1.5rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 0 0.2rem 0; transition: background 0.15s ease; }
   .pc-arrow:hover { background: #ffffff; }
   .pc-prev { left: 0.75rem; }
