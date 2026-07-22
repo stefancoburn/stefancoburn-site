@@ -1,6 +1,6 @@
 [
   {
-    "title": "The Feynman Lectures on Physics (Vols. 1–3)",
+    "title": "The Feynman Lectures on Physics (Vols. 1\u20133)",
     "author": "Richard Feynman",
     "genres": [
       "Science"
@@ -1634,7 +1634,7 @@
   },
   {
     "title": "Papillon",
-    "author": "Henri Charrière",
+    "author": "Henri Charri\u00e8re",
     "genres": [
       "Biography"
     ],
@@ -2228,6 +2228,16 @@
     ],
     "rating": null,
     "slug": "the-score",
+    "hasCover": true
+  },
+  {
+    "title": "Not Fade Away",
+    "author": "Laurence Shames & Peter Barton",
+    "genres": [
+      "Biography"
+    ],
+    "rating": null,
+    "slug": "not-fade-away",
     "hasCover": true
   }
 ]
