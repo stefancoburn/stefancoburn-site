@@ -2,7 +2,7 @@
 title: "Discontent in Heaven"
 date: "2026-07-22"
 description: "On hedonic adaptation, and the practice of amazement."
-prominence: normal
+prominence: medium
 ---
 
 I like to imagine that if you handed an American colonist from the mid-1700s a Cool Ranch Dorito, his head would explode. If someone from the 1600s could pull on an athleisure shirt woven from cotton, polyester, and spandex, they would struggle to comprehend the smooth hug of that sensuous fabric — bewildering compared to the rough, common clothes they wore every day. Think of the gulf between a mattress stuffed with hay and one built from layers of gel and foam, offering sculpted comfort, heat dissipation, and a total absence of vermin.

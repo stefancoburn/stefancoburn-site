@@ -2,7 +2,7 @@
 title: "Fear"
 date: "2026-07-13"
 description: "On facing fear head-on — from rock walls to skydiving — and what it taught me about courage."
-prominence: normal
+prominence: medium
 ---
 
 I am well acquainted with fear. As a young child, I suffered from many fears, anxieties, and worries — dogs, heights, extraterrestrials, rollercoasters. I think many of these fears came from a combination of a biological predisposition to anxiety and an overactive imagination.

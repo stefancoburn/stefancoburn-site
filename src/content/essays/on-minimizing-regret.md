@@ -2,7 +2,7 @@
 title: "On Minimizing Regret"
 date: "2026-07-08"
 description: "Heuristics for making decisions and minimizing future regret."
-prominence: normal
+prominence: medium
 ---
 
 Regret minimization is a powerful framework. It lets you negotiate decisions from the perspective of your future self, rather than getting bogged down by indecision in the present. I have used it throughout my life to make critical decisions amidst uncertainty.
