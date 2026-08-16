@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import Cover from '../components/Cover.astro';
 import books from '../data/books.json';
 
 const bookNotes = await getCollection('book-notes');
@@ -70,10 +71,7 @@ function stars(r: number | null): string {
         {byTier.fire.map(b => (
           <a class="book" href={b.noteLink || '#'} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating={b.rating} data-title={b.title}>
             <div class="book-cover">
-              {b.hasCover
-                ? <img src={`/images/covers/${b.slug}.jpg`} alt={b.title} loading="lazy" decoding="async" width="120" height="180" />
-                : <div class="placeholder-cover"><div class="pt">{b.title}</div><div class="pa">{b.author}</div></div>
-              }
+              <Cover slug={b.slug} title={b.title} author={b.author} />
               {b.noteLink && <span class="notes-kicker">Notes</span>}
             </div>
             <div class="book-info">
@@ -102,10 +100,7 @@ function stars(r: number | null): string {
           {t.list.map(b => (
             <a class="book" href={b.noteLink || '#'} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating={b.rating} data-title={b.title}>
               <div class="book-cover">
-                {b.hasCover
-                  ? <img src={`/images/covers/${b.slug}.jpg`} alt={b.title} loading="lazy" decoding="async" width="120" height="180" />
-                  : <div class="placeholder-cover"><div class="pt">{b.title}</div><div class="pa">{b.author}</div></div>
-                }
+                <Cover slug={b.slug} title={b.title} author={b.author} />
                 {b.noteLink && <span class="notes-kicker">Notes</span>}
               </div>
               <div class="book-info">
@@ -130,10 +125,7 @@ function stars(r: number | null): string {
           {byTier.unrated.map(b => (
             <a class="book" href={b.noteLink || '#'} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating="0" data-title={b.title}>
               <div class="book-cover">
-                {b.hasCover
-                  ? <img src={`/images/covers/${b.slug}.jpg`} alt={b.title} loading="lazy" decoding="async" width="120" height="180" />
-                  : <div class="placeholder-cover"><div class="pt">{b.title}</div><div class="pa">{b.author}</div></div>
-                }
+                <Cover slug={b.slug} title={b.title} author={b.author} />
               </div>
               <div class="book-info">
                 <div class="t">{b.title}</div>

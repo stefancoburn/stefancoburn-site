@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from 'fs';
 import { join } from 'path';
 
-const COVERS_DIR = join(process.cwd(), 'public/images/covers');
+const COVERS_DIR = join(process.cwd(), 'src/images/covers');
 const BOOKS_PATH = join(process.cwd(), 'src/data/books.json');
 
 mkdirSync(COVERS_DIR, { recursive: true });

@@ -1,0 +1,71 @@
+/* Self-hosted fonts — Latin subset, woff2 only.
+   Only the weights actually used by the design are shipped:
+   Newsreader 400 / 500 / 600 + 400 italic, Lato 400 / 700.
+   The two "Fallback" faces are metric-matched system fonts (via capsize)
+   so text doesn't jump when the web fonts swap in. */
+
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/newsreader-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/newsreader-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/newsreader-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400 600; /* one italic file serves every italic weight */
+  font-display: swap;
+  src: url('../fonts/newsreader-latin-400-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/lato-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700 900; /* 700 file also covers the one 900 usage */
+  font-display: swap;
+  src: url('../fonts/lato-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Metric-matched fallbacks (computed with @capsizecss/core) — zero layout shift on swap */
+@font-face {
+  font-family: 'Newsreader Fallback';
+  src: local('Georgia');
+  ascent-override: 76.4676%;
+  descent-override: 27.5699%;
+  size-adjust: 96.1192%;
+}
+@font-face {
+  font-family: 'Lato Fallback';
+  src: local('Arial'), local('ArialMT');
+  ascent-override: 101.0345%;
+  descent-override: 21.8038%;
+  line-gap-override: 0%;
+  size-adjust: 97.6894%;
+}

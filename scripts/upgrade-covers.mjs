@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, copyFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-const COVERS_DIR = join(process.cwd(), 'public/images/covers');
+const COVERS_DIR = join(process.cwd(), 'src/images/covers');
 const BOOKS_PATH = join(process.cwd(), 'src/data/books.json');
 const BACKUP_DIR = join(process.cwd(), 'covers-backup');
 

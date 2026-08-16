@@ -9,7 +9,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
-const COVERS_DIR = join(process.cwd(), 'public/images/covers');
+const COVERS_DIR = join(process.cwd(), 'src/images/covers');
 const FIXES_PATH = join(process.cwd(), 'cover-fixes.json');
 
 if (!existsSync(FIXES_PATH)) {

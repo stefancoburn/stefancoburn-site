@@ -5,3 +5,6 @@ dist/
 covers-backup/
 cover-fixes.json
 publish.command
+
+_to_delete/
+Personal Website/

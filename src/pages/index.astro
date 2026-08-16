@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Cover from '../components/Cover.astro';
+import profile from '../images/profile.jpg';
 import books from '../data/books.json';
 
 const bookNotes = (await getCollection('book-notes')).sort(
@@ -32,7 +35,7 @@ const currentlyReading = currentlyReadingSlugs
         <p class="hero-sub"><strong>Engineer, volunteer firefighter, beginner pianist,</strong> pragmatic optimist. Writing about technology, society, and the good life — one book at a time.</p>
       </div>
       <div class="hero-portrait">
-        <img src="/images/profile.jpg" alt="Stefan Coburn" width="320" height="400" loading="eager" onerror="this.style.display='none';this.parentElement.classList.add('placeholder')" />
+        <Picture src={profile} widths={[260, 320, 486]} sizes="(max-width: 720px) 260px, 320px" formats={['avif']} fallbackFormat="webp" alt="Stefan Coburn" loading="eager" fetchpriority="high" decoding="async" quality="mid" />
       </div>
     </div>
 
@@ -49,8 +52,8 @@ const currentlyReading = currentlyReadingSlugs
         <div style="display:flex;gap:32px;flex-wrap:wrap">
           {currentlyReading.map(b => (
             <a href={`/bookshelf#${b.slug}`} style="display:flex;gap:14px;text-decoration:none;color:inherit">
-              <div style="width:60px;height:90px;flex-shrink:0;border-radius:2px;overflow:hidden;box-shadow:0 6px 16px -6px rgba(0,0,0,.35);background:var(--bg-panel)">
-                {b.hasCover && <img src={`/images/covers/${b.slug}.jpg`} alt={b.title} loading="lazy" style="width:100%;height:100%;object-fit:cover" />}
+              <div class="mini-cover" style="width:60px;height:90px;flex-shrink:0;border-radius:2px;overflow:hidden;box-shadow:0 6px 16px -6px rgba(0,0,0,.35);background:var(--bg-panel)">
+                <Cover slug={b.slug} title={b.title} author={b.author} widths={[60, 120]} sizes="60px" />
               </div>
               <div style="padding-top:4px">
                 <div style="font-family:var(--display);font-size:15px;font-weight:600;line-height:1.25">{b.title}</div>

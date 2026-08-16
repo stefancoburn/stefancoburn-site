@@ -1,14 +1,12 @@
 ---
-import '@fontsource/newsreader/400.css';
-import '@fontsource/newsreader/500.css';
-import '@fontsource/newsreader/600.css';
-import '@fontsource/newsreader/400-italic.css';
-import '@fontsource/lato/400.css';
-import '@fontsource/lato/700.css';
-import '@fontsource/lato/900.css';
+import '../styles/fonts.css';
 import '../styles/global.css';
-import SpeedInsights from '@vercel/speed-insights/astro';
 import Analytics from '@vercel/analytics/astro';
+// Hashed URLs of the fonts every page needs above the fold — preloaded so the
+// browser starts fetching them the instant it sees the HTML, not after CSS parses.
+import newsreader400 from '../fonts/newsreader-latin-400-normal.woff2?url';
+import newsreader400i from '../fonts/newsreader-latin-400-italic.woff2?url';
+import lato400 from '../fonts/lato-latin-400-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -36,6 +34,9 @@ const ogImageURL = ogImage
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
   <title>{title}</title>
+  <link rel="preload" href={newsreader400} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={newsreader400i} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={lato400} as="font" type="font/woff2" crossorigin />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="canonical" href={canonicalURL.href} />
   <link rel="alternate" type="application/rss+xml" title="Stefan Coburn" href="/rss.xml" />
@@ -84,7 +85,16 @@ const ogImageURL = ogImage
     <div class="footer-mono" style="text-align:right">Designed for clarity<br>and calm.</div>
   </footer>
 
-  <SpeedInsights />
   <Analytics />
+  <script>
+    // Astro's built-in prefetch fires on hover (desktop). Phones don't hover,
+    // so also prefetch/prerender the moment a finger touches a link — that
+    // ~100 ms head start is usually enough to make the next page appear instantly.
+    import { prefetch } from 'astro:prefetch';
+    document.addEventListener('touchstart', (e) => {
+      const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (a && a.origin === location.origin) prefetch(a.href);
+    }, { passive: true });
+  </script>
 </body>
 </html>

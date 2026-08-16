@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
-const COVERS_DIR = join(process.cwd(), 'public/images/covers');
+const COVERS_DIR = join(process.cwd(), 'src/images/covers');
 const BOOKS_PATH = join(process.cwd(), 'src/data/books.json');
 
 mkdirSync(COVERS_DIR, { recursive: true });
@@ -104,7 +104,7 @@ async function main() {
     console.log(`\nMissing covers (${missing.length}):`);
     missing.forEach((t) => console.log(`  - ${t}`));
   }
-  console.log(`\nCovers saved to: public/images/covers/`);
+  console.log(`\nCovers saved to: src/images/covers/`);
   console.log(`Updated: src/data/books.json (added slug + hasCover fields)`);
 }
 

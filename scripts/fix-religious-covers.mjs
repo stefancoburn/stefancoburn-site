@@ -12,7 +12,7 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 import sharp from 'sharp';
 
-const COVERS_DIR = join(process.cwd(), 'public/images/covers');
+const COVERS_DIR = join(process.cwd(), 'src/images/covers');
 
 const fixes = [
   {
