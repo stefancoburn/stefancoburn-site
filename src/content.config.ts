@@ -7,6 +7,8 @@ const bookNotes = defineCollection({
     title: z.string(),
     date: z.string(),
     description: z.string().optional(),
+    /** Bookshelf slug, only needed when it differs from the note's filename. */
+    book: z.string().optional(),
   }),
 });
 

@@ -47,3 +47,12 @@ Vercel auto-deploys on push to main. Stefan is a git novice — always give exac
 - All CSS is inlined into each page (`build.inlineStylesheets: 'always'`), so keep `global.css` lean.
 - Internal links are prefetched on hover/touch and prerendered in Chromium (`prefetch` + `experimental.clientPrerender` in `astro.config.mjs`).
 - Vercel Speed Insights was removed on purpose; Vercel Analytics stays.
+
+## Content conventions (Aug 2026 polish pass)
+
+- Quotes live in `src/data/quotes.ts` (not inline in the page). The home-page "Quotes kept" stat counts that array automatically.
+- Book notes: the note filename normally equals the book's bookshelf `slug`. If it doesn't, add `book: "<bookshelf-slug>"` to the note's frontmatter (see `elder-statesman.md`) so the note page shows the cover/rating and the bookshelf shows the Notes badge.
+- Essays and book notes get automatic Older/Newer links (by date) — nothing to do per post.
+- Bookshelf filters are shareable: `/bookshelf?genre=History&sort=title-asc&q=feyn`.
+- Books without a note render as non-links on the bookshelf (no more `href="#"`).
+- iOS icon is `public/apple-touch-icon.png` (generated from an SVG of the brand mark); `favicon.svg` is the browser-tab icon.

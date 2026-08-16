@@ -3,14 +3,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const essays = await getCollection('essays');
-  return essays.map((essay) => ({
+  const essays = (await getCollection('essays')).sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+  // Newest first, so "newer" is the previous index and "older" is the next.
+  return essays.map((essay, i) => ({
     params: { id: essay.id },
-    props: { essay },
+    props: { essay, newer: essays[i - 1] ?? null, older: essays[i + 1] ?? null },
   }));
 }
 
-const { essay } = Astro.props;
+const { essay, newer, older } = Astro.props;
 const { Content } = await render(essay);
 const dateStr = new Date(essay.data.date).toLocaleDateString('en-US', {
   year: 'numeric',
@@ -28,6 +31,10 @@ const readingTime = Math.max(1, Math.ceil(words / 250));
       <h1>{essay.data.title}</h1>
       <p class="meta">{dateStr} &middot; {readingTime} min read</p>
       <Content />
+      <nav class="post-nav" aria-label="More essays">
+        {older ? <a class="post-nav-link prev" href={`/essays/${older.id}`}><span class="k">&larr; Older</span><span class="t">{older.data.title}</span></a> : <span></span>}
+        {newer ? <a class="post-nav-link next" href={`/essays/${newer.id}`}><span class="k">Newer &rarr;</span><span class="t">{newer.data.title}</span></a> : <span></span>}
+      </nav>
       <p class="back-link"><a href="/essays">&larr; All Essays</a></p>
     </article>
   </main>

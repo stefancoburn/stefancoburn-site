@@ -1,16 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import Cover from '../../components/Cover.astro';
+import books from '../../data/books.json';
 
 export async function getStaticPaths() {
-  const bookNotes = await getCollection('book-notes');
-  return bookNotes.map((note) => ({
+  const bookNotes = (await getCollection('book-notes')).sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+  return bookNotes.map((note, i) => ({
     params: { id: note.id },
-    props: { note },
+    props: { note, newer: bookNotes[i - 1] ?? null, older: bookNotes[i + 1] ?? null },
   }));
 }
 
-const { note } = Astro.props;
+const { note, newer, older } = Astro.props;
+// The matching bookshelf entry (note id === book slug), if there is one.
+const book = books.find(b => b.slug === (note.data.book ?? note.id)) ?? null;
+function stars(r: number | null): string {
+  if (r == null) return '';
+  const full = Math.floor(r);
+  const frac = r - full;
+  return '★'.repeat(full) + (frac >= 0.75 ? '★' : frac >= 0.25 ? '½' : '');
+}
 const { Content, remarkPluginFrontmatter } = await render(note);
 const dateStr = new Date(note.data.date).toLocaleDateString('en-US', {
   year: 'numeric',
@@ -27,7 +39,22 @@ const readingTime = Math.max(1, Math.ceil(words / 250));
     <article class="prose">
       <h1>{note.data.title}</h1>
       <p class="meta">{dateStr} &middot; {readingTime} min read</p>
+      {book && (
+        <a class="note-book" href={`/bookshelf#${book.slug}`}>
+          <span class="note-book-cover"><Cover slug={book.slug} title={book.title} author={book.author} widths={[64, 128]} sizes="64px" loading="eager" /></span>
+          <span class="note-book-info">
+            <span class="note-book-title">{book.title}</span>
+            <span class="note-book-author">{book.author}</span>
+            {book.rating != null && <span class="note-book-rating">{stars(book.rating)} <span class="n">{book.rating.toFixed(1)}</span></span>}
+            <span class="note-book-link">See it on the bookshelf &rarr;</span>
+          </span>
+        </a>
+      )}
       <Content />
+      <nav class="post-nav" aria-label="More book notes">
+        {older ? <a class="post-nav-link prev" href={`/book-notes/${older.id}`}><span class="k">&larr; Older</span><span class="t">{older.data.title}</span></a> : <span></span>}
+        {newer ? <a class="post-nav-link next" href={`/book-notes/${newer.id}`}><span class="k">Newer &rarr;</span><span class="t">{newer.data.title}</span></a> : <span></span>}
+      </nav>
       <p class="back-link"><a href="/book-notes">&larr; All Book Notes</a></p>
     </article>
   </main>

@@ -37,7 +37,9 @@ const ogImageURL = ogImage
   <link rel="preload" href={newsreader400} as="font" type="font/woff2" crossorigin />
   <link rel="preload" href={newsreader400i} as="font" type="font/woff2" crossorigin />
   <link rel="preload" href={lato400} as="font" type="font/woff2" crossorigin />
+  <meta name="theme-color" content="#faf5ef" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="canonical" href={canonicalURL.href} />
   <link rel="alternate" type="application/rss+xml" title="Stefan Coburn" href="/rss.xml" />
   <meta property="og:type" content="website" />
@@ -54,6 +56,7 @@ const ogImageURL = ogImage
   <meta name="twitter:image" content={ogImageURL} />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <a href="/" class="brand">
       <span class="brand-mark">sc</span>
@@ -70,7 +73,9 @@ const ogImageURL = ogImage
     </nav>
   </header>
 
-  <slot />
+  <div id="main" tabindex="-1">
+    <slot />
+  </div>
 
   <footer class="site-footer">
     <div class="footer-l">

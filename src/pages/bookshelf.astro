@@ -5,11 +5,12 @@ import Cover from '../components/Cover.astro';
 import books from '../data/books.json';
 
 const bookNotes = await getCollection('book-notes');
-const noteIds = new Set(bookNotes.map(n => n.id));
+// slug → note id (a note can point at a differently-named book via `book:` frontmatter)
+const noteBySlug = new Map(bookNotes.map(n => [n.data.book ?? n.id, n.id]));
 
 const booksWithLinks = books.map(b => ({
   ...b,
-  noteLink: noteIds.has(b.slug) ? `/book-notes/${b.slug}` : null,
+  noteLink: noteBySlug.has(b.slug) ? `/book-notes/${noteBySlug.get(b.slug)}` : null,
 }));
 
 const allGenres = [...new Set(books.flatMap(b => b.genres))].sort();
@@ -44,6 +45,11 @@ function stars(r: number | null): string {
 
     <div class="shelf-controls" id="controls">
       <div class="control-row">
+        <label class="control-label" for="shelf-search">Search</label>
+        <input id="shelf-search" class="shelf-search" type="search" placeholder="Title or author…" autocomplete="off" spellcheck="false" />
+        <span class="shelf-count" id="shelf-count" aria-live="polite"></span>
+      </div>
+      <div class="control-row">
         <span class="control-label">Filter</span>
         <button class="pill active" data-genre="all">All · {books.length}</button>
         {allGenres.map(g => {
@@ -60,6 +66,11 @@ function stars(r: number | null): string {
       </div>
     </div>
 
+    {/* Flat grid used when sorting by rating/title (books are moved here by the script) */}
+    <section class="tier-section" data-tier="flat" id="flat-shelf" hidden>
+      <div class="book-grid"></div>
+    </section>
+
     {/* Shelf of Fire — cover grid */}
     <section class="tier-section" data-tier="fire">
       <div class="tier-head">
@@ -69,7 +80,7 @@ function stars(r: number | null): string {
       </div>
       <div class="book-grid">
         {byTier.fire.map(b => (
-          <a class="book" href={b.noteLink || '#'} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating={b.rating} data-title={b.title}>
+          <a class="book" href={b.noteLink || undefined} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating={b.rating} data-title={b.title} data-author={b.author}>
             <div class="book-cover">
               <Cover slug={b.slug} title={b.title} author={b.author} />
               {b.noteLink && <span class="notes-kicker">Notes</span>}
@@ -98,7 +109,7 @@ function stars(r: number | null): string {
         </div>
         <div class="book-grid">
           {t.list.map(b => (
-            <a class="book" href={b.noteLink || '#'} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating={b.rating} data-title={b.title}>
+            <a class="book" href={b.noteLink || undefined} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating={b.rating} data-title={b.title} data-author={b.author}>
               <div class="book-cover">
                 <Cover slug={b.slug} title={b.title} author={b.author} />
                 {b.noteLink && <span class="notes-kicker">Notes</span>}
@@ -123,7 +134,7 @@ function stars(r: number | null): string {
         </div>
         <div class="book-grid">
           {byTier.unrated.map(b => (
-            <a class="book" href={b.noteLink || '#'} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating="0" data-title={b.title}>
+            <a class="book" href={b.noteLink || undefined} id={b.slug} data-genres={JSON.stringify(b.genres)} data-rating="0" data-title={b.title} data-author={b.author}>
               <div class="book-cover">
                 <Cover slug={b.slug} title={b.title} author={b.author} />
               </div>
@@ -140,21 +151,86 @@ function stars(r: number | null): string {
   </main>
 
   <script>
-    const genreBtns = document.querySelectorAll<HTMLButtonElement>('.pill[data-genre]');
-    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-title]'));
-    const tiers = Array.from(document.querySelectorAll<HTMLElement>('.tier-section'));
-    genreBtns.forEach(btn => btn.addEventListener('click', () => {
-      genreBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const g = btn.dataset.genre!;
-      items.forEach(el => {
-        const genres = JSON.parse(el.dataset.genres!) as string[];
-        (el as HTMLElement).style.display = (g === 'all' || genres.includes(g)) ? '' : 'none';
-      });
-      tiers.forEach(t => {
-        const visible = Array.from(t.querySelectorAll<HTMLElement>('[data-title]')).filter(el => el.style.display !== 'none').length;
-        (t as HTMLElement).style.display = visible ? '' : 'none';
-      });
-    }));
+    // Bookshelf controls: text search + genre filter + sort, all reflected in the
+    // URL (?q=…&genre=…&sort=…) so a filtered shelf can be shared or bookmarked.
+    const $ = <T extends Element>(sel: string, root: ParentNode = document) => Array.from(root.querySelectorAll<T>(sel));
+    const genreBtns = $<HTMLButtonElement>('.pill[data-genre]');
+    const sortBtns  = $<HTMLButtonElement>('.pill[data-sort]');
+    const search    = document.getElementById('shelf-search') as HTMLInputElement;
+    const countEl   = document.getElementById('shelf-count')!;
+    const flat      = document.getElementById('flat-shelf')!;
+    const flatGrid  = flat.querySelector('.book-grid')!;
+    const tiers     = $<HTMLElement>('.tier-section[data-tier]:not([data-tier="flat"])');
+    const items     = $<HTMLElement>('.book[data-title]');
+
+    // Remember where every book started so "By tier" can put it back.
+    const home = new Map(items.map(el => [el, el.parentElement!]));
+    const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const meta = new Map(items.map(el => [el, {
+      genres: JSON.parse(el.dataset.genres || '[]') as string[],
+      rating: parseFloat(el.dataset.rating || '0') || 0,
+      title:  norm(el.dataset.title || ''),
+      author: norm(el.dataset.author || ''),
+      sortTitle: norm((el.dataset.title || '').replace(/^(the|a|an)\s+/i, '')),
+    }]));
+
+    const state = { q: '', genre: 'all', sort: 'tier' };
+
+    function apply() {
+      const q = norm(state.q.trim());
+      let visible = 0;
+      for (const el of items) {
+        const m = meta.get(el)!;
+        const ok = (state.genre === 'all' || m.genres.includes(state.genre))
+                && (!q || m.title.includes(q) || m.author.includes(q));
+        el.style.display = ok ? '' : 'none';
+        if (ok) visible++;
+      }
+
+      if (state.sort === 'tier') {
+        // Restore original grouping (append in original order = stable)
+        for (const el of items) home.get(el)!.appendChild(el);
+        flat.hidden = true;
+        for (const t of tiers) {
+          const any = $<HTMLElement>('.book[data-title]', t).some(el => el.style.display !== 'none');
+          t.style.display = any ? '' : 'none';
+        }
+      } else {
+        const sorted = [...items].sort((a, b) => {
+          const A = meta.get(a)!, B = meta.get(b)!;
+          if (state.sort === 'rating-desc') return (B.rating - A.rating) || A.sortTitle.localeCompare(B.sortTitle);
+          if (state.sort === 'rating-asc')  return ((A.rating || 99) - (B.rating || 99)) || A.sortTitle.localeCompare(B.sortTitle);
+          return A.sortTitle.localeCompare(B.sortTitle); // title-asc
+        });
+        for (const el of sorted) flatGrid.appendChild(el);
+        for (const t of tiers) t.style.display = 'none';
+        flat.hidden = false;
+      }
+
+      countEl.textContent = (q || state.genre !== 'all') ? `${visible} of ${items.length}` : '';
+      genreBtns.forEach(b => b.classList.toggle('active', b.dataset.genre === state.genre));
+      sortBtns.forEach(b => b.classList.toggle('active', b.dataset.sort === state.sort));
+
+      // Reflect state in the URL without adding history entries
+      const url = new URL(location.href);
+      state.q ? url.searchParams.set('q', state.q) : url.searchParams.delete('q');
+      state.genre !== 'all' ? url.searchParams.set('genre', state.genre) : url.searchParams.delete('genre');
+      state.sort !== 'tier' ? url.searchParams.set('sort', state.sort) : url.searchParams.delete('sort');
+      history.replaceState(null, '', url);
+    }
+
+    genreBtns.forEach(b => b.addEventListener('click', () => { state.genre = b.dataset.genre!; apply(); }));
+    sortBtns.forEach(b => b.addEventListener('click', () => { state.sort = b.dataset.sort!; apply(); }));
+    search.addEventListener('input', () => { state.q = search.value; apply(); });
+
+    // Initial state from URL (shareable links like /bookshelf?genre=History&sort=title-asc)
+    const params = new URLSearchParams(location.search);
+    const validGenres = new Set(genreBtns.map(b => b.dataset.genre));
+    const validSorts  = new Set(sortBtns.map(b => b.dataset.sort));
+    if (params.get('q')) { state.q = params.get('q')!; search.value = state.q; }
+    if (validGenres.has(params.get('genre') || '')) state.genre = params.get('genre')!;
+    if (validSorts.has(params.get('sort') || '')) state.sort = params.get('sort')!;
+    if (state.q || state.genre !== 'all' || state.sort !== 'tier') apply();
   </script>
+
 </BaseLayout>

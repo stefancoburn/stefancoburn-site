@@ -2,6 +2,7 @@
 title: "Elder Statesman"
 date: "2025-09-17"
 description: "A Biography of J. Reuben Clark"
+book: "elder-statesman-a-biography-of-j-reuben-clark"
 ---
 
 ## A Biography of J. Reuben Clark
