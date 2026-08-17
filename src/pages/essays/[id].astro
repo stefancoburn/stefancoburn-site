@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import Subscribe from '../../components/Subscribe.astro';
 
 export async function getStaticPaths() {
   const essays = (await getCollection('essays')).sort(
@@ -31,6 +32,7 @@ const readingTime = Math.max(1, Math.ceil(words / 250));
       <h1>{essay.data.title}</h1>
       <p class="meta">{dateStr} &middot; {readingTime} min read</p>
       <Content />
+      <Subscribe kind="essay" />
       <nav class="post-nav" aria-label="More essays">
         {older ? <a class="post-nav-link prev" href={`/essays/${older.id}`}><span class="k">&larr; Older</span><span class="t">{older.data.title}</span></a> : <span></span>}
         {newer ? <a class="post-nav-link next" href={`/essays/${newer.id}`}><span class="k">Newer &rarr;</span><span class="t">{newer.data.title}</span></a> : <span></span>}

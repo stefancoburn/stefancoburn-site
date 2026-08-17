@@ -1,0 +1,61 @@
+# Emails new essays / book notes to Buttondown subscribers.
+#
+# Trigger: any push to main. Only files ADDED under src/content/{essays,book-notes}
+# in that push are sent — editing an existing post never re-sends it.
+#
+# Setup (one time): in the GitHub repo → Settings → Secrets and variables → Actions,
+# add a secret named BUTTONDOWN_API_KEY (from Buttondown → Settings → API).
+# Optional: add a repository *variable* NEWSLETTER_MODE = draft to have emails
+# created as drafts you review and send by hand instead of going out automatically.
+name: Newsletter
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/essays/**'
+      - 'src/content/book-notes/**'
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find posts added in this push
+        id: new
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE="${{ github.sha }}~1"
+          fi
+          FILES=$(git diff --name-only --diff-filter=A "$BEFORE" "${{ github.sha }}" -- 'src/content/essays/*.md' 'src/content/book-notes/*.md' | tr '\n' ' ')
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+          echo "New posts: ${FILES:-none}"
+
+      - name: Wait for the site to be live (so links in the email work)
+        if: steps.new.outputs.files != ''
+        run: |
+          for f in ${{ steps.new.outputs.files }}; do
+            slug=$(basename "$f" .md)
+            case "$f" in *essays*) url="https://stefancoburn.com/essays/$slug";; *) url="https://stefancoburn.com/book-notes/$slug";; esac
+            for i in $(seq 1 30); do
+              code=$(curl -s -o /dev/null -w '%{http_code}' "$url")
+              [ "$code" = "200" ] && { echo "$url is live"; break; }
+              echo "waiting for $url ($code)…"; sleep 20
+            done
+          done
+
+      - uses: actions/setup-node@v4
+        if: steps.new.outputs.files != ''
+        with:
+          node-version: 22
+
+      - name: Send via Buttondown
+        if: steps.new.outputs.files != ''
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          NEWSLETTER_MODE: ${{ vars.NEWSLETTER_MODE }}
+        run: node scripts/send-newsletter.mjs ${{ steps.new.outputs.files }}

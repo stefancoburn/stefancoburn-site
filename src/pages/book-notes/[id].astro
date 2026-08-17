@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import Subscribe from '../../components/Subscribe.astro';
 import Cover from '../../components/Cover.astro';
 import books from '../../data/books.json';
 
@@ -51,6 +52,7 @@ const readingTime = Math.max(1, Math.ceil(words / 250));
         </a>
       )}
       <Content />
+      <Subscribe kind="note" />
       <nav class="post-nav" aria-label="More book notes">
         {older ? <a class="post-nav-link prev" href={`/book-notes/${older.id}`}><span class="k">&larr; Older</span><span class="t">{older.data.title}</span></a> : <span></span>}
         {newer ? <a class="post-nav-link next" href={`/book-notes/${newer.id}`}><span class="k">Newer &rarr;</span><span class="t">{newer.data.title}</span></a> : <span></span>}

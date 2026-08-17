@@ -56,3 +56,10 @@ Vercel auto-deploys on push to main. Stefan is a git novice — always give exac
 - Bookshelf filters are shareable: `/bookshelf?genre=History&sort=title-asc&q=feyn`.
 - Books without a note render as non-links on the bookshelf (no more `href="#"`).
 - iOS icon is `public/apple-touch-icon.png` (generated from an SVG of the brand mark); `favicon.svg` is the browser-tab icon.
+
+## Email newsletter (Buttondown)
+
+- Subscribe box: `src/components/Subscribe.astro`, shown at the end of every essay and book note. Plain HTML POST to Buttondown (works without JS); with JS it submits in the background and confirms inline.
+- The Buttondown username lives in `src/data/site.ts` (`BUTTONDOWN_USERNAME`). If Stefan's Buttondown URL isn't buttondown.com/stefancoburn, change that one constant.
+- Sending is automatic: `.github/workflows/newsletter.yml` runs on every push to main; for each content file *added* in that push (essays or book notes) it waits for the page to be live, then `scripts/send-newsletter.mjs` creates the email in Buttondown via API (free plan includes API). Editing an existing post never re-sends. Needs the repo secret `BUTTONDOWN_API_KEY`; the optional repo variable `NEWSLETTER_MODE=draft` makes it create drafts for review instead of sending. Preview an email locally: `node scripts/send-newsletter.mjs --dry-run src/content/essays/<slug>.md`.
+- Because of this, **publishing an essay = sending an email**. Before pushing a new essay, confirm with Stefan that it's ready to go out (or that NEWSLETTER_MODE is draft).
