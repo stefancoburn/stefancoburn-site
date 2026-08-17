@@ -2,6 +2,7 @@
 import '../styles/fonts.css';
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import { BUTTONDOWN_USERNAME } from '../data/site';
 // Hashed URLs of the fonts every page needs above the fold — preloaded so the
 // browser starts fetching them the instant it sees the HTML, not after CSS parses.
 import newsreader400 from '../fonts/newsreader-latin-400-normal.woff2?url';
@@ -83,6 +84,7 @@ const ogImageURL = ogImage
         <a href="https://x.com/stefancoburn" target="_blank" rel="noopener">X</a>
         <a href="https://linkedin.com/in/stefancoburn" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://t.me/stefancoburn" target="_blank" rel="noopener">Telegram</a>
+        <a href={`https://buttondown.com/${BUTTONDOWN_USERNAME}`} target="_blank" rel="noopener">Newsletter</a>
         <a href="/rss.xml">RSS</a>
       </div>
       <div class="footer-mono">© {new Date().getFullYear()} Stefan Coburn · built with Astro · deployed on Vercel</div>
