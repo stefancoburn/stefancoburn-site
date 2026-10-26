@@ -17,8 +17,10 @@ const allGenres = [...new Set(books.flatMap(b => b.genres))].sort();
 
 const byTier = {
   fire:    booksWithLinks.filter(b => b.rating === 5),
-  keepers: booksWithLinks.filter(b => b.rating !== null && b.rating >= 4 && b.rating < 5).sort((a,b) => b.rating - a.rating || a.title.localeCompare(b.title)),
-  worth:   booksWithLinks.filter(b => b.rating !== null && b.rating >= 3 && b.rating < 4).sort((a,b) => b.rating - a.rating || a.title.localeCompare(b.title)),
+  keepers:     booksWithLinks.filter(b => b.rating === 4.5).sort((a,b) => a.title.localeCompare(b.title)),
+  recommended: booksWithLinks.filter(b => b.rating === 4).sort((a,b) => a.title.localeCompare(b.title)),
+  worth:       booksWithLinks.filter(b => b.rating === 3.5).sort((a,b) => a.title.localeCompare(b.title)),
+  fair:        booksWithLinks.filter(b => b.rating === 3).sort((a,b) => a.title.localeCompare(b.title)),
   once:    booksWithLinks.filter(b => b.rating !== null && b.rating > 0 && b.rating < 3).sort((a,b) => b.rating - a.rating || a.title.localeCompare(b.title)),
   unrated: booksWithLinks.filter(b => b.rating === null),
 };
@@ -95,11 +97,13 @@ function stars(r: number | null): string {
       </div>
     </section>
 
-    {/* Keepers / Worth / Once — cover grid also */}
+    {/* Keepers / Recommended / Worth / Fair / Once — cover grid also */}
     {[
-      { key: 'keepers', stars: '★★★★½', name: 'Keepers', sub: "I'd re-read, I'd recommend", list: byTier.keepers },
-      { key: 'worth',   stars: '★★★★',  name: 'Worth the time', sub: 'solid — one good idea or more', list: byTier.worth },
-      { key: 'once',    stars: '★★★',   name: 'Read once', sub: "there's always a lesson", list: byTier.once },
+      { key: 'keepers',     stars: '★★★★½', name: 'Keepers', sub: "I'd re-read, I'd recommend", list: byTier.keepers },
+      { key: 'recommended', stars: '★★★★',  name: 'Recommended', sub: "I'd hand it to a friend", list: byTier.recommended },
+      { key: 'worth',       stars: '★★★½',  name: 'Worth the time', sub: 'solid — one good idea or more', list: byTier.worth },
+      { key: 'fair',        stars: '★★★',   name: 'Fair reads', sub: 'a chapter or two worth keeping', list: byTier.fair },
+      { key: 'once',    stars: '½ – ★★½',   name: 'Read once', sub: "there's always a lesson", list: byTier.once },
     ].map(t => (
       <section class="tier-section" data-tier={t.key}>
         <div class="tier-head">

@@ -2226,7 +2226,7 @@
     "genres": [
       "Biography"
     ],
-    "rating": null,
+    "rating": 4,
     "slug": "not-fade-away",
     "hasCover": true
   },
@@ -2246,7 +2246,7 @@
     "genres": [
       "Fiction"
     ],
-    "rating": null,
+    "rating": 4.5,
     "slug": "a-short-stay-in-hell",
     "hasCover": true
   }
