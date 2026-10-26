@@ -2229,5 +2229,25 @@
     "rating": null,
     "slug": "not-fade-away",
     "hasCover": true
+  },
+  {
+    "title": "A River Runs Through It",
+    "author": "Norman Maclean",
+    "genres": [
+      "Fiction"
+    ],
+    "rating": null,
+    "slug": "a-river-runs-through-it",
+    "hasCover": true
+  },
+  {
+    "title": "A Short Stay in Hell",
+    "author": "Steven L. Peck",
+    "genres": [
+      "Fiction"
+    ],
+    "rating": null,
+    "slug": "a-short-stay-in-hell",
+    "hasCover": true
   }
 ]

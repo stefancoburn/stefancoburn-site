@@ -17,11 +17,13 @@ const essays = (await getCollection('essays')).sort(
 const totalBooks = books.length;
 const totalNotes = bookNotes.length;
 
-// Pick up to 3 books to show as "currently reading" — tweak by editing the slugs below.
+// Books shown as "currently reading" on the home page — tweak by editing the slugs below.
 const currentlyReadingSlugs = [
   'the-count-of-monte-cristo',
   'not-fade-away',
   'the-score',
+  'a-river-runs-through-it',
+  'a-short-stay-in-hell',
 ];
 const currentlyReading = currentlyReadingSlugs
   .map(slug => books.find(b => b.slug === slug))
