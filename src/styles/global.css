@@ -387,6 +387,7 @@ picture { display: contents; } /* <picture> wrappers from the image pipeline sho
 .prose .meta + p { font-size: 19.5px; color: var(--ink); }
 .prose code { font-family: var(--mono); font-size: 15px; background: var(--bg-panel); padding: 2px 6px; border-radius: 2px; }
 .prose hr { border: none; border-top: 1px solid var(--rule); margin: 40px auto; width: 60%; }
+.prose sup { font-size: .7em; line-height: 0; } /* exponents in essays; line-height 0 keeps line spacing even */
 .prose .back-link { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--rule); }
 .prose .back-link a {
   font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
