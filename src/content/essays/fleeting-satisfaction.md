@@ -1,6 +1,6 @@
 ---
 title: "Fleeting Satisfaction"
-date: "2026-10-30"
+date: "2026-10-29"
 description: "From the Moon to the Masters: the thrill of winning fades fast, so love the game."
 prominence: normal
 ---

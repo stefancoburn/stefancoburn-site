@@ -1,6 +1,6 @@
 ---
 title: "Rounding to Zero"
-date: "2026-10-30"
+date: "2026-10-29"
 description: "On numbers too big to grasp, the infinite, and the weight of a finite life."
 prominence: normal
 ---
