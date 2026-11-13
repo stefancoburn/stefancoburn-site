@@ -1,0 +1,215 @@
+---
+// Family Tree project page. The interactive charts are standalone pages in
+// public/projects/family-tree/; the images shown here are stills of those charts
+// in src/images/projects/family-tree/ (run through the image pipeline).
+// To add a chart: drop both files in and add an entry to `charts` below.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const stills = import.meta.glob<{ default: ImageMetadata }>('../../images/projects/family-tree/*.jpg', { eager: true });
+const still = (name: string) => stills[`../../images/projects/family-tree/${name}.jpg`]?.default;
+const base = '/projects/family-tree';
+
+interface Chart {
+  image: string;      // still in src/images/projects/family-tree/
+  page: string;       // interactive page in public/projects/family-tree/
+  title: string;
+  alt: string;        // read aloud by screen readers; describes what the picture shows
+  how: string;        // how to read the chart
+  shows: string;      // what it reveals
+}
+
+const directLine: Chart[] = [
+  {
+    image: 'ancestor-flag-fan',
+    page: 'ancestor-flag-fan.html',
+    title: 'Where they were born: the fan',
+    alt: 'Half-circle fan chart of seven generations. Each ancestor is drawn as the flag of their birth country. The inner rings are all United States flags; the outer rings mix in Swiss, English, Scottish, Welsh, Danish and Dutch flags.',
+    how: 'I am at the centre. Each ring outward is one generation further back: two parents, four grandparents, and so on to the 64 ancestors of the seventh generation on the outer edge. My father’s side is on the left, my mother’s on the right. Every person is drawn as the flag of the country where they were born.',
+    shows: 'The four inner generations are entirely American. Step out to the fifth and the tree abruptly becomes European: of the 127 people, 60 were born in the United States, 21 in Switzerland, 12 in England, 11 in Scotland, 8 in Wales and 6 in Denmark. In the seventh generation alone, only a third were born in America.',
+  },
+  {
+    image: 'ancestor-birthplace-flags',
+    page: 'ancestor-birthplace-flags.html',
+    title: 'Where they were born: the pedigree',
+    alt: 'Pedigree chart of the same 127 ancestors as rows of flags, one row per generation, with a single United States flag at the bottom and a row of 64 small mixed flags at the top.',
+    how: 'The same data as the fan, laid out as a classic pedigree. I am the single flag at the bottom; each row above is the generation before, with lines joining every person to their two parents.',
+    shows: 'The straight rows make it easier to follow one line upward. Two colonial-era births are shown under the Grand Union flag, and one lone Australian flag marks an ancestor born in Sydney.',
+  },
+  {
+    image: 'ancestor-timeline',
+    page: 'ancestor-timeline.html',
+    title: 'When they were born',
+    alt: 'Scatter chart with birth year on the horizontal axis, running from 2000 on the left back to 1700 on the right, and generation on the vertical axis. Dots climb in steps from one dot at the bottom left to a cluster of 64 dots at the top right, joined by thin threads.',
+    how: 'Each dot is one ancestor. Left to right runs backward in time, from today to 1700. Bottom to top counts generations. Colour marks the country of birth, and the thin threads connect each person to their parents. The dashed line marks 1847, the year the Salt Lake Valley was settled.',
+    shows: 'Seven generations span 225 years, from my own birth in 1988 back to 1763. A generation averages just under 32 years. The spread widens going back: my four grandparents were born within seven years of one another, while the seventh generation’s births stretch across seven decades.',
+  },
+  {
+    image: 'ancestor-distance',
+    page: 'ancestor-distance.html',
+    title: 'How far from home they were born',
+    alt: 'Scatter chart with birth year on the horizontal axis and distance from Fayetteville, Georgia on a logarithmic vertical axis. A dense band of dots sits near 1,600 miles; older dots split into a high group near 4,000 to 5,000 miles and a low group between 200 and 1,000 miles.',
+    how: 'The same people and the same time axis, but height now shows how far each ancestor was born from where I live today, in Fayetteville, Georgia. The scale is logarithmic, so each step up is a multiplication, not an addition.',
+    shows: 'A fork. Ancestors born between about 1840 and 1930 nearly all sit in one tight band about 1,600 miles away: Utah, Idaho and Nevada. Before that the line splits in two. One branch jumps to four or five thousand miles (Switzerland, Britain, Denmark); the other drops to a few hundred miles (the American South and East). Two separate populations met in the Mountain West.',
+  },
+  {
+    image: 'ancestor-distance-provo',
+    page: 'ancestor-distance-provo.html',
+    title: 'How far from Provo they were born',
+    alt: 'Scatter chart like the previous one but measuring distance from Provo, Utah. Dots dip into a low basin between 40 and 300 miles for the middle generations, then rise to bands near 2,000 miles and 5,000 miles for the oldest generations.',
+    how: 'The same chart re-centred on Provo, Utah, where I was born. Dotted lines mark familiar distances: Salt Lake City at 38 miles, St. George at 240, New York City at about 2,000, Yorkshire and Zürich at about 5,000.',
+    shows: 'Measured from Utah, the fork becomes a basin. The oldest generations start far away, in Europe and the eastern United States. Around the 1850s they arrive, and for the next hundred years almost every birth in the tree happens within 300 miles of Provo.',
+  },
+];
+
+const wholeTree: Chart[] = [
+  {
+    image: 'migration-map',
+    page: 'tree-analyses.html',
+    title: 'Born there, died here',
+    alt: 'Map of the North Atlantic with hundreds of curved lines running from Switzerland, Denmark, England and Wales, and from New England, to a dense cluster in Utah. Shorter orange lines cross the United States.',
+    how: 'One arc for each of 740 people with both a known birthplace and a known place of death, drawn from the first to the second. Magenta arcs crossed an ocean, orange arcs moved 500 to 2,500 miles, blue arcs moved less. Grey dots mark people who died within 25 miles of where they were born.',
+    shows: 'Nearly every long arc ends in the same place: the Salt Lake Valley. They start in Zürich, Copenhagen, Yorkshire, Wales and New England. Two arcs stop in the middle of the Atlantic, for relatives who died at sea during the crossing. 212 people never left home at all.',
+  },
+  {
+    image: 'lifetime-distance',
+    page: 'tree-analyses.html',
+    title: 'How far they moved in a lifetime',
+    alt: 'Scatter chart of distance between birthplace and place of death against year of birth from 1750 to 2000, on a logarithmic scale. A black median line rises to above 1,000 miles for people born between 1800 and 1840, then falls to around 100 to 300 miles.',
+    how: 'Each dot is one person, placed by the year they were born and by the distance between where they were born and where they died. The black line is the median for each decade. The shaded band marks 1840 to 1890, the years of the gathering to Utah.',
+    shows: 'One cohort did almost all of the moving. People born between 1800 and 1840 ended their lives a median of 1,257 miles from where they began. Every other cohort, before and after, has a median between roughly 100 and 270 miles. A single generation crossed the world, and their children stayed put.',
+  },
+  {
+    image: 'children-per-family',
+    page: 'tree-analyses.html',
+    title: 'Children per family',
+    alt: 'Bar chart of the number of families by number of children, from 1 to 16. The tallest bars are at 1 and 7 children with 14 families each; bars remain high from 5 through 11 children and one family has 16.',
+    how: 'One bar for each family size, counting the 110 families in the tree with at least one recorded child. The dark bar marks the median.',
+    shows: 'The median family had seven children, and families of eight to eleven were common. Between them these 110 families had 745 children; the largest had sixteen. The tall bar at one child is probably an artefact: a family often enters the tree through a single documented child, with siblings missing from the record.',
+  },
+];
+---
+<BaseLayout
+  title="Family Tree — Stefan Coburn"
+  description="Seven generations and 127 direct ancestors, charted by where and when they were born, how far they travelled, and how they converged on Utah."
+  ogImage={`${base}/og.jpg`}
+  active="projects"
+>
+  <main class="container">
+    <div class="ft-head">
+      <div class="eyebrow">Genealogy · Data visualization</div>
+      <h1>Family Tree</h1>
+      <p class="ft-lede">
+        Seven generations of my direct ancestors, 127 people in all, charted by where and when
+        they were born. Then the wider tree of 864 relatives, charted by how far they travelled.
+      </p>
+      <p class="ft-sub">
+        Each picture below is a still. Open the interactive version to hover over any flag, dot
+        or arc and see the person behind it.
+      </p>
+    </div>
+
+    <section class="ft-section">
+      <h2>The direct line</h2>
+      <p class="ft-intro">
+        Two parents, four grandparents, eight great-grandparents: go back seven generations and
+        there are 127 people on the chart. The first five charts show only these direct ancestors.
+      </p>
+      {directLine.map((c) => {
+        const img = still(c.image);
+        return (
+          <figure class="ft-chart">
+            <h3>{c.title}</h3>
+            <a class="ft-frame" href={`${base}/${c.page}`} data-astro-prefetch="false">
+              {img && (
+                <Picture src={img} widths={[640, 960, 1440, 1920]} sizes="(max-width:960px) 100vw, 864px"
+                  formats={['avif']} fallbackFormat="webp" alt={c.alt} loading="lazy" decoding="async" quality="high" />
+              )}
+            </a>
+            <figcaption>
+              <p><strong>How to read it.</strong> {c.how}</p>
+              <p><strong>What it shows.</strong> {c.shows}</p>
+              <a class="ft-open" href={`${base}/${c.page}`} data-astro-prefetch="false">Open the interactive chart →</a>
+            </figcaption>
+          </figure>
+        );
+      })}
+    </section>
+
+    <section class="ft-section">
+      <h2>The whole tree</h2>
+      <p class="ft-intro">
+        The full tree holds 864 people in 143 families: the direct line plus their brothers,
+        sisters, spouses and children. These three charts use everyone with enough recorded detail.
+      </p>
+      {wholeTree.map((c) => {
+        const img = still(c.image);
+        return (
+          <figure class="ft-chart">
+            <h3>{c.title}</h3>
+            <a class="ft-frame" href={`${base}/${c.page}`} data-astro-prefetch="false">
+              {img && (
+                <Picture src={img} widths={[640, 960, 1440, 1920]} sizes="(max-width:960px) 100vw, 864px"
+                  formats={['avif']} fallbackFormat="webp" alt={c.alt} loading="lazy" decoding="async" quality="high" />
+              )}
+            </a>
+            <figcaption>
+              <p><strong>How to read it.</strong> {c.how}</p>
+              <p><strong>What it shows.</strong> {c.shows}</p>
+              <a class="ft-open" href={`${base}/${c.page}`} data-astro-prefetch="false">Open the interactive chart →</a>
+            </figcaption>
+          </figure>
+        );
+      })}
+    </section>
+
+    <section class="ft-section ft-notes">
+      <h2>About the data</h2>
+      <ul>
+        <li>Built from a family tree of 864 individuals and 143 families, with 672 distinct places located on the map.</li>
+        <li>Living relatives are shown without names, dates or birthplaces.</li>
+        <li>Four Swiss ancestors are dated from christening records, not birth records.</li>
+        <li>Five American birthplaces are known only to the county, and are placed at the county’s centre.</li>
+        <li>The whole-tree charts over-represent the branches that have been researched hardest. The direct-line charts do not have that bias.</li>
+        <li>The record stops at the seventh generation: none of those 64 ancestors has parents linked yet.</li>
+      </ul>
+      <div class="back-link"><a href="/projects">← All projects</a></div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .ft-head h1 {
+    font-family: var(--display); font-weight: 500; font-size: clamp(40px, 7vw, 60px);
+    line-height: 1.05; letter-spacing: -.025em;
+  }
+  .ft-lede { font-family: var(--display); font-size: 21px; line-height: 1.5; color: var(--ink-soft); max-width: 680px; margin-top: 18px; }
+  .ft-sub { font-family: var(--ui); font-size: 13.5px; line-height: 1.5; color: var(--muted); max-width: 620px; margin-top: 14px; }
+
+  .ft-section { margin-top: 64px; padding-top: 28px; border-top: 2px solid var(--ink); }
+  .ft-section h2 { font-family: var(--display); font-weight: 500; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; }
+  .ft-intro { font-family: var(--display); font-size: 18px; line-height: 1.6; color: var(--ink-soft); max-width: 680px; margin-top: 16px; }
+
+  .ft-chart { margin: 48px 0 0; }
+  .ft-chart + .ft-chart { margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--rule); }
+  .ft-chart h3 { font-family: var(--display); font-weight: 500; font-size: 28px; line-height: 1.2; letter-spacing: -.01em; margin-bottom: 18px; }
+  .ft-frame {
+    display: block; background: #fff; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 14px 28px -18px rgba(0,0,0,.25);
+    transition: box-shadow .2s ease;
+  }
+  .ft-frame:hover { box-shadow: 0 4px 10px rgba(0,0,0,.12), 0 20px 34px -18px rgba(0,0,0,.32); }
+  .ft-frame :global(img) { width: 100%; height: auto; display: block; }
+  .ft-chart figcaption { max-width: 680px; margin-top: 22px; }
+  .ft-chart figcaption p { font-family: var(--display); font-size: 17px; line-height: 1.62; color: var(--ink-soft); margin-bottom: 12px; }
+  .ft-chart figcaption strong { font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-deep); margin-right: 4px; }
+  .ft-open { font-family: var(--ui); font-size: 13px; font-weight: 700; color: var(--accent-deep); text-decoration: none; border-bottom: 1.5px solid var(--accent); padding-bottom: 1px; }
+  .ft-open:hover { color: var(--ink); }
+
+  .ft-notes ul { margin: 18px 0 0 20px; max-width: 680px; }
+  .ft-notes li { font-family: var(--display); font-size: 16.5px; line-height: 1.6; color: var(--muted); margin-bottom: 8px; }
+  .back-link { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .back-link a { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+  .back-link a:hover { color: var(--accent-deep); }
+</style>
