@@ -1,7 +1,8 @@
 ---
 // Watch page for video projects. One page is generated for every entry in
-// src/data/projects.ts that has a `video` block; the files it plays live at
-// public/projects/{slug}/video.mp4 and public/projects/{slug}/poster.jpg.
+// src/data/projects.ts that has a `video` block. Videos are embedded from YouTube
+// (privacy-enhanced player, so no YouTube cookies until the visitor presses play);
+// an entry without a `youtube` id plays public/projects/{slug}/video.mp4 instead.
 // (Interactive projects don't use this — they are their own standalone pages.)
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { projects, type Project } from '../../data/projects';
@@ -30,10 +31,21 @@ const base = `/projects/${project.slug}`;
     </div>
 
     <div class="watch-player">
-      <video controls playsinline preload="metadata" poster={`${base}/poster.jpg`}>
-        <source src={`${base}/video.mp4`} type="video/mp4" />
-        Your browser can't play this video. <a href={`${base}/video.mp4`}>Download it instead</a>.
-      </video>
+      {video.youtube ? (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${video.youtube}?rel=0`}
+          title={project.title}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      ) : (
+        <video controls playsinline preload="metadata" poster={`${base}/poster.jpg`}>
+          <source src={`${base}/video.mp4`} type="video/mp4" />
+          Your browser can't play this video. <a href={`${base}/video.mp4`}>Download it instead</a>.
+        </video>
+      )}
     </div>
 
     <div class="watch-body">
@@ -50,6 +62,10 @@ const base = `/projects/${project.slug}`;
 
       {video.note && <p class="watch-note">{video.note}</p>}
 
+      {video.youtube && (
+        <p class="watch-note"><a href={`https://youtu.be/${video.youtube}`} target="_blank" rel="noopener">Watch on YouTube</a></p>
+      )}
+
       <div class="back-link"><a href="/projects">← All projects</a></div>
     </div>
   </main>
@@ -65,7 +81,7 @@ const base = `/projects/${project.slug}`;
     border-radius: 2px; overflow: hidden;
     box-shadow: 0 2px 6px rgba(0,0,0,.15), 0 20px 40px -24px rgba(0,0,0,.45);
   }
-  .watch-player video { width: 100%; height: 100%; display: block; background: #0d1014; }
+  .watch-player video, .watch-player iframe { width: 100%; height: 100%; display: block; border: 0; background: #0d1014; }
 
   .watch-body { max-width: 680px; margin-top: 40px; }
   .watch-body p { font-family: var(--display); font-size: 18px; line-height: 1.65; color: var(--ink-soft); margin-bottom: 20px; }
@@ -81,6 +97,7 @@ const base = `/projects/${project.slug}`;
     font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; color: var(--accent-deep);
   }
   .watch-body .watch-note { font-family: var(--ui); font-size: 13px; color: var(--muted); }
+  .watch-body .watch-note a { color: var(--accent-deep); }
   .back-link { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--rule); }
   .back-link a {
     font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
