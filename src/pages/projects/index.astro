@@ -12,7 +12,7 @@ const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.def
 ---
 <BaseLayout
   title="Projects — Stefan Coburn"
-  description="Interactive explainers and tools Stefan Coburn has built to understand things properly."
+  description="Interactive explainers, tools and videos Stefan Coburn has built to understand things properly."
   active="projects"
 >
   <main class="container-wide">
@@ -23,8 +23,8 @@ const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.def
       </div>
     </div>
     <p class="page-intro">
-      Interactive explainers and tools I've built with Claude, usually because I wanted to
-      understand something well enough to play with it. Each one opens as its own full-screen page.
+      Interactive explainers, tools and videos I've built with Claude, usually because I wanted to
+      understand something well enough to play with it.
     </p>
 
     <div class="project-grid">
@@ -32,7 +32,7 @@ const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.def
         const img = thumb(p.slug);
         return (
           <a class="project-card" href={`/projects/${p.slug}/`} data-astro-prefetch="false">
-            <div class="project-thumb">
+            <div class:list={['project-thumb', { 'is-video': !!p.video }]}>
               {img ? (
                 <Picture
                   src={img}
@@ -48,6 +48,7 @@ const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.def
               ) : (
                 <div class="placeholder-cover"><div class="pt">{p.title}</div></div>
               )}
+              {p.video && <span class="project-play" aria-hidden="true">▶ {p.video.duration}</span>}
             </div>
             <div class="project-kind">{p.kind}</div>
             <h2 class="project-title">{p.title}</h2>
@@ -68,12 +69,19 @@ const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.def
 
   .project-card { display: block; text-decoration: none; color: inherit; }
   .project-thumb {
+    position: relative;
     aspect-ratio: 16 / 10; overflow: hidden; border-radius: 2px;
     background: var(--bg-panel); border: 1px solid var(--rule);
     box-shadow: 0 2px 6px rgba(0,0,0,.12), 0 14px 28px -16px rgba(0,0,0,.3);
     transition: transform .25s ease, box-shadow .25s ease;
   }
   .project-thumb :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .project-thumb.is-video :global(img) { object-position: center; }
+  .project-play {
+    position: absolute; right: 12px; top: 12px;
+    font-family: var(--ui); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    background: var(--bg); color: var(--ink); padding: 5px 10px; border-radius: 2px;
+  }
   .project-card:hover .project-thumb {
     transform: translateY(-4px);
     box-shadow: 0 4px 10px rgba(0,0,0,.16), 0 22px 36px -18px rgba(0,0,0,.38);

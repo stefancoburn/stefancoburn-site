@@ -1,0 +1,90 @@
+---
+// Watch page for video projects. One page is generated for every entry in
+// src/data/projects.ts that has a `video` block; the files it plays live at
+// public/projects/{slug}/video.mp4 and public/projects/{slug}/poster.jpg.
+// (Interactive projects don't use this — they are their own standalone pages.)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projects, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects
+    .filter((p) => p.video)
+    .map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+}
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const video = project.video!;
+const base = `/projects/${project.slug}`;
+---
+<BaseLayout
+  title={`${project.title} — Stefan Coburn`}
+  description={project.summary}
+  ogImage={`${base}/poster.jpg`}
+  active="projects"
+>
+  <main class="container">
+    <div class="watch-head">
+      <div class="eyebrow">{project.kind} · {video.duration}</div>
+      <h1>{project.title}</h1>
+    </div>
+
+    <div class="watch-player">
+      <video controls playsinline preload="metadata" poster={`${base}/poster.jpg`}>
+        <source src={`${base}/video.mp4`} type="video/mp4" />
+        Your browser can't play this video. <a href={`${base}/video.mp4`}>Download it instead</a>.
+      </video>
+    </div>
+
+    <div class="watch-body">
+      {video.about.map((para) => <p>{para}</p>)}
+
+      {video.covers && (
+        <>
+          <h2>What it covers</h2>
+          <ol>
+            {video.covers.map((c) => <li>{c}</li>)}
+          </ol>
+        </>
+      )}
+
+      {video.note && <p class="watch-note">{video.note}</p>}
+
+      <div class="back-link"><a href="/projects">← All projects</a></div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .watch-head h1 {
+    font-family: var(--display); font-weight: 500; font-size: clamp(36px, 6vw, 52px);
+    line-height: 1.05; letter-spacing: -.02em;
+  }
+  .watch-player {
+    margin-top: 32px; aspect-ratio: 16 / 9; background: #0d1014;
+    border-radius: 2px; overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15), 0 20px 40px -24px rgba(0,0,0,.45);
+  }
+  .watch-player video { width: 100%; height: 100%; display: block; background: #0d1014; }
+
+  .watch-body { max-width: 680px; margin-top: 40px; }
+  .watch-body p { font-family: var(--display); font-size: 18px; line-height: 1.65; color: var(--ink-soft); margin-bottom: 20px; }
+  .watch-body p:first-child { font-size: 19.5px; color: var(--ink); }
+  .watch-body h2 { font-family: var(--display); font-weight: 600; font-size: 24px; margin: 40px 0 12px; letter-spacing: -.01em; }
+  .watch-body ol { list-style: none; counter-reset: covers; margin: 0 0 28px; }
+  .watch-body ol li {
+    counter-increment: covers; position: relative; padding-left: 44px; margin-bottom: 10px;
+    font-family: var(--display); font-size: 18px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .watch-body ol li::before {
+    content: counter(covers, decimal-leading-zero); position: absolute; left: 0; top: 3px;
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; color: var(--accent-deep);
+  }
+  .watch-body .watch-note { font-family: var(--ui); font-size: 13px; color: var(--muted); }
+  .back-link { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .back-link a {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+  }
+  .back-link a:hover { color: var(--accent-deep); }
+</style>
