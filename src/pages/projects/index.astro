@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { projects } from '../../data/projects';
+
+// Thumbnails go through the same image pipeline as book covers:
+// drop a JPEG at src/images/projects/{slug}.jpg and it is resized,
+// converted to AVIF (+WebP fallback) and content-hashed at build time.
+const thumbs = import.meta.glob<{ default: ImageMetadata }>('../../images/projects/*.jpg', { eager: true });
+const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.default;
+---
+<BaseLayout
+  title="Projects — Stefan Coburn"
+  description="Interactive explainers and tools Stefan Coburn has built to understand things properly."
+  active="projects"
+>
+  <main class="container-wide">
+    <div class="page-title">
+      <div>
+        <div class="eyebrow">/projects</div>
+        <h1>Built to<br><em>understand.</em></h1>
+      </div>
+    </div>
+    <p class="page-intro">
+      Interactive explainers and tools I've built with Claude, usually because I wanted to
+      understand something well enough to play with it. Each one opens as its own full-screen page.
+    </p>
+
+    <div class="project-grid">
+      {projects.map((p, i) => {
+        const img = thumb(p.slug);
+        return (
+          <a class="project-card" href={`/projects/${p.slug}/`} data-astro-prefetch="false">
+            <div class="project-thumb">
+              {img ? (
+                <Picture
+                  src={img}
+                  widths={[480, 720, 1080]}
+                  sizes="(max-width:760px) 100vw, 540px"
+                  formats={['avif']}
+                  fallbackFormat="webp"
+                  alt={`Screenshot of ${p.title}`}
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  quality="mid"
+                />
+              ) : (
+                <div class="placeholder-cover"><div class="pt">{p.title}</div></div>
+              )}
+            </div>
+            <div class="project-kind">{p.kind}</div>
+            <h2 class="project-title">{p.title}</h2>
+            <p class="project-summary">{p.summary}</p>
+          </a>
+        );
+      })}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .project-grid {
+    margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--rule);
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px 48px;
+  }
+  @media (max-width: 760px) { .project-grid { grid-template-columns: 1fr; gap: 44px; } }
+
+  .project-card { display: block; text-decoration: none; color: inherit; }
+  .project-thumb {
+    aspect-ratio: 16 / 10; overflow: hidden; border-radius: 2px;
+    background: var(--bg-panel); border: 1px solid var(--rule);
+    box-shadow: 0 2px 6px rgba(0,0,0,.12), 0 14px 28px -16px rgba(0,0,0,.3);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .project-thumb :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .project-card:hover .project-thumb {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,.16), 0 22px 36px -18px rgba(0,0,0,.38);
+  }
+  @media (hover: none) { .project-thumb { transition: none; } }
+
+  .project-kind {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent-deep); margin-top: 20px;
+  }
+  .project-title {
+    font-family: var(--display); font-weight: 500; font-size: 28px; line-height: 1.2;
+    letter-spacing: -.01em; margin-top: 6px;
+  }
+  .project-card:hover .project-title { color: var(--accent-deep); }
+  .project-summary {
+    font-family: var(--display); font-size: 16.5px; line-height: 1.55; color: var(--muted);
+    margin-top: 8px; max-width: 520px;
+  }
+</style>

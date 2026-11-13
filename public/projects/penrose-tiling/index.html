@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Penrose Tiling — Kites &amp; Darts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --panel: rgba(16,18,24,0.78);
+    --panel-border: rgba(255,255,255,0.09);
+    --text: #eceae4;
+    --muted: #9a9a96;
+    --accent: #e9b44c;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:#0e1116;color:var(--text);
+    font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+  canvas.dragging{cursor:grabbing}
+  .glass{background:var(--panel);border:1px solid var(--panel-border);border-radius:14px;
+    backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+    box-shadow:0 10px 40px rgba(0,0,0,0.35)}
+  #title{position:fixed;top:16px;left:16px;padding:14px 18px 13px;max-width:330px;pointer-events:auto}
+  #title h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:21px;margin:0 0 3px;letter-spacing:-0.01em}
+  #title p{margin:0;font-size:12.5px;line-height:1.45;color:var(--muted)}
+  #title .more{margin-top:8px;display:none}
+  #title.open .more{display:block}
+  #title button.link{background:none;border:0;color:var(--accent);font:inherit;font-size:12px;padding:0;margin-top:6px;cursor:pointer}
+
+  #panel{position:fixed;top:16px;right:16px;width:248px;padding:14px;display:flex;flex-direction:column;gap:13px}
+  #panel h2{font-size:10.5px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin:0 0 7px;font-weight:600}
+  .row{display:flex;gap:6px;flex-wrap:wrap}
+  .btn{flex:1;appearance:none;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);
+    color:var(--text);font:500 12.5px Inter,sans-serif;padding:8px 10px;border-radius:9px;cursor:pointer;
+    transition:background .15s,border-color .15s;white-space:nowrap}
+  .btn:hover{background:rgba(255,255,255,0.1)}
+  .btn.primary{background:var(--accent);color:#1a1408;border-color:transparent;font-weight:600}
+  .btn.primary:hover{filter:brightness(1.07)}
+  .seg{display:flex;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:2px}
+  .seg button{flex:1;border:0;background:none;color:var(--muted);font:500 12px Inter,sans-serif;padding:6px 4px;border-radius:7px;cursor:pointer}
+  .seg button.on{background:rgba(255,255,255,0.13);color:var(--text)}
+  .swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+  .sw{height:30px;border-radius:8px;border:2px solid transparent;cursor:pointer;padding:0;overflow:hidden;display:flex}
+  .sw span{flex:1}
+  .sw.on{border-color:var(--text)}
+  .toggle{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;padding:3px 0;cursor:pointer;user-select:none}
+  .toggle small{display:block;color:var(--muted);font-size:11px;margin-top:1px}
+  .sw-t{position:relative;width:32px;height:18px;flex:none;border-radius:9px;background:rgba(255,255,255,0.16);transition:background .15s}
+  .sw-t::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .15s}
+  .toggle.on .sw-t{background:var(--accent)}
+  .toggle.on .sw-t::after{transform:translateX(14px)}
+  #collapse{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:6px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1}
+  #panel.min{width:auto;padding:8px}
+  #panel.min > :not(#collapse):not(#openBtn){display:none}
+  #openBtn{display:none}
+  #panel.min #openBtn{display:block}
+  #panel.min #collapse{display:none}
+
+  #hud{position:fixed;left:16px;bottom:16px;padding:11px 14px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.65;color:#cfcdc6;min-width:250px}
+  #hud b{color:var(--text);font-weight:500}
+  #hud .k{color:var(--muted)}
+  #hud .phi{color:var(--accent)}
+  #zoombar{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;padding:4px;gap:2px}
+  #zoombar button{width:36px;height:36px;border:0;background:none;color:var(--text);font-size:19px;border-radius:9px;cursor:pointer}
+  #zoombar button:hover{background:rgba(255,255,255,0.1)}
+  #hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);font-size:12px;color:var(--muted);padding:8px 14px;
+    transition:opacity .8s;pointer-events:none;white-space:nowrap}
+  @media (max-width: 720px){
+    #title{max-width:calc(100% - 32px);padding:10px 13px}
+    #title h1{font-size:17px}
+    #title p.sub{display:none}
+    #panel{top:auto;bottom:16px;right:16px;width:220px}
+    #hud{bottom:auto;top:84px;left:16px;min-width:0;font-size:10.5px;padding:8px 11px}
+    #zoombar{bottom:auto;top:84px}
+    #hint{display:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="title" class="glass">
+  <h1>Penrose Tiling</h1>
+  <p>Kites &amp; darts: two tiles that cover the plane forever and never repeat.</p>
+  <div class="more">
+    <p style="margin-top:4px">Roger Penrose found the kite-and-dart pair in 1974. With matching rules (the arcs), the tiles can <i>only</i> fit together aperiodically: no translation ever maps the tiling onto itself, yet every finite patch recurs infinitely often.</p>
+    <p style="margin-top:8px">The page generates tiles as you look. It starts from one giant supertile and splits it into golden “Robinson triangles” level by level, refining only what is on screen. Zoom out far enough and you see supertiles of higher order, which form another Penrose tiling. Over a large area the ratio of kites to darts tends to the golden ratio φ.</p>
+  </div>
+  <button class="link" id="moreBtn">About this tiling ↓</button>
+</div>
+
+<div id="panel" class="glass">
+  <button id="collapse" title="Hide panel">✕</button>
+  <button id="openBtn" class="btn" title="Show controls">⚙︎ Controls</button>
+  <div>
+    <h2>Generate</h2>
+    <div class="row" style="margin-bottom:6px">
+      <button class="btn primary" id="newBtn" title="New random location (N)">New tiling</button>
+      <button class="btn" id="replayBtn" title="Replay deployment (R)">Replay</button>
+    </div>
+    <div class="seg" id="seedSeg">
+      <button data-v="sun" class="on">Sun centre</button>
+      <button data-v="star">Star centre</button>
+    </div>
+  </div>
+  <div>
+    <h2>Palette</h2>
+    <div class="swatches" id="swatches"></div>
+  </div>
+  <div>
+    <h2>Display</h2>
+    <div class="toggle on" data-k="outlines"><div>Outlines</div><div class="sw-t"></div></div>
+    <div class="toggle" data-k="arcs"><div>Matching arcs<small>Penrose's decoration rules</small></div><div class="sw-t"></div></div>
+    <div class="toggle" data-k="hier"><div>Supertile overlay<small>Hierarchy three levels up</small></div><div class="sw-t"></div></div>
+    <div class="toggle on" data-k="selfsim"><div>Supertiles on zoom-out<small>Off: tiles shrink to texture</small></div><div class="sw-t"></div></div>
+  </div>
+  <div class="row">
+    <button class="btn" id="centerBtn" title="Fly to the centre of symmetry (C)">Go to centre</button>
+  </div>
+</div>
+
+<div id="hud" class="glass"></div>
+<div id="zoombar" class="glass">
+  <button id="zin" title="Zoom in (+)">+</button>
+  <button id="zout" title="Zoom out (−)">−</button>
+</div>
+<div id="hint" class="glass">Drag to pan · scroll or pinch to zoom · double-click to dive in</div>
+
+<script>
+(() => {
+'use strict';
+const PHI = (1 + Math.sqrt(5)) / 2, IPHI = 1 / PHI, IPHI2 = 1 / (PHI * PHI), LNPHI = Math.log(PHI);
+const N = 52;                         // top-level supertile order (≈ 7×10^10 tiles across)
+const POW = []; for (let k = 0; k <= N + 3; k++) POW[k] = Math.pow(PHI, k);
+const R_TOP = POW[N + 1];
+const MIN_PX = 12;                    // smallest on-screen short edge before switching level
+const GROW_MS = 520;
+
+// ---------- palettes ----------
+const PALETTES = [
+  { name: 'Penrose', bg: '#0e1116', kite: '#e9b44c', dart: '#1d3557', stroke: '#0b0d12', arcs: ['#f6f1e4', '#e4572e'], hier: 'rgba(255,255,255,0.6)', ui: '#e9b44c' },
+  { name: 'Paper', bg: '#f3ede2', kite: '#efe6d6', dart: '#c8553d', stroke: '#2b2620', arcs: ['#2b2620', '#3f7f7f'], hier: 'rgba(30,25,20,0.65)', ui: '#c8553d' },
+  { name: 'Glacier', bg: '#0b1a24', kite: '#d4e6ee', dart: '#2f6690', stroke: '#0b1a24', arcs: ['#f4a261', '#0b1a24'], hier: 'rgba(244,162,97,0.85)', ui: '#7fb6d5' },
+  { name: 'Mono', bg: '#101010', kite: '#ececec', dart: '#333333', stroke: '#101010', arcs: ['#ff5a36', '#36a2ff'], hier: 'rgba(255,90,54,0.8)', ui: '#dcdcdc' },
+  { name: 'Spectrum', bg: '#15131b', spectrum: true, stroke: '#15131b', arcs: ['#ffffff', '#15131b'], hier: 'rgba(255,255,255,0.7)', ui: '#c39bf0' },
+];
+function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+function rgbHex(c) { return '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join(''); }
+function buildColors(p) {
+  const cols = [];
+  for (let t = 0; t < 2; t++) for (let o = 0; o < 10; o++) {
+    if (p.spectrum) { const h = (o * 36 + 200) % 360; cols.push(t === 0 ? `hsl(${h},58%,70%)` : `hsl(${h},52%,36%)`); }
+    else cols.push(t === 0 ? p.kite : p.dart);
+  }
+  // area-weighted mix for "texture" mode (kites cover φ²/(φ²+1) of the plane)
+  const kf = PHI * PHI / (PHI * PHI + 1);
+  const kc = p.spectrum ? [196, 170, 220] : hexRgb(p.kite), dc = p.spectrum ? [70, 60, 110] : hexRgb(p.dart);
+  cols.push(rgbHex(kc.map((v, i) => v * kf + dc[i] * (1 - kf))));
+  return cols;
+}
+
+// ---------- state ----------
+const state = {
+  pal: 0, colors: null,
+  outlines: true, arcs: false, hier: false, selfsim: true,
+  seedType: 'sun', rot: -90,
+  cam: { x: 0, y: 0, s: 34 },
+  deploy: null,          // {t0, from}
+};
+state.colors = buildColors(PALETTES[0]);
+try { const sv = JSON.parse(localStorage.getItem('penrose-prefs') || '{}');
+  if (typeof sv.pal === 'number' && PALETTES[sv.pal]) state.pal = sv.pal;
+  ['outlines', 'arcs', 'hier', 'selfsim'].forEach(k => { if (typeof sv[k] === 'boolean') state[k] = sv[k]; });
+  state.colors = buildColors(PALETTES[state.pal]);
+} catch (e) {}
+function savePrefs() { try { localStorage.setItem('penrose-prefs', JSON.stringify({ pal: state.pal, outlines: state.outlines, arcs: state.arcs, hier: state.hier, selfsim: state.selfsim })); } catch (e) {} }
+
+// top-level wheel: level-N triangles. Red = half-kite (A tip, B on axis, C side); Blue = half-dart (A reflex, B tip, C side)
+let roots = [];
+function buildRoots() {
+  roots = [];
+  const s = POW[N], rho = state.rot;
+  const d = (a, r) => [r * Math.cos(a * Math.PI / 180), r * Math.sin(a * Math.PI / 180)];
+  for (let j = 0; j < 5; j++) {
+    const a = rho + 72 * j;
+    if (state.seedType === 'sun') {
+      const B = d(a, PHI * s);
+      for (const sg of [1, -1]) { const C = d(a + 36 * sg, PHI * s); roots.push([0, 0, 0, B[0], B[1], C[0], C[1]]); }
+    } else {
+      const A = d(a, s);
+      for (const sg of [1, -1]) { const C = d(a + 36 * sg, PHI * s); roots.push([1, A[0], A[1], 0, 0, C[0], C[1]]); }
+    }
+  }
+}
+
+// ---------- canvas ----------
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  clampCam(); requestDraw();
+}
+window.addEventListener('resize', resize);
+
+function clampCam() {
+  const c = state.cam, maxR = 0.3 * R_TOP;
+  const hd = Math.hypot(W, H) / 2;
+  const sMin = hd / (0.5 * maxR);
+  c.s = Math.max(sMin, Math.min(3000, c.s));
+  const r = Math.hypot(c.x, c.y), lim = maxR - hd / c.s;
+  if (r > lim) { c.x *= lim / r; c.y *= lim / r; }
+}
+
+// ---------- generation & emission ----------
+// per-frame buffers
+const L_FINE = 0, L_COARSE = 1;
+const fills = [[], []], edges = [[], []], arcs = [[[], []], [[], []]];
+let hierEdges = [];
+for (let l = 0; l < 2; l++) for (let i = 0; i < 21; i++) fills[l][i] = [];
+let vx0, vx1, vy0, vy1, camX, camY, S, W2, H2;
+let kFine, kCoarse, kHier, drawCoarse, trackGrowth, instantFrame, nowT, growing, nRed, nBlue;
+let fixedTexture = false;
+const seen = new Map(); let lastFineK = null;
+
+function hash2(a, b) { let h = (a * 374761393 + b * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+
+function emit(layer, col, ax, ay, bx, by, cx, cy, k) {
+  // to screen
+  let Ax = (ax - camX) * S + W2, Ay = (ay - camY) * S + H2;
+  let Bx = (bx - camX) * S + W2, By = (by - camY) * S + H2;
+  let Cx = (cx - camX) * S + W2, Cy = (cy - camY) * S + H2;
+  const u = POW[k] * S; // short edge in px
+  let e = 1;
+  if (layer === L_FINE) {
+    if (col === 0) nRed++; else nBlue++;
+    if (trackGrowth) {
+      const q = POW[k] * 0.05;
+      const mx = (ax + bx) * 0.5, my = (ay + by) * 0.5;
+      const qx = Math.round(mx / q), qy = Math.round(my / q);
+      const key = k + ':' + col + ':' + qx + ':' + qy;
+      let birth = seen.get(key);
+      if (birth === undefined) {
+        birth = instantFrame ? -1e12 : nowT + hash2(qx | 0, qy | 0) * 320;
+        seen.set(key, birth);
+      }
+      const age = nowT - birth;
+      if (age < GROW_MS) {
+        growing = true;
+        if (age <= 0) return;
+        const t = age / GROW_MS, c1 = 1.70158, c3 = c1 + 1;
+        e = 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); // easeOutBack
+        // scale about axis midpoint so both halves grow as one tile
+        const Mx = (Ax + Bx) * 0.5, My = (Ay + By) * 0.5;
+        Ax = Mx + (Ax - Mx) * e; Ay = My + (Ay - My) * e;
+        Bx = Mx + (Bx - Mx) * e; By = My + (By - My) * e;
+        Cx = Mx + (Cx - Mx) * e; Cy = My + (Cy - My) * e;
+      }
+    }
+  }
+  // colour bucket
+  let ci;
+  if (fixedTexture && k > 0) ci = 20;
+  else {
+    let ang = col === 0 ? Math.atan2(by - ay, bx - ax) : Math.atan2(ay - by, ax - bx);
+    ang = ang * 180 / Math.PI - state.rot;
+    const o = ((Math.round(ang / 36) % 10) + 10) % 10;
+    ci = col * 10 + o;
+  }
+  // consistent winding so mirror-image halves don't leave an antialiasing seam along the axis
+  if ((Bx - Ax) * (Cy - Ay) - (By - Ay) * (Cx - Ax) > 0) fills[layer][ci].push(Ax, Ay, Bx, By, Cx, Cy);
+  else fills[layer][ci].push(Ax, Ay, Cx, Cy, Bx, By);
+  if (fixedTexture && k > 0) return;
+  if (state.outlines) edges[layer].push(Ax, Ay, Cx, Cy, Bx, By);
+  if (state.arcs) {
+    const r = u * e;
+    if (col === 0) {
+      pushArc(arcs[layer][0], Ax, Ay, Bx, By, Cx, Cy, r * 1.0);
+      pushArc(arcs[layer][1], Bx, By, Ax, Ay, Cx, Cy, r * IPHI2);
+    } else {
+      pushArc(arcs[layer][0], Bx, By, Ax, Ay, Cx, Cy, r * IPHI);
+      pushArc(arcs[layer][1], Ax, Ay, Bx, By, Cx, Cy, r * IPHI);
+    }
+  }
+}
+function pushArc(buf, vx, vy, px, py, qx, qy, r) {
+  const a0 = Math.atan2(py - vy, px - vx), a1 = Math.atan2(qy - vy, qx - vx);
+  let d = a1 - a0; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI;
+  buf.push(vx, vy, r, a0, a0 + d);
+}
+
+function rec(col, ax, ay, bx, by, cx, cy, k) {
+  const mnx = ax < bx ? (ax < cx ? ax : cx) : (bx < cx ? bx : cx);
+  const mxx = ax > bx ? (ax > cx ? ax : cx) : (bx > cx ? bx : cx);
+  if (mxx < vx0 || mnx > vx1) return;
+  const mny = ay < by ? (ay < cy ? ay : cy) : (by < cy ? by : cy);
+  const mxy = ay > by ? (ay > cy ? ay : cy) : (by > cy ? by : cy);
+  if (mxy < vy0 || mny > vy1) return;
+  if (k === kHier) hierEdges.push((ax - camX) * S + W2, (ay - camY) * S + H2, (cx - camX) * S + W2, (cy - camY) * S + H2, (bx - camX) * S + W2, (by - camY) * S + H2);
+  if (drawCoarse && k === kCoarse) emit(L_COARSE, col, ax, ay, bx, by, cx, cy, k);
+  if (k === kFine) { emit(L_FINE, col, ax, ay, bx, by, cx, cy, k); return; }
+  const k1 = k - 1;
+  if (col === 0) {
+    const dx = ax + (bx - ax) * IPHI, dy = ay + (by - ay) * IPHI;
+    const ex = ax + (cx - ax) * IPHI2, ey = ay + (cy - ay) * IPHI2;
+    rec(0, cx, cy, dx, dy, bx, by, k1);
+    rec(0, cx, cy, dx, dy, ex, ey, k1);
+    rec(1, ex, ey, ax, ay, dx, dy, k1);
+  } else {
+    const ex = cx + (bx - cx) * IPHI2, ey = cy + (by - cy) * IPHI2;
+    rec(1, ex, ey, cx, cy, ax, ay, k1);
+    rec(0, bx, by, ax, ay, ex, ey, k1);
+  }
+}
+
+// ---------- drawing ----------
+let rafId = 0, dirty = true;
+function requestDraw() { dirty = true; if (!rafId) rafId = requestAnimationFrame(frame); }
+const smooth = t => t * t * (3 - 2 * t);
+const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+function frame(t) {
+  rafId = 0;
+  nowT = t;
+  let keepGoing = stepInertia(t) || stepFly(t);
+  const c = state.cam;
+  camX = c.x; camY = c.y; S = c.s; W2 = W / 2; H2 = H / 2;
+  const m = 4 / S;
+  vx0 = camX - W2 / S - m; vx1 = camX + W2 / S + m; vy0 = camY - H2 / S - m; vy1 = camY + H2 / S + m;
+
+  // level of detail
+  let kStar = Math.log((state.selfsim ? MIN_PX : 8) / S) / LNPHI;
+  let deploying = false;
+  if (state.deploy) {
+    const p = (t - state.deploy.t0) / state.deploy.dur;
+    if (p >= 1) state.deploy = null;
+    else { deploying = true; kStar = Math.max(kStar, state.deploy.target + state.deploy.span * (1 - easeInOut(Math.max(0, p)))); }
+  }
+  fixedTexture = !state.selfsim;
+  let kf = Math.max(0, Math.floor(kStar)), frac = kStar < 0 ? 0 : kStar - kf;
+  kf = Math.min(kf, N - 1);
+  kFine = kf; kCoarse = kf + 1;
+  const fineAlpha = 1 - smooth(Math.min(1, Math.max(0, (frac - 0.15) / 0.7)));
+  drawCoarse = fineAlpha < 0.999;
+  kHier = state.hier ? Math.min(N, kFine + 3) : -1;
+  trackGrowth = true;
+  instantFrame = deploying || lastFineK !== kFine || seen.size > 160000;
+  if (seen.size > 160000) seen.clear();
+  lastFineK = kFine;
+  growing = false; nRed = 0; nBlue = 0;
+
+  for (let l = 0; l < 2; l++) { for (let i = 0; i < 21; i++) fills[l][i].length = 0; edges[l].length = 0; arcs[l][0].length = 0; arcs[l][1].length = 0; }
+  hierEdges.length = 0;
+  for (const r of roots) rec(r[0], r[1], r[2], r[3], r[4], r[5], r[6], N);
+
+  const P = PALETTES[state.pal];
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H);
+  ctx.lineJoin = 'bevel'; ctx.lineCap = 'butt';
+  if (drawCoarse) drawLayer(L_COARSE, 1, kCoarse);
+  drawLayer(L_FINE, fineAlpha, kFine);
+  if (hierEdges.length) {
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = P.hier; ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    const b = hierEdges;
+    for (let i = 0; i < b.length; i += 6) { ctx.moveTo(b[i], b[i + 1]); ctx.lineTo(b[i + 2], b[i + 3]); ctx.lineTo(b[i + 4], b[i + 5]); }
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+  updateHud(kStar, kFine, fineAlpha);
+  dirty = false;
+  if (growing || deploying || keepGoing) rafId = requestAnimationFrame(frame);
+}
+
+function drawLayer(l, alpha, k) {
+  if (alpha <= 0.001) return;
+  const P = PALETTES[state.pal];
+  const u = POW[k] * S;
+  ctx.globalAlpha = alpha;
+  const seamFix = !state.outlines || (fixedTexture && k > 0);
+  for (let ci = 0; ci < 21; ci++) {
+    const b = fills[l][ci]; if (!b.length) continue;
+    ctx.beginPath();
+    for (let i = 0; i < b.length; i += 6) { ctx.moveTo(b[i], b[i + 1]); ctx.lineTo(b[i + 2], b[i + 3]); ctx.lineTo(b[i + 4], b[i + 5]); ctx.closePath(); }
+    ctx.fillStyle = state.colors[ci]; ctx.fill();
+    if (seamFix) { ctx.strokeStyle = state.colors[ci]; ctx.lineWidth = 0.7; ctx.stroke(); }
+  }
+  if (state.arcs && arcs[l][0].length) {
+    ctx.lineWidth = Math.max(0.6, Math.min(4, u * 0.07));
+    for (let j = 0; j < 2; j++) {
+      const b = arcs[l][j]; if (!b.length) continue;
+      ctx.beginPath();
+      for (let i = 0; i < b.length; i += 5) {
+        const x = b[i], y = b[i + 1], r = b[i + 2], a0 = b[i + 3], a1 = b[i + 4];
+        ctx.moveTo(x + r * Math.cos(a0), y + r * Math.sin(a0));
+        ctx.arc(x, y, r, a0, a1, a1 < a0);
+      }
+      ctx.strokeStyle = P.arcs[j]; ctx.stroke();
+    }
+  }
+  const e = edges[l];
+  if (e.length && !(fixedTexture && u < 6)) {
+    ctx.strokeStyle = P.stroke;
+    ctx.lineWidth = Math.max(0.5, Math.min(2.6, u * 0.05));
+    ctx.beginPath();
+    for (let i = 0; i < e.length; i += 6) { ctx.moveTo(e[i], e[i + 1]); ctx.lineTo(e[i + 2], e[i + 3]); ctx.lineTo(e[i + 4], e[i + 5]); }
+    ctx.stroke();
+  }
+}
+
+// ---------- HUD ----------
+const hud = document.getElementById('hud');
+function fmtBig(x) {
+  if (x < 1e4) return Math.round(x).toLocaleString();
+  const e = Math.floor(Math.log10(x)), m = x / Math.pow(10, e);
+  return m.toFixed(1) + '×10' + String(e).split('').map(d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]).join('');
+}
+function updateHud(kStar, kf, fa) {
+  const S_ = state.cam.s;
+  const tilesOnScreen = Math.round((nRed + nBlue) / 2);
+  const dist = Math.hypot(state.cam.x, state.cam.y);
+  const showOrder = kStar > 0.5 ? kf : 0;
+  let levelLine;
+  if (!state.selfsim && kf > 0) levelLine = `<span class="k">view</span> <b>tiles &lt; ${Math.max(0.01, S_).toPrecision(2)} px, shown as texture</b>`;
+  else if (showOrder === 0) levelLine = `<span class="k">showing</span> <b>individual tiles</b>`;
+  else levelLine = `<span class="k">showing</span> <b>order-${showOrder} supertiles</b> <span class="k">(≈${fmtBig(Math.pow(PHI, 2 * showOrder))} tiles each)</span>`;
+  const ratio = nBlue ? (nRed / nBlue) : 0;
+  const ratioOk = !(!state.selfsim && kf > 0) && nBlue > 20;
+  hud.innerHTML =
+    levelLine + '<br>' +
+    ((!state.selfsim && kf > 0)
+      ? `<span class="k">on screen</span> <b>≈${fmtBig(tilesOnScreen * Math.pow(PHI, 2 * kf))}</b> tiles`
+      : `<span class="k">on screen</span> <b>${tilesOnScreen.toLocaleString()}</b> ${showOrder ? 'supertiles' : 'tiles'}`) +
+    (ratioOk ? ` · <span class="k">kites:darts</span> <b class="phi">${ratio.toFixed(3)}</b> <span class="k">→ φ=1.618</span>` : '') + '<br>' +
+    `<span class="k">tile edge</span> <b>${S_ >= 1 ? S_.toFixed(1) + ' px' : (S_ < 1e-3 ? S_.toExponential(1) : S_.toFixed(3)) + ' px'}</b> · ` +
+    `<span class="k">from centre</span> <b>${fmtBig(dist)}</b> <span class="k">edges</span>`;
+}
+
+// ---------- camera interaction ----------
+let inertia = null, fly = null;
+function zoomAt(f, sx, sy) {
+  const c = state.cam;
+  const wx = c.x + (sx - W / 2) / c.s, wy = c.y + (sy - H / 2) / c.s;
+  c.s *= f; clampCam();
+  c.x = wx - (sx - W / 2) / c.s; c.y = wy - (sy - H / 2) / c.s;
+  clampCam(); requestDraw();
+}
+function stepInertia(t) {
+  if (!inertia) return false;
+  const dt = Math.min(40, t - inertia.t); inertia.t = t;
+  const c = state.cam;
+  c.x -= inertia.vx * dt / c.s; c.y -= inertia.vy * dt / c.s;
+  const decay = Math.pow(0.0035, dt / 1000);
+  inertia.vx *= decay; inertia.vy *= decay;
+  clampCam();
+  if (Math.hypot(inertia.vx, inertia.vy) < 0.01) { inertia = null; return false; }
+  return true;
+}
+function stepFly(t) {
+  if (!fly) return false;
+  const p = Math.min(1, (t - fly.t0) / fly.dur), e = easeInOut(p), c = state.cam;
+  // zoom-out-and-in arc in log space
+  const ls = Math.log(fly.s0) * (1 - e) + Math.log(fly.s1) * e - fly.dip * Math.sin(Math.PI * e);
+  c.s = Math.exp(ls);
+  c.x = fly.x0 + (fly.x1 - fly.x0) * e; c.y = fly.y0 + (fly.y1 - fly.y0) * e;
+  clampCam();
+  if (p >= 1) { fly = null; return false; }
+  return true;
+}
+function flyTo(x, y, s, dur = 1600) {
+  const c = state.cam;
+  const d = Math.hypot(x - c.x, y - c.y);
+  const dip = d > 0 ? Math.max(0, Math.log((d * Math.min(c.s, s)) / Math.min(W, H) + 1) * 0.9) : 0;
+  fly = { t0: performance.now(), dur, x0: c.x, y0: c.y, s0: c.s, x1: x, y1: y, s1: s, dip };
+  inertia = null; requestDraw();
+}
+
+const pointers = new Map();
+let lastPinch = null, lastMove = null, velSamples = [];
+cv.addEventListener('pointerdown', e => {
+  cv.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  inertia = null; fly = null; velSamples = [];
+  cv.classList.add('dragging'); hideHint();
+});
+cv.addEventListener('pointermove', e => {
+  if (!pointers.has(e.pointerId)) return;
+  const prev = pointers.get(e.pointerId);
+  const cur = { x: e.clientX, y: e.clientY };
+  pointers.set(e.pointerId, cur);
+  const c = state.cam;
+  if (pointers.size === 1) {
+    const dx = cur.x - prev.x, dy = cur.y - prev.y;
+    c.x -= dx / c.s; c.y -= dy / c.s; clampCam();
+    velSamples.push({ t: performance.now(), dx, dy }); if (velSamples.length > 6) velSamples.shift();
+    requestDraw();
+  } else if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, dist = Math.hypot(a.x - b.x, a.y - b.y);
+    if (lastPinch) {
+      c.x -= (mid.x - lastPinch.mid.x) / c.s; c.y -= (mid.y - lastPinch.mid.y) / c.s;
+      zoomAt(dist / lastPinch.dist, mid.x, mid.y);
+    }
+    lastPinch = { mid, dist };
+  }
+});
+function endPointer(e) {
+  if (!pointers.has(e.pointerId)) return;
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) lastPinch = null;
+  if (pointers.size === 0) {
+    cv.classList.remove('dragging');
+    const now = performance.now();
+    const recent = velSamples.filter(s => now - s.t < 90);
+    if (recent.length >= 2) {
+      const span = Math.max(16, now - recent[0].t);
+      let sx = 0, sy = 0; recent.forEach(s => { sx += s.dx; sy += s.dy; });
+      inertia = { vx: sx / span, vy: sy / span, t: now };
+      requestDraw();
+    }
+  }
+}
+cv.addEventListener('pointerup', endPointer);
+cv.addEventListener('pointercancel', endPointer);
+cv.addEventListener('wheel', e => {
+  e.preventDefault(); hideHint(); fly = null;
+  let dy = e.deltaY; if (e.deltaMode === 1) dy *= 16;
+  const k = e.ctrlKey ? 0.012 : 0.0016;
+  zoomAt(Math.exp(-dy * k), e.clientX, e.clientY);
+}, { passive: false });
+cv.addEventListener('dblclick', e => {
+  const c = state.cam;
+  const wx = c.x + (e.clientX - W / 2) / c.s, wy = c.y + (e.clientY - H / 2) / c.s;
+  flyTo(wx, wy, c.s * (e.shiftKey ? 1 / (PHI * PHI) : PHI * PHI), 700);
+});
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  const c = state.cam, step = 120 / c.s;
+  switch (e.key) {
+    case 'ArrowLeft': case 'a': c.x -= step; break;
+    case 'ArrowRight': case 'd': c.x += step; break;
+    case 'ArrowUp': case 'w': c.y -= step; break;
+    case 'ArrowDown': case 's': c.y += step; break;
+    case '+': case '=': zoomAt(1.25, W / 2, H / 2); return;
+    case '-': case '_': zoomAt(0.8, W / 2, H / 2); return;
+    case 'n': case 'N': newTiling(); return;
+    case 'r': case 'R': replay(); return;
+    case 'c': case 'C': goCenter(); return;
+    default: return;
+  }
+  clampCam(); requestDraw();
+});
+document.getElementById('zin').onclick = () => flyTo(state.cam.x, state.cam.y, state.cam.s * PHI * PHI, 450);
+document.getElementById('zout').onclick = () => flyTo(state.cam.x, state.cam.y, state.cam.s / (PHI * PHI), 450);
+
+// ---------- generation controls ----------
+function defaultScale() { return Math.min(W, H) < 600 ? 24 : 34; }
+function replay() {
+  const target = Math.log(MIN_PX / state.cam.s) / LNPHI;
+  state.deploy = { t0: performance.now(), dur: 4200, target, span: 9 };
+  seen.clear(); requestDraw();
+}
+function newTiling() {
+  const rnd = Math.random;
+  state.rot = rnd() * 360;
+  buildRoots();
+  const r = Math.pow(10, 4 + rnd() * 4.5), a = rnd() * Math.PI * 2;
+  state.cam.x = r * Math.cos(a); state.cam.y = r * Math.sin(a); state.cam.s = defaultScale();
+  inertia = null; fly = null;
+  clampCam(); replay();
+}
+function goCenter() { flyTo(0, 0, Math.max(state.cam.s, defaultScale()), 2000); }
+document.getElementById('newBtn').onclick = newTiling;
+document.getElementById('replayBtn').onclick = replay;
+document.getElementById('centerBtn').onclick = goCenter;
+document.querySelectorAll('#seedSeg button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#seedSeg button').forEach(x => x.classList.toggle('on', x === b));
+  state.seedType = b.dataset.v; buildRoots();
+  state.cam.x = 0; state.cam.y = 0; state.cam.s = defaultScale(); inertia = null; fly = null;
+  replay();
+});
+
+// palette swatches
+const swWrap = document.getElementById('swatches');
+PALETTES.forEach((p, i) => {
+  const b = document.createElement('button'); b.className = 'sw'; b.title = p.name;
+  if (p.spectrum) b.style.background = 'linear-gradient(90deg,#e7a6a6,#e8d48f,#9fd8a8,#93c3e8,#c6a3ee)';
+  else b.innerHTML = `<span style="background:${p.kite}"></span><span style="background:${p.dart}"></span>`;
+  b.onclick = () => { state.pal = i; state.colors = buildColors(p); applyTheme(); savePrefs(); requestDraw(); };
+  swWrap.appendChild(b);
+});
+function applyTheme() {
+  const p = PALETTES[state.pal];
+  document.documentElement.style.setProperty('--accent', p.ui);
+  document.body.style.background = p.bg;
+  [...swWrap.children].forEach((b, i) => b.classList.toggle('on', i === state.pal));
+}
+document.querySelectorAll('.toggle').forEach(t => {
+  const k = t.dataset.k;
+  t.classList.toggle('on', !!state[k]);
+  t.onclick = () => { state[k] = !state[k]; t.classList.toggle('on', state[k]); savePrefs(); requestDraw(); };
+});
+const panel = document.getElementById('panel');
+document.getElementById('collapse').onclick = () => panel.classList.add('min');
+document.getElementById('openBtn').onclick = () => panel.classList.remove('min');
+const titleBox = document.getElementById('title');
+document.getElementById('moreBtn').onclick = () => {
+  const o = titleBox.classList.toggle('open');
+  document.getElementById('moreBtn').textContent = o ? 'Less ↑' : 'About this tiling ↓';
+};
+const hint = document.getElementById('hint');
+let hintHidden = false;
+function hideHint() { if (!hintHidden) { hintHidden = true; hint.style.opacity = 0; } }
+setTimeout(hideHint, 9000);
+if (window.innerWidth < 720) panel.classList.add('min');
+
+// ---------- boot ----------
+applyTheme();
+buildRoots();
+resize();
+state.cam.s = defaultScale();
+replay();
+})();
+</script>
+</body>
+</html>

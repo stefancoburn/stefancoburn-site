@@ -1,0 +1,1050 @@
+<!doctype html><html><head><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Weighing the Earth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* Layout: a lamplit 3D stage on top (always dark, like the sealed shed at night), then a reading column for the math, synced to the same clock. */
+:root{
+  --paper:#eceef0; --ink:#1b2026; --muted:#5b6570; --rule:#cfd4d9; --panel:#f7f8f9;
+  --brass:#8f6420; --brass-soft:#e9dcc3; --lead:#5d6670; --mahogany:#6a2a1a; --ok:#2f6b4f;
+  --stage:#0c0f13; --stage-ink:#e8e3d8; --stage-dim:#9aa1a8; --glass:rgba(16,20,26,.78); --glass-line:rgba(255,255,255,.10); --lamp:#e7b458;
+  --f-display:"IM Fell English", "Iowan Old Style", Georgia, serif;
+  --f-body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#111417; --ink:#e4e1da; --muted:#9aa2aa; --rule:#2a3036; --panel:#171b20;
+  --brass:#d6a655; --brass-soft:#3a3021; --lead:#8d96a0; --mahogany:#b0573f; --ok:#6fbf94; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --paper:#111417; --ink:#e4e1da; --muted:#9aa2aa; --rule:#2a3036; --panel:#171b20;
+  --brass:#d6a655; --brass-soft:#3a3021; --lead:#8d96a0; --mahogany:#b0573f; --ok:#6fbf94; color-scheme:dark;}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lamp);outline-offset:2px}
+
+/* ---------- Stage ---------- */
+#stage{position:relative;height:clamp(480px,80vh,860px);background:var(--stage);color:var(--stage-ink);overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#gl.dragging{cursor:grabbing}
+.glass{background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:6px}
+#titleCard{position:absolute;left:16px;top:16px;padding:10px 14px 11px;max-width:min(420px,calc(100% - 32px))}
+#titleCard .kicker{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stage-dim)}
+#titleCard .kicker b{color:var(--lamp);font-weight:500}
+#titleCard h1{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,3.2vw,34px);line-height:1.05;margin:4px 0 0;letter-spacing:.005em;text-wrap:balance}
+#scope{position:absolute;right:16px;top:16px;width:272px;padding:8px 10px 10px}
+#scope .hdr{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--stage-dim)}
+#scope canvas{display:block;width:100%;height:96px;margin-top:6px;border-radius:4px}
+#scope dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:8px 0 0;font-family:var(--f-mono);font-size:11.5px}
+#scope dt{color:var(--stage-dim)}
+#scope dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;color:var(--stage-ink)}
+#exag{font-family:var(--f-mono);font-size:10.5px;color:var(--lamp);margin-top:6px}
+#caption{position:absolute;left:50%;bottom:112px;transform:translateX(-50%);width:min(620px,calc(100% - 32px));padding:10px 16px;font-size:15.5px;line-height:1.45;text-align:center;text-wrap:balance;transition:opacity .35s}
+#labels{position:absolute;inset:0;pointer-events:none}
+.lbl{position:absolute;left:0;top:0;display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:11px;white-space:nowrap;color:var(--stage-ink);transition:opacity .25s;will-change:transform}
+.lbl i{width:7px;height:7px;border-radius:50%;background:var(--lamp);box-shadow:0 0 0 3px rgba(231,180,88,.22);flex:none}
+.lbl span{background:rgba(12,15,19,.72);padding:2px 6px;border-radius:3px;border:1px solid var(--glass-line)}
+.lbl.hot span{border-color:var(--lamp);color:var(--lamp)}
+#nogl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:var(--stage-dim);font-family:var(--f-mono);font-size:13px}
+
+/* control bar */
+#bar{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;gap:10px;padding:8px 10px;flex-wrap:wrap}
+#playBtn{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--lamp);color:#1a1307;display:grid;place-items:center;cursor:pointer}
+#playBtn svg{width:16px;height:16px;fill:currentColor}
+#timeline{position:relative;flex:1 1 200px;min-width:120px;height:26px;cursor:pointer;touch-action:none}
+#segs{position:absolute;left:0;right:0;top:11px;height:4px;display:flex;gap:3px}
+.seg{position:relative;background:rgba(255,255,255,.16);border-radius:2px;overflow:hidden}
+.seg i{position:absolute;inset:0 auto 0 0;width:0;background:var(--stage-ink)}
+.seg.cur i{background:var(--lamp)}
+#knob{position:absolute;top:7px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(0,0,0,.35);pointer-events:none}
+#tlTip{position:absolute;bottom:26px;transform:translateX(-50%);font-family:var(--f-mono);font-size:10.5px;white-space:nowrap;padding:3px 7px;pointer-events:none}
+#timeLbl{font-family:var(--f-mono);font-size:11.5px;color:var(--stage-dim);font-variant-numeric:tabular-nums;flex:none}
+.chips{display:flex;gap:6px;flex:1 0 100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:4px;border:1px solid var(--glass-line);background:rgba(255,255,255,.04);font-family:var(--f-mono);font-size:11px;color:var(--stage-dim);cursor:pointer;white-space:nowrap}
+.chip:hover{color:var(--stage-ink);border-color:rgba(255,255,255,.22)}
+.chip[aria-pressed="true"]{color:var(--lamp);border-color:rgba(231,180,88,.45)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.35}
+.chip[aria-pressed="true"] .dot{opacity:1}
+kbd{font-family:var(--f-mono);font-size:10px;opacity:.6}
+
+/* drawer */
+#drawer{position:absolute;top:16px;right:16px;bottom:112px;width:min(340px,calc(100% - 32px));display:flex;flex-direction:column;z-index:3}
+#drawer .tabs{display:flex;align-items:center;gap:4px;padding:8px 8px 0;border-bottom:1px solid var(--glass-line)}
+.tab{border:0;background:none;padding:6px 10px 8px;font-family:var(--f-mono);font-size:11.5px;color:var(--stage-dim);cursor:pointer;border-bottom:2px solid transparent}
+.tab[aria-selected="true"]{color:var(--stage-ink);border-bottom-color:var(--lamp)}
+#drawerClose{margin-left:auto;border:0;background:none;color:var(--stage-dim);font-size:20px;line-height:1;cursor:pointer;padding:2px 8px}
+.pane{overflow:auto;padding:6px 8px 10px;flex:1;min-height:0}
+.row{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;width:100%;text-align:left;border:0;background:none;padding:8px;border-radius:4px;cursor:pointer}
+.row:hover{background:rgba(255,255,255,.05)}
+.row .n{font-family:var(--f-mono);font-size:11px;color:var(--stage-dim);padding-top:3px}
+.row .t{font-size:15px;line-height:1.3}
+.row .s{grid-column:2;font-size:13px;color:var(--stage-dim);line-height:1.4}
+.row.cur .t{color:var(--lamp)}
+#partDetail h3{font-family:var(--f-display);font-weight:400;font-size:24px;margin:6px 0 2px}
+#partDetail .spec{font-family:var(--f-mono);font-size:11.5px;color:var(--lamp);margin-bottom:8px}
+#partDetail p{font-size:14.5px;line-height:1.5;margin:0 0 12px;color:var(--stage-ink)}
+.back,.btn{border:1px solid var(--glass-line);background:rgba(255,255,255,.05);border-radius:4px;padding:6px 10px;font-family:var(--f-mono);font-size:11.5px;color:var(--stage-ink);cursor:pointer}
+.back{border:0;background:none;padding:6px 0;color:var(--stage-dim)}
+
+@media (max-width:860px){
+  #scope{top:auto;bottom:112px;right:12px;width:200px;padding:6px 8px 8px}
+  #scope canvas{height:60px}
+  #scope dl{font-size:10.5px}
+  #scope .hdr span:last-child{display:none}
+  #caption{bottom:auto;top:108px;font-size:14px;padding:8px 12px}
+}
+@media (max-width:720px){
+  #stage{height:clamp(540px,86vh,760px)}
+  #titleCard{left:12px;top:12px}
+  #bar{left:8px;right:8px;bottom:8px}
+  .chip kbd{display:none}
+  #drawer{top:auto;left:8px;right:8px;width:auto;bottom:108px;height:56%}
+  #scope{bottom:108px}
+}
+@media (max-width:420px){ #scope{display:none} }
+
+/* ---------- Reading column ---------- */
+main{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:40px 64px}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--brass)}
+h2{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,3.4vw,38px);line-height:1.1;margin:6px 0 14px;text-wrap:balance}
+h3{font-size:18px;margin:26px 0 6px}
+p{margin:0 0 14px}
+section{padding-block:34px;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:0;padding-top:0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}
+.prose{max-width:66ch}
+@media (max-width:820px){.cols{grid-template-columns:1fr;gap:20px}}
+
+#chartWrap{position:relative;margin-top:8px}
+#chart{display:block;width:100%;height:240px;cursor:crosshair;touch-action:pan-y}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:18px;height:0;border-top:2px solid var(--brass)}
+.sw.req{border-top:2px dashed var(--muted)}
+.sw.tp{width:8px;height:8px;border:0;border-radius:50%;background:var(--ink)}
+.sw.rp{width:12px;border-top:3px solid var(--ok)}
+
+.tablewrap{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.spec{font-family:var(--f-mono);font-size:13px;white-space:nowrap;color:var(--brass)}
+td .pl{border:0;background:none;padding:0;font:inherit;font-weight:600;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;cursor:pointer}
+td .pl:hover{text-decoration-color:var(--brass)}
+
+ol.steps{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:14px;counter-reset:s}
+ol.steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:6px 12px;counter-increment:s}
+ol.steps li::before{content:counter(s);font-family:var(--f-mono);font-size:12px;color:var(--brass);border:1px solid var(--brass);border-radius:50%;width:24px;height:24px;display:grid;place-items:center;margin-top:2px}
+.eq{font-family:var(--f-body);font-style:italic;font-size:19px;background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:8px 14px;margin:6px 0 2px;overflow-x:auto;white-space:nowrap}
+.eq b{font-style:normal;font-weight:600}
+.eq.big{font-size:23px;border-color:var(--brass);background:var(--brass-soft)}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;font-size:.92em;line-height:1.15}
+.frac>span:first-child{border-bottom:1px solid currentColor;padding:0 3px}
+.note{font-size:14.5px;color:var(--muted)}
+
+/* calculator */
+.calc{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:18px}
+.calc h3{margin-top:0}
+.inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+.inputs label{display:grid;gap:4px;font-size:13.5px;color:var(--muted)}
+.inputs .ctl{display:flex;align-items:center;gap:6px}
+.inputs input{width:100%;min-width:0;font-family:var(--f-mono);font-size:15px;padding:7px 9px;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+.inputs .u{font-family:var(--f-mono);font-size:12px;color:var(--muted);flex:none}
+.outs{display:grid;gap:12px;margin-top:18px}
+.out{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:4px 12px;border-top:1px solid var(--rule);padding-top:10px}
+.out .k{font-size:14px;color:var(--muted)}
+.out .v{font-family:var(--f-mono);font-size:18px;font-variant-numeric:tabular-nums;text-align:right}
+.out .v.hero{font-size:24px;color:var(--brass)}
+.out .cmp{grid-column:1/-1;font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.meter{grid-column:1/-1;position:relative;height:6px;background:var(--rule);border-radius:3px}
+.meter i{position:absolute;top:-3px;width:2px;height:12px;background:var(--ink)}
+.meter b{position:absolute;top:-4px;width:10px;height:14px;margin-left:-5px;border-radius:2px;background:var(--brass)}
+.reset{margin-top:14px;border:1px solid var(--rule);background:none;border-radius:4px;padding:6px 10px;font-family:var(--f-mono);font-size:12px;cursor:pointer;color:var(--ink)}
+
+.errs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px 28px;margin-top:10px}
+.errs div{min-width:0}
+.errs h3{margin:0 0 4px;font-size:16.5px}
+.errs p{font-size:15.5px;margin:0}
+.big-num{font-family:var(--f-display);font-size:clamp(44px,6vw,64px);line-height:1;color:var(--brass)}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px;margin:18px 0 8px}
+.compare .lab{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:6px}
+footer{font-size:13.5px;color:var(--muted)}
+footer a{color:inherit}
+@media (prefers-reduced-motion: reduce){#caption,.lbl{transition:none}}
+</style>
+
+<div id="stage" aria-label="3D model of the Cavendish torsion balance">
+  <canvas id="gl"></canvas>
+  <div id="labels" aria-hidden="true"></div>
+  <div id="titleCard" class="glass">
+    <div class="kicker"><b id="chNum">01 / 08</b> · <span id="chName">Weighing the world</span></div>
+    <h1>The Cavendish Experiment</h1>
+  </div>
+  <div id="scope" class="glass" aria-live="off">
+    <div class="hdr"><span>Telescope · true scale</span><span>inches</span></div>
+    <canvas id="scopeCv" width="540" height="192" aria-label="Magnified vernier scale reading"></canvas>
+    <dl>
+      <dt>Clock</dt><dd id="hClock">before run</dd>
+      <dt>Scale</dt><dd id="hRead">0.000 in</dd>
+      <dt>Twist</dt><dd id="hTwist">0.000°</dd>
+      <dt>Pull</dt><dd id="hForce">balanced</dd>
+    </dl>
+    <div id="exag">3D motion exaggerated ×4</div>
+  </div>
+  <div id="caption" class="glass" role="status"></div>
+
+  <div id="drawer" class="glass" hidden>
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tabCh" role="tab" aria-selected="true">Chapters</button>
+      <button class="tab" id="tabParts" role="tab" aria-selected="false">Parts</button>
+      <button id="drawerClose" aria-label="Close panel">×</button>
+    </div>
+    <div class="pane" id="paneCh"></div>
+    <div class="pane" id="paneParts" hidden>
+      <div id="partList"></div>
+      <div id="partDetail" hidden>
+        <button class="back" id="partBack">← All parts</button>
+        <h3 id="pdName"></h3>
+        <div class="spec" id="pdSpec"></div>
+        <p id="pdText"></p>
+        <button class="btn" id="pFocus">Frame in view</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="bar" class="glass">
+    <button id="playBtn" aria-label="Play"><svg viewBox="0 0 20 20" aria-hidden="true"><g id="playIcon"><path d="M5 3.5v13l11-6.5z"/></g></svg></button>
+    <div id="timeline" role="slider" tabindex="0" aria-label="Timeline" aria-valuemin="0" aria-valuemax="180" aria-valuenow="0">
+      <div id="segs"></div><div id="knob"></div>
+      <div id="tlTip" class="glass" hidden></div>
+    </div>
+    <span id="timeLbl">0:00 / 3:00</span>
+    <div class="chips">
+      <button class="chip" id="bCut" aria-pressed="true" title="Remove the front wall and roof (C)"><span class="dot"></span>Cutaway <kbd>C</kbd></button>
+      <button class="chip" id="bLabels" aria-pressed="true" title="Show part labels (L)"><span class="dot"></span>Labels <kbd>L</kbd></button>
+      <button class="chip" id="bDir" aria-pressed="true" title="Scripted camera. Drag the scene to look around freely (D)"><span class="dot"></span>Director cam <kbd>D</kbd></button>
+      <button class="chip" id="bTrue" aria-pressed="false" title="Show the arm's real, tiny motion instead of ×4 (T)"><span class="dot"></span>True motion <kbd>T</kbd></button>
+      <button class="chip" id="bSpeed" aria-label="Playback speed 1×" title="Playback speed (S)">1×</button>
+      <button class="chip" id="bChapters">Chapters</button>
+      <button class="chip" id="bParts">Parts</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section id="reading">
+    <div class="eyebrow">What the telescope saw</div>
+    <h2>A swing that never quite stops</h2>
+    <div class="cols">
+      <div class="prose">
+        <p>Once the great weights swing into place, the arm doesn't just move to a new position and stop. It overshoots and oscillates around the new rest point with a period of about 15 minutes, losing a little amplitude each swing. A run could take hours.</p>
+        <p>Cavendish didn't wait for it to settle. He wrote down the scale reading at each extreme of the swing and took the rest point as the midpoint. Because each swing is a little smaller than the last, he averaged in a way that corrects for the decay:</p>
+        <div class="eq">x<sub>rest</sub> ≈ ½ [ x<sub>2</sub> + ½ (x<sub>1</sub> + x<sub>3</sub>) ]</div>
+        <p class="note">x₁, x₂, x₃ are three successive turning points. The green ticks on the chart apply this to the simulated swing. They land on the true rest line almost immediately, long before the motion dies out.</p>
+      </div>
+      <div style="min-width:0">
+        <div id="chartWrap"><canvas id="chart" aria-label="Scale reading over time. Click to jump the 3D model to that moment."></canvas></div>
+        <div class="legend">
+          <span><i class="sw"></i>Scale reading</span>
+          <span><i class="sw req"></i>True rest point</span>
+          <span><i class="sw tp"></i>Turning point</span>
+          <span><i class="sw rp"></i>Cavendish's estimate</span>
+        </div>
+        <p class="note" style="margin-top:8px">Minutes of the run, one simulated minute per second of playback. Click the chart to jump the model to that moment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="equipment">
+    <div class="eyebrow">The apparatus</div>
+    <h2>Lead, mahogany and a very thin wire</h2>
+    <p class="prose">The design came from the geologist John Michell, who built a torsion balance for the purpose but died in 1793 before he could use it. The apparatus passed to Cavendish, who rebuilt much of it and ran the experiment in 1797–98 in an outbuilding at his house on Clapham Common. Select a part to see it in the model.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th style="width:26%">Part</th><th style="width:24%">Specification</th><th>Why it matters</th></tr></thead>
+      <tbody id="partsTable"></tbody>
+    </table></div>
+  </section>
+
+  <section id="math">
+    <div class="eyebrow">The physics</div>
+    <h2>From a twist to the constant of gravity</h2>
+    <div class="cols">
+      <div class="prose">
+        <p>The experiment balances two torques: the gravitational pull of the big balls and the springback of the twisted wire. You can't calibrate a wire that weak against a known force, so the arm's own swing period stands in for the calibration.</p>
+        <ol class="steps">
+          <li><div><b>Gravity between a pair of balls.</b> Big mass <i>M</i>, small mass <i>m</i>, centres a distance <i>r</i> apart.
+            <div class="eq">F = <span class="frac"><span>G M m</span><span>r²</span></span></div></div></li>
+          <li><div><b>Torque on the arm.</b> Two pairs, each pulling at a lever arm of <i>L</i>/2, so the torques add.
+            <div class="eq">τ = 2 · F · <span class="frac"><span>L</span><span>2</span></span> = F L</div></div></li>
+          <li><div><b>The wire pushes back</b> in proportion to how far it's twisted. κ is the wire's torsion constant.
+            <div class="eq">τ = κ θ</div></div></li>
+          <li><div><b>The period measures κ.</b> A torsion pendulum swings with period <i>T</i>. The arm's moment of inertia is dominated by the two small balls.
+            <div class="eq">T = 2π √(I / κ),&nbsp;&nbsp; I = 2m(L/2)² = ½ m L² &nbsp;⇒&nbsp; κ = <span class="frac"><span>2π² m L²</span><span>T²</span></span></div></div></li>
+          <li><div><b>Set the torques equal and solve for G.</b> The small mass cancels. Writing the twist as the linear shift <i>d</i> of each small ball (θ = 2d/L), the arm length cancels too.
+            <div class="eq big">G = <span class="frac"><span>2π² L r² θ</span><span>M T²</span></span> = <span class="frac"><span>4π² r² d</span><span>M T²</span></span></div></div></li>
+          <li><div><b>Weigh the Earth.</b> Surface gravity <i>g</i> = G M<sub>⊕</sub> / R². Divide the Earth's mass by its volume:
+            <div class="eq">ρ<sub>⊕</sub> = <span class="frac"><span>3 g</span><span>4π G R</span></span></div>
+            <p class="note" style="margin-top:6px">Cavendish didn't write G at all. He compared the big ball's pull directly with the Earth's pull on the same small ball and reported density relative to water. Physicists named and extracted G from his numbers much later.</p></div></li>
+        </ol>
+      </div>
+      <div style="min-width:0">
+        <div class="calc" id="calc">
+          <h3>Run the numbers</h3>
+          <p class="note">Defaults use his first wire's 15-minute period and a deflection that fits his published result. Change any value.</p>
+          <div class="inputs">
+            <label for="iT">Swing period T<span class="ctl"><input id="iT" type="number" step="0.1" min="1" value="15"><span class="u">min</span></span></label>
+            <label for="iD">Deflection of each ball d<span class="ctl"><input id="iD" type="number" step="0.005" min="0.001" value="0.17"><span class="u">in</span></span></label>
+            <label for="iR">Centre distance r<span class="ctl"><input id="iR" type="number" step="1" min="160" value="225"><span class="u">mm</span></span></label>
+            <label for="iM">Large ball mass M<span class="ctl"><input id="iM" type="number" step="1" min="1" value="158"><span class="u">kg</span></span></label>
+          </div>
+          <div class="outs">
+            <div class="out"><span class="k">Gravitational constant G</span><span class="v hero" id="oG">—</span>
+              <div class="meter" id="mG"><i style="left:50%"></i><b></b></div>
+              <span class="cmp" id="cG"></span></div>
+            <div class="out"><span class="k">Mean density of the Earth</span><span class="v" id="oRho">—</span><span class="cmp" id="cRho"></span></div>
+            <div class="out"><span class="k">Mass of the Earth</span><span class="v" id="oME">—</span></div>
+            <div class="out"><span class="k">Pull on each small ball</span><span class="v" id="oF">—</span><span class="cmp" id="cF"></span></div>
+            <div class="out"><span class="k">Wire stiffness κ</span><span class="v" id="oK">—</span><span class="cmp">Torque needed to twist the wire through one radian, from κ = 2π²mL²/T².</span></div>
+          </div>
+          <button class="reset" id="calcReset">Reset to Cavendish's values</button>
+        </div>
+        <p class="note" style="margin-top:12px">This ignores small corrections Cavendish did make: the far big ball pulling each small ball the wrong way, the pull of the rods, the arm and the case. Together they shift the answer by a few percent.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="errors">
+    <div class="eyebrow">What could go wrong</div>
+    <h2>Fighting forces bigger than gravity</h2>
+    <p class="prose">The signal is about 1.5 × 10⁻⁷ newtons, roughly one fifty-millionth of the small balls' weight. Almost anything else in the room could swamp it, and most of Cavendish's paper is about ruling these effects out.</p>
+    <div class="errs">
+      <div><h3>Heat and air currents</h3><p>A temperature difference of a fraction of a degree across the case sets up convection that pushes the balls harder than gravity does. That is why the room was sealed, the lamps and observer stayed outside, and the weights were moved by rope. He tested this directly by warming the weights and watching the arm drift.</p></div>
+      <div><h3>Drift of the wire</h3><p>A freshly loaded wire slowly relaxes, so the zero point creeps. Reversing the weights and measuring the shift between the two sides doubles the signal and cancels a steady drift.</p></div>
+      <div><h3>Magnetism</h3><p>Iron in the fittings or magnetic impurities could pull like gravity does. He checked the size of any magnetic effect and found it negligible next to the gravitational one.</p></div>
+      <div><h3>Everything else attracts too</h3><p>The rods holding the weights, the mahogany case and the arm itself all have mass. He estimated each pull and corrected for it, along with the far ball on each side.</p></div>
+      <div><h3>An arithmetic slip</h3><p>His paper reports a mean density of 5.48 times that of water. Averaging his own results gives 5.448. The error was spotted decades later.</p></div>
+      <div><h3>The stiffer wire</h3><p>Partway through, he switched to a stiffer wire. The period dropped from about 15 to 7.5 minutes and the deflection shrank to around 0.03 inches. The results agreed, a check that the answer didn't depend on the wire.</p></div>
+    </div>
+  </section>
+
+  <section id="legacy">
+    <div class="eyebrow">The result</div>
+    <h2>Within one percent, in 1798</h2>
+    <div class="compare">
+      <div><div class="big-num">5.448</div><div class="lab">Cavendish, Earth density ×water</div></div>
+      <div><div class="big-num">5.514</div><div class="lab">Modern value</div></div>
+      <div><div class="big-num">6.74</div><div class="lab">Implied G, ×10⁻¹¹ m³ kg⁻¹ s⁻²</div></div>
+      <div><div class="big-num">6.674</div><div class="lab">Modern G (CODATA)</div></div>
+    </div>
+    <p class="prose">G is still the least precisely known of the fundamental constants, and the best modern measurements disagree with each other by more than their stated uncertainties. Many of them still use a torsion balance descended from Michell's design, now with fibres of tungsten or fused silica, laser readout and vacuum chambers.</p>
+  </section>
+
+  <footer>
+    <p>Sources: H. Cavendish, “Experiments to Determine the Density of the Earth,” <i>Philosophical Transactions of the Royal Society</i> 88 (1798); <a href="https://en.wikipedia.org/wiki/Cavendish_experiment" target="_blank" rel="noopener">Cavendish experiment</a>, Wikipedia. The playback compresses a run of about two hours into three minutes. The damping rate and exact timings are illustrative; the dimensions, masses, period and deflection follow the historical apparatus.</p>
+    <p>Keys: Space play/pause · ← → skip 5 s · Shift+← → previous/next chapter · C L D T S toggles.</p>
+  </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const clamp = (x,a,b) => Math.min(b, Math.max(a, x));
+const smooth = x => { x = clamp(x,0,1); return x*x*(3-2*x); };
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------- Story data ---------------- */
+const TOTAL = 180;
+const CH = [
+  {name:'Weighing the world', start:0,   len:16, sub:'Why a lab measurement could give the mass of the Earth.'},
+  {name:'The sealed shed',    start:16,  len:20, sub:'Telescopes, lamps and a room nobody enters.'},
+  {name:'The torsion balance',start:36,  len:22, sub:'A 6-foot arm hung from one thin wire.'},
+  {name:'The great weights',  start:58,  len:18, sub:'Two 158 kg lead balls swung in from outside.'},
+  {name:'The pull',           start:76,  len:22, sub:'A force of 0.00000015 newtons twists the wire.'},
+  {name:'Reading the swing',  start:98,  len:30, sub:'Turning points, rest points and the period.'},
+  {name:'Reversal',           start:128, len:30, sub:'Move the weights to the other side and measure the shift.'},
+  {name:'The answer',         start:158, len:22, sub:'Density of the Earth, and G.'}
+];
+const CAPS = [
+  [0,  'Clapham Common, 1797. Henry Cavendish sets out to find the density of the Earth by measuring the pull between lead balls in a shed.'],
+  [7,  'Newton’s law says every mass attracts every other. Measure that pull between known masses and you can work out how much the Earth must weigh.'],
+  [16, 'The apparatus sits sealed inside an outbuilding. Nobody enters during a run: body heat would stir air currents stronger than the gravity being measured.'],
+  [25, 'Cavendish watches from outside, through telescopes set in holes in the end walls, with lamps outside lighting the scales.'],
+  [36, 'Inside the mahogany case, a 6-foot wooden arm hangs from a single wire about 39 inches long.'],
+  [45, 'Each end carries a 2-inch lead ball of 0.73 kg. The wire is so weak in torsion that the arm swings back and forth once every 15 minutes.'],
+  [52, 'That slow swing is the point. A very gentle wire lets a tiny force produce a twist you can read.'],
+  [58, 'Outside the case, two 12-inch lead balls of 158 kg each hang from a beam that turns on the same vertical axis.'],
+  [65, 'A rope and pulley worked from outside the room swings them in, each 225 mm from a small ball, centre to centre.'],
+  [76, 'Each big ball pulls its neighbour with about 1.5 × 10⁻⁷ N, the weight of 0.016 milligrams.'],
+  [84, 'Both pulls turn the arm the same way. The wire twists until its springback balances them: about a quarter of a degree.'],
+  [91, 'In 3D the motion is exaggerated ×4. The telescope view is to true scale: each end moves about 0.17 inches.'],
+  [98, 'The arm never settles. It overshoots and swings about its new rest point for hours, slowly losing energy.'],
+  [108,'Rather than wait, Cavendish read the extreme of each swing and averaged them to find the rest point.'],
+  [118,'He also timed the swings. The period gives the wire’s stiffness, so the wire needs no separate calibration.'],
+  [128,'Then he reverses the weights, swinging them round to the opposite side of the small balls.'],
+  [142,'The rest point jumps the other way. The shift is twice the deflection, and any slow drift of the wire cancels out.'],
+  [158,'From deflection and period: G = 4π²r²d / MT². The mass of the small balls drops out entirely.'],
+  [166,'Cavendish reported the Earth’s mean density as 5.48 times that of water. His own data average 5.448; the difference is an arithmetic slip.'],
+  [173,'Expressed as a gravitational constant, that is 6.74 × 10⁻¹¹, within 1% of today’s value.']
+];
+
+/* ---------------- Physics (true scale, SI) ---------------- */
+const R_ARM = 0.9, R_BIG = 0.15, R_SMALL = 0.0255, SEP = 0.225;
+const PHI = 2*Math.asin(SEP/(2*R_ARM));           // angle between small ball and its big ball (~14.4°)
+const THETA0 = (0.17*0.0254)/R_ARM;               // true equilibrium twist, rad
+const G_MOD = 6.6743e-11, M_BIG = 158, M_SMALL = 0.73;
+const F_PAIR = G_MOD*M_BIG*M_SMALL/(SEP*SEP);
+const T_SHOW = 15;                                 // 15-minute period, 1 playback second = 1 minute
+const T_RUN0 = 58;                                 // run clock starts when the weights begin to move
+
+function bigAngle(t){
+  if (t < 62) return Math.PI/2;
+  if (t < 70) return Math.PI/2 + (PHI - Math.PI/2)*smooth((t-62)/8);
+  if (t < 132) return PHI;
+  if (t < 140) return PHI + (Math.PI - 2*PHI)*smooth((t-132)/8);
+  return Math.PI - PHI;
+}
+function torque(beta){ // sum over the four ball pairs, units of G M m / R², ring of radius 1
+  let s = 0;
+  for (const a of [0, Math.PI]) for (const b of [beta, beta+Math.PI]){
+    const d = 2*Math.abs(Math.sin((b-a)/2));
+    s += Math.sin(b-a)/(d*d*d);
+  }
+  return s;
+}
+const TQ_CAL = THETA0/torque(PHI);
+const DT = 0.01, N = Math.round(TOTAL/DT)+2;
+const TH = new Float64Array(N), EQ = new Float64Array(N);
+(function integrate(){
+  const w = 2*Math.PI/T_SHOW, gam = Math.log(1/0.78)/T_SHOW;
+  let th = 0, v = 0;
+  for (let i=0;i<N;i++){
+    const t = i*DT, eq = TQ_CAL*torque(bigAngle(t));
+    EQ[i] = eq; TH[i] = th;
+    const a = -w*w*(th-eq) - 2*gam*v;
+    v += a*DT; th += v*DT;
+  }
+})();
+function sample(arr,t){ const x = clamp(t,0,TOTAL)/DT, i = Math.floor(x), f = x-i; return arr[i]*(1-f) + arr[Math.min(N-1,i+1)]*f; }
+const inchOf = th => th*R_ARM/0.0254;
+// turning points and Cavendish-style rest estimates
+const TURN = [];
+for (let i=Math.round(64/DT); i<N-2; i++){
+  const a=TH[i-1], b=TH[i], c=TH[i+1];
+  if ((b>a && b>=c) || (b<a && b<=c)) TURN.push({t:i*DT, x:inchOf(b)});
+}
+const REST = [];
+for (let k=1;k<TURN.length-1;k++){
+  const t1=TURN[k-1], t2=TURN[k], t3=TURN[k+1];
+  if (t3.t > 130 && t1.t < 148) continue;            // skip swings disturbed by the reversal
+  REST.push({t:t2.t, x:0.5*(t2.x + 0.5*(t1.x+t3.x))});
+}
+
+/* ---------------- Parts ---------------- */
+const PARTS = [
+  {id:'wire', name:'Torsion wire', spec:'Silvered copper · ~39 in (1 m)', text:'The whole measurement is the twist of this wire. It had to be weak enough that a force of a ten-millionth of a newton would turn it measurably, and strong enough to carry the arm and balls.', why:'Its twist is the measurement.', dist:2.4, max:5},
+  {id:'arm', name:'Torsion arm', spec:'Wood · 6 ft (1.8 m)', text:'A light wooden rod, braced by a fine wire truss so it stays stiff without adding much mass. Its length sets the lever arm for the gravitational torque.', why:'Long lever, low mass.', dist:2.6, max:5},
+  {id:'small', name:'Small lead ball', spec:'2 in (51 mm) · 1.61 lb (0.73 kg)', text:'One hangs at each end of the arm. Their mass cancels out of the final formula: it appears in both the gravitational pull and the arm’s inertia.', why:'Their mass cancels from the result.', dist:0.9, max:4},
+  {id:'big', name:'Large lead ball', spec:'12 in (300 mm) · 348 lb (158 kg)', text:'Hung on copper rods from a beam turning on the same axis as the arm. Swung in beside the small balls, each pulls its neighbour with about 1.5 × 10⁻⁷ N.', why:'The source of the pull.', dist:2.0, max:7},
+  {id:'beam', name:'Weight beam & pulley', spec:'Turned by rope from outside', text:'Cavendish moved the great weights without entering the room, using a rope that ran over a pulley to the outside.', why:'No one enters the room.', dist:3.2, max:7},
+  {id:'case', name:'Mahogany case', spec:'~1.98 m × 1.27 m, narrow', text:'Encloses the arm and small balls to block draughts. The large balls hang outside it. Shown translucent here.', why:'Blocks draughts.', dist:3.6, max:10},
+  {id:'vernier', name:'Ivory scale & vernier', spec:'1/20 in divisions · read to 0.01 in', text:'An ivory scale fixed near each end of the arm, with a vernier on the arm itself. The deflection being measured is only about a sixth of an inch.', why:'Reads the arm’s position.', dist:0.8, max:3.5},
+  {id:'scope', name:'Telescope', spec:'Through holes in the end walls', text:'One at each end, focused on the verniers. Cavendish could read the arm’s position without entering the room or bringing body heat near the case.', why:'Remote reading.', dist:2.2, max:14},
+  {id:'lamp', name:'Lamp', spec:'Outside, lighting each scale', text:'Lamps outside the room lit the scales, so no flame warmed the air inside.', why:'Light without heat inside.', dist:2.0, max:12},
+  {id:'shed', name:'The sealed room', spec:'Outbuilding, Clapham Common', text:'The apparatus sat alone in a closed outbuilding at Cavendish’s house. Temperature differences were the biggest threat to the experiment.', why:'Keeps the air still.', dist:9, max:40}
+];
+
+/* ---------------- Camera shots (director) ---------------- */
+const SHOTS = [
+  [0,   [7.5,5.2,9.5],  [0,1.2,0]],
+  [14,  [6.2,3.6,7.4],  [0,1.3,0]],
+  [18,  [-6.8,3.0,6.2], [-1.2,1.3,0]],
+  [27,  [-5.4,1.6,1.9], [-3.0,1.2,0]],
+  [34,  [-2.4,2.3,4.0], [0,1.4,0]],
+  [38,  [0.4,2.5,2.9],  [0,1.55,0]],
+  [46,  [1.45,1.32,0.95],[0.88,1.06,0]],
+  [55,  [2.6,2.3,3.1],  [0,1.35,0]],
+  [60,  [3.4,3.3,4.1],  [0,1.6,0]],
+  [71,  [1.75,1.55,1.35],[0.8,1.05,-0.12]],
+  [78,  [1.35,1.25,0.7],[0.86,1.04,-0.12]],
+  [88,  [0.05,4.3,0.55],[0,1.04,0]],
+  [98,  [2.2,1.45,1.25],[0.93,1.08,0]],
+  [112, [0.05,4.1,0.6], [0,1.04,0]],
+  [126, [0.05,4.1,0.6], [0,1.04,0]],
+  [131, [3.1,3.1,3.6],  [0,1.4,0]],
+  [143, [0.05,4.2,0.6], [0,1.04,0]],
+  [156, [0.05,4.2,0.6], [0,1.04,0]],
+  [164, [6.0,4.0,7.2],  [0,1.3,0]],
+  [180, [8.2,5.4,10.2], [0,1.2,0]]
+];
+
+/* ---------------- UI state ---------------- */
+let TIME = 0;
+const UI = {playing:false, labels:true, cut:true, director:true, trueMotion:false, speedIdx:1, hotPart:null};
+const SPEEDS = [0.5,1,2,4];
+const fmt = s => { s = Math.max(0,Math.floor(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
+const chapterAt = t => { let k=0; CH.forEach((c,i)=>{ if (t >= c.start) k=i; }); return k; };
+const SUP = {'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function sci(x,d){ if (!isFinite(x) || x===0) return '—'; const e = Math.floor(Math.log10(Math.abs(x))); const m = x/Math.pow(10,e); return m.toFixed(d)+' × 10'+String(e).split('').map(c=>SUP[c]).join(''); }
+
+/* ---------------- Three.js scene ---------------- */
+const stage = $('#stage'), canvas = $('#gl');
+let renderer=null, scene, camera, W3 = {};
+try {
+  if (!window.THREE) throw new Error('three missing');
+  renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio||1));
+} catch(e){ renderer = null; }
+
+if (renderer) buildScene(); else {
+  const d = document.createElement('div'); d.id='nogl';
+  d.textContent = 'The 3D model needs WebGL, which isn’t available here. The timeline, telescope view and chart below still work.';
+  stage.insertBefore(d, $('#labels'));
+}
+
+function mat(color, o){ return new THREE.MeshStandardMaterial(Object.assign({color, roughness:.7, metalness:0}, o||{})); }
+function box(w,h,d,m){ const x = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), m); x.castShadow = x.receiveShadow = true; return x; }
+function cyl(r,h,m,seg){ const x = new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg||16), m); x.castShadow = true; return x; }
+function sphere(r,m){ const x = new THREE.Mesh(new THREE.SphereGeometry(r,40,28), m); x.castShadow = x.receiveShadow = true; return x; }
+function lineMesh(pts, color, opacity){ const g = new THREE.BufferGeometry().setFromPoints(pts.map(p=>new THREE.Vector3(...p))); const l = new THREE.Line(g, new THREE.LineBasicMaterial({color, transparent:opacity<1, opacity:opacity||1})); return l; }
+
+function buildScene(){
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0c0f13);
+  scene.fog = new THREE.Fog(0x0c0f13, 16, 34);
+  camera = new THREE.PerspectiveCamera(38, 1, 0.02, 80);
+  camera.position.set(...SHOTS[0][1]);
+
+  scene.add(new THREE.HemisphereLight(0x9fb3c8, 0x1a1410, 0.55));
+  const key = new THREE.DirectionalLight(0xd8e2ff, 0.75);
+  key.position.set(4, 9, 6); key.castShadow = true;
+  key.shadow.mapSize.set(2048,2048);
+  Object.assign(key.shadow.camera, {left:-5,right:5,top:5,bottom:-5,near:1,far:25});
+  key.shadow.bias = -0.0004;
+  scene.add(key);
+
+  const M = {
+    ground: mat(0x151a1f, {roughness:1}),
+    floor: mat(0x3b2e22, {roughness:.9}),
+    wall: mat(0x4a3a2b, {roughness:.95}),
+    roof: mat(0x2e2721, {roughness:1}),
+    lead: mat(0x6c747d, {roughness:.42, metalness:.55}),
+    wood: mat(0xb08a5a, {roughness:.6}),
+    mahog: mat(0x6a2a1a, {roughness:.45}),
+    brass: mat(0xb8893a, {roughness:.35, metalness:.8}),
+    copper: mat(0xb0703f, {roughness:.35, metalness:.8}),
+    ivory: mat(0xefe6cf, {roughness:.5}),
+    dark: mat(0x0a0b0c, {roughness:1}),
+    glass: new THREE.MeshStandardMaterial({color:0x9cc4d8, transparent:true, opacity:.07, roughness:.1, depthWrite:false, side:THREE.DoubleSide})
+  };
+  W3.M = M;
+
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(30, 64), M.ground);
+  ground.rotation.x = -Math.PI/2; ground.position.y = -0.01; ground.receiveShadow = true; scene.add(ground);
+
+  // shed: x ±3.4, z ±2.0, height 3.0
+  const SX=3.4, SZ=2.0, SH=3.0, WT=0.08;
+  const floor = box(SX*2, 0.04, SZ*2, M.floor); floor.position.y = 0.0; scene.add(floor);
+  const walls = new THREE.Group(); scene.add(walls);
+  const back = box(SX*2, SH, WT, M.wall); back.position.set(0, SH/2, -SZ); walls.add(back);
+  const left = box(WT, SH, SZ*2, M.wall); left.position.set(-SX, SH/2, 0); walls.add(left);
+  const right = left.clone(); right.position.x = SX; walls.add(right);
+  const front = box(SX*2, SH, WT, M.wall); front.position.set(0, SH/2, SZ); scene.add(front);
+  const roof = box(SX*2+0.3, 0.08, SZ*2+0.3, M.roof); roof.position.y = SH+0.04; scene.add(roof);
+  W3.front = front; W3.roof = roof;
+  // plank lines on back wall
+  for (let y=0.3;y<SH;y+=0.3){ const l = lineMesh([[-SX,y,-SZ+0.045],[SX,y,-SZ+0.045]], 0x2c2219, 1); walls.add(l); }
+  // holes in end walls
+  for (const s of [-1,1]){
+    const hole = new THREE.Mesh(new THREE.CircleGeometry(0.07, 24), M.dark);
+    hole.position.set(s*(SX+0.045*s), 1.08, 0); hole.rotation.y = s>0 ? Math.PI/2 : -Math.PI/2; scene.add(hole);
+    const hole2 = hole.clone(); hole2.position.x = s*(SX-0.045); hole2.rotation.y = -hole.rotation.y; scene.add(hole2);
+  }
+
+  // mahogany case (frame + faint panes). Arm height 1.1
+  const ARM_Y = 1.1, BALL_Y = 1.04;
+  const CW = 1.98, CH_ = 0.9, CD = 0.12, CY0 = 0.62;
+  const caseG = new THREE.Group(); scene.add(caseG);
+  const t = 0.025;
+  const bar = (w,h,d,x,y,z)=>{ const b = box(w,h,d,M.mahog); b.position.set(x,y,z); caseG.add(b); };
+  for (const y of [CY0, CY0+CH_]) for (const z of [-CD/2, CD/2]) bar(CW, t, t, 0, y, z);
+  for (const x of [-CW/2, CW/2]) for (const z of [-CD/2, CD/2]) bar(t, CH_, t, x, CY0+CH_/2, z);
+  for (const x of [-CW/2, CW/2]) for (const y of [CY0, CY0+CH_]) bar(t, t, CD, x, y, 0);
+  const paneF = new THREE.Mesh(new THREE.PlaneGeometry(CW, CH_), M.glass); paneF.position.set(0, CY0+CH_/2, CD/2); caseG.add(paneF);
+  const paneB = paneF.clone(); paneB.position.z = -CD/2; caseG.add(paneB);
+  const stand = box(CW+0.1, 0.06, 0.4, M.mahog); stand.position.set(0, CY0-0.04, 0); scene.add(stand);
+  for (const x of [-0.9, 0.9]){ const leg = box(0.06, CY0-0.07, 0.06, M.mahog); leg.position.set(x, (CY0-0.07)/2, 0); scene.add(leg); }
+  // tube + torsion head above the case
+  const tube = cyl(0.02, 0.5, M.mahog); tube.position.set(0, CY0+CH_+0.25, 0); scene.add(tube);
+  const head = cyl(0.05, 0.05, M.brass, 24); head.position.set(0, 2.12, 0); scene.add(head);
+  const bracket = box(0.05, 0.9, 0.05, M.wood); bracket.position.set(0, 2.1+0.45+0.03, 0); scene.add(bracket);
+  // torsion wire (static; its twist is invisible)
+  const wire = cyl(0.0022, 2.1-ARM_Y, M.copper, 8); wire.position.set(0, (2.1+ARM_Y)/2, 0); scene.add(wire);
+
+  // arm group (rotates)
+  const arm = new THREE.Group(); arm.position.set(0, ARM_Y, 0); scene.add(arm);
+  const rod = box(1.84, 0.018, 0.018, M.wood); arm.add(rod);
+  const post = cyl(0.006, 0.12, M.wood, 8); post.position.y = 0.06; arm.add(post);
+  arm.add(lineMesh([[-0.92,0,0],[0,0.12,0],[0.92,0,0]], 0xcfc7b8, 0.8));
+  for (const s of [-1,1]){
+    const b = sphere(R_SMALL, M.lead); b.position.set(s*R_ARM, BALL_Y-ARM_Y, 0); arm.add(b);
+    const hang = cyl(0.0012, ARM_Y-BALL_Y-R_SMALL, M.copper, 6); hang.position.set(s*R_ARM, -(ARM_Y-BALL_Y-R_SMALL)/2, 0); arm.add(hang);
+    const vern = box(0.004, 0.012, 0.03, M.ivory); vern.position.set(s*0.93, 0.0, 0); arm.add(vern);
+  }
+  W3.arm = arm;
+  // fixed ivory scales at each end of the case
+  for (const s of [-1,1]){ const sc = box(0.006, 0.02, 0.14, M.ivory); sc.position.set(s*0.945, ARM_Y+0.018, 0); scene.add(sc); }
+
+  // weight beam group (rotates about y)
+  const beam = new THREE.Group(); beam.position.set(0, 2.62, 0); scene.add(beam);
+  const pivot = cyl(0.03, 0.38, M.brass); pivot.position.set(0, 2.62+0.19, 0); scene.add(pivot);
+  const bm = box(1.92, 0.06, 0.07, M.wood); beam.add(bm);
+  for (const s of [-1,1]){
+    const B = sphere(R_BIG, M.lead); B.position.set(s*R_ARM, BALL_Y-2.62, 0); beam.add(B);
+    const rodL = 2.62-(BALL_Y+R_BIG);
+    const r = cyl(0.008, rodL, M.copper, 8); r.position.set(s*R_ARM, -rodL/2, 0); beam.add(r);
+  }
+  W3.beam = beam;
+  // pulley on the right wall + rope
+  const pul = cyl(0.06, 0.03, M.brass, 24); pul.rotation.x = Math.PI/2; pul.position.set(SX-0.1, 2.62, 1.2); scene.add(pul);
+  W3.pulley = pul.position.clone();
+  const ropeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]);
+  W3.rope = new THREE.Line(ropeGeo, new THREE.LineBasicMaterial({color:0xcbb68a})); scene.add(W3.rope);
+
+  // telescopes & lamps outside the end walls
+  W3.sight = [];
+  for (const s of [-1,1]){
+    const tel = new THREE.Group(); tel.position.set(s*(SX+0.55), 1.08, 0); scene.add(tel);
+    const tube2 = cyl(0.035, 0.6, M.brass, 20); tube2.rotation.z = Math.PI/2; tel.add(tube2);
+    const eye = cyl(0.02, 0.12, M.brass, 12); eye.rotation.z = Math.PI/2; eye.position.x = s*0.34; tel.add(eye);
+    for (const a of [0, 2.1, 4.2]){ const leg = cyl(0.008, 1.12, M.wood, 6); leg.position.set(s*0.05+Math.cos(a)*0.12, -0.54, Math.sin(a)*0.12); leg.rotation.set(Math.sin(a)*0.12, 0, -Math.cos(a)*0.12); tel.add(leg); }
+    const lampBody = box(0.12, 0.18, 0.12, M.brass); lampBody.position.set(s*(SX+0.35), 1.45, 0.55); scene.add(lampBody);
+    const flame = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 12), new THREE.MeshBasicMaterial({color:0xffc56a})); flame.position.set(s*(SX+0.35), 1.58, 0.55); scene.add(flame);
+    const pl = new THREE.PointLight(0xffb04a, 1.3, 7, 2); pl.position.set(s*(SX+0.2), 1.6, 0.55); scene.add(pl);
+    const inner = new THREE.PointLight(0xffc27a, 0.55, 3.2, 2); inner.position.set(s*1.25, 1.35, 0.35); scene.add(inner);
+    const sl = lineMesh([[s*(SX+0.25),1.08,0],[s*0.95,1.11,0]], 0xe7b458, 0.0); scene.add(sl); W3.sight.push(sl);
+  }
+
+  // force arrows
+  W3.arrows = [0,1].map(()=>{ const a = new THREE.ArrowHelper(new THREE.Vector3(0,0,-1), new THREE.Vector3(), 0.14, 0xe7b458, 0.04, 0.025); scene.add(a); return a; });
+
+  // anchors for labels
+  W3.anchor = {
+    wire: ()=> new THREE.Vector3(0, 1.62, 0),
+    arm: ()=> new THREE.Vector3(-0.45, 1.1, 0).applyAxisAngle(new THREE.Vector3(0,1,0), W3.arm.rotation.y).setY(1.12),
+    small: ()=> new THREE.Vector3(R_ARM, 0, 0).applyAxisAngle(new THREE.Vector3(0,1,0), W3.arm.rotation.y).setY(1.04),
+    big: ()=> new THREE.Vector3(-R_ARM, 0, 0).applyAxisAngle(new THREE.Vector3(0,1,0), W3.beam.rotation.y).setY(1.04+R_BIG),
+    beam: ()=> new THREE.Vector3(0.5, 0, 0).applyAxisAngle(new THREE.Vector3(0,1,0), W3.beam.rotation.y).setY(2.66),
+    case: ()=> new THREE.Vector3(-0.7, 1.52, 0.06),
+    vernier: ()=> new THREE.Vector3(0.945, 1.13, 0),
+    scope: ()=> new THREE.Vector3(-(SX+0.55), 1.12, 0),
+    lamp: ()=> new THREE.Vector3(-(SX+0.35), 1.6, 0.55),
+    shed: ()=> new THREE.Vector3(SX-0.4, SH-0.1, -SZ+0.1)
+  };
+  W3.cam = {pos:camera.position.clone(), look:new THREE.Vector3(0,1.2,0)};
+  W3.free = {target:new THREE.Vector3(0,1.2,0), r:6, az:0.6, el:0.35};
+}
+
+/* ---------------- Labels overlay ---------------- */
+const labelsEl = $('#labels');
+const LBL = {};
+PARTS.forEach(p=>{
+  const d = document.createElement('div'); d.className='lbl'; d.innerHTML = '<i></i><span></span>'; d.querySelector('span').textContent = p.name;
+  labelsEl.appendChild(d); LBL[p.id] = d;
+});
+
+/* ---------------- Timeline UI ---------------- */
+const segsEl = $('#segs'), tlEl = $('#timeline'), knob = $('#knob'), tip = $('#tlTip');
+CH.forEach(c=>{ const d = document.createElement('div'); d.className='seg'; d.style.flex = String(c.len); d.innerHTML='<i></i>'; segsEl.appendChild(d); });
+const segEls = [...segsEl.querySelectorAll('.seg')], segFills = segEls.map(s=>s.querySelector('i'));
+tlEl.setAttribute('aria-valuemax', String(TOTAL));
+
+function setPlaying(p){
+  UI.playing = p;
+  const end = TIME >= TOTAL-0.01;
+  $('#playBtn').setAttribute('aria-label', p ? 'Pause' : (end ? 'Replay' : 'Play'));
+  $('#playIcon').innerHTML = p ? '<path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z"/>'
+    : (end ? '<path d="M10 3.5a6.5 6.5 0 1 1-6.1 4.3l1.9.7A4.5 4.5 0 1 0 10 5.5v2.2L6.5 4.6 10 1.5z"/>' : '<path d="M5 3.5v13l11-6.5z"/>');
+}
+function seek(x){ TIME = clamp(x,0,TOTAL); if (!UI.playing) setPlaying(false); }
+$('#playBtn').addEventListener('click', ()=>{
+  if (!UI.playing && TIME >= TOTAL-0.01) seek(0);
+  setPlaying(!UI.playing);
+  if (UI.playing && !UI.director) setDirector(true);
+});
+function tAtX(clientX){ const r = tlEl.getBoundingClientRect(); return clamp((clientX-r.left)/r.width,0,1)*TOTAL; }
+let scrubbing = false;
+tlEl.addEventListener('pointerdown', e=>{ scrubbing = true; tlEl.setPointerCapture(e.pointerId); seek(tAtX(e.clientX)); });
+tlEl.addEventListener('pointermove', e=>{
+  const t = tAtX(e.clientX);
+  if (scrubbing) seek(t);
+  const r = tlEl.getBoundingClientRect();
+  tip.hidden = false; tip.textContent = fmt(t)+' · '+CH[chapterAt(t)].name; tip.style.left = (e.clientX-r.left)+'px';
+});
+tlEl.addEventListener('pointerup', ()=>{ scrubbing=false; });
+tlEl.addEventListener('pointerleave', ()=>{ if (!scrubbing) tip.hidden = true; });
+tlEl.addEventListener('keydown', e=>{
+  if (e.key==='ArrowRight'){ seek(TIME+5); e.preventDefault(); }
+  else if (e.key==='ArrowLeft'){ seek(TIME-5); e.preventDefault(); }
+  else if (e.key==='Home'){ seek(0); e.preventDefault(); }
+  else if (e.key==='End'){ seek(TOTAL); e.preventDefault(); }
+});
+
+/* chips */
+function press(id, on){ $(id).setAttribute('aria-pressed', on ? 'true':'false'); }
+$('#bCut').addEventListener('click', ()=>{ UI.cut = !UI.cut; press('#bCut', UI.cut); });
+$('#bLabels').addEventListener('click', ()=>{ UI.labels = !UI.labels; press('#bLabels', UI.labels); });
+$('#bTrue').addEventListener('click', ()=>{ UI.trueMotion = !UI.trueMotion; press('#bTrue', UI.trueMotion); $('#exag').textContent = UI.trueMotion ? '3D motion at true scale' : '3D motion exaggerated ×4'; });
+function setDirector(on){
+  UI.director = on; press('#bDir', on);
+  if (!on && W3.cam){ // seed free orbit from current view
+    const off = W3.cam.pos.clone().sub(W3.cam.look);
+    W3.free.target.copy(W3.cam.look); W3.free.r = off.length();
+    W3.free.az = Math.atan2(off.x, off.z); W3.free.el = Math.asin(clamp(off.y/W3.free.r,-1,1));
+  }
+}
+$('#bDir').addEventListener('click', ()=> setDirector(!UI.director));
+$('#bSpeed').addEventListener('click', ()=>{
+  UI.speedIdx = (UI.speedIdx+1)%SPEEDS.length; const s = SPEEDS[UI.speedIdx]+'×';
+  $('#bSpeed').textContent = s; $('#bSpeed').setAttribute('aria-label','Playback speed '+s);
+});
+
+/* drawer */
+const drawer = $('#drawer');
+function openDrawer(which){
+  drawer.hidden = false;
+  const ch = which==='ch';
+  $('#tabCh').setAttribute('aria-selected', ch); $('#tabParts').setAttribute('aria-selected', !ch);
+  $('#paneCh').hidden = !ch; $('#paneParts').hidden = ch;
+  $('#scope').style.visibility = 'hidden';
+}
+function closeDrawer(){ drawer.hidden = true; $('#scope').style.visibility = ''; UI.hotPart = null; }
+$('#bChapters').addEventListener('click', ()=> (!drawer.hidden && !$('#paneCh').hidden) ? closeDrawer() : openDrawer('ch'));
+$('#bParts').addEventListener('click', ()=> (!drawer.hidden && !$('#paneParts').hidden) ? closeDrawer() : openDrawer('parts'));
+$('#tabCh').addEventListener('click', ()=> openDrawer('ch'));
+$('#tabParts').addEventListener('click', ()=> openDrawer('parts'));
+$('#drawerClose').addEventListener('click', closeDrawer);
+CH.forEach((c,i)=>{
+  const b = document.createElement('button'); b.className='row';
+  b.innerHTML = '<span class="n"></span><span class="t"></span><span class="s"></span>';
+  b.querySelector('.n').textContent = fmt(c.start); b.querySelector('.t').textContent = c.name; b.querySelector('.s').textContent = c.sub;
+  b.addEventListener('click', ()=>{ seek(c.start+0.01); setDirector(true); setPlaying(true); });
+  $('#paneCh').appendChild(b);
+});
+const chRows = [...$('#paneCh').children];
+function showPart(id){
+  const p = PARTS.find(x=>x.id===id); if (!p) return;
+  openDrawer('parts');
+  $('#partList').hidden = true; $('#partDetail').hidden = false;
+  $('#pdName').textContent = p.name; $('#pdSpec').textContent = p.spec; $('#pdText').textContent = p.text;
+  UI.hotPart = id; framePart(id);
+}
+function framePart(id){
+  const p = PARTS.find(x=>x.id===id); if (!p || !W3.anchor) return;
+  setDirector(false);
+  W3.free.target.copy(W3.anchor[id]()); W3.free.r = p.dist;
+}
+PARTS.forEach(p=>{
+  const b = document.createElement('button'); b.className='row';
+  b.innerHTML = '<span class="n"></span><span class="t"></span><span class="s"></span>';
+  b.querySelector('.t').textContent = p.name; b.querySelector('.s').textContent = p.spec;
+  b.addEventListener('click', ()=> showPart(p.id));
+  $('#partList').appendChild(b);
+});
+$('#partBack').addEventListener('click', ()=>{ $('#partList').hidden=false; $('#partDetail').hidden=true; UI.hotPart=null; });
+$('#pFocus').addEventListener('click', ()=> UI.hotPart && framePart(UI.hotPart));
+// parts table in the page
+PARTS.forEach(p=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td><button class="pl"></button></td><td class="spec"></td><td></td>';
+  tr.querySelector('.pl').textContent = p.name; tr.children[1].textContent = p.spec; tr.children[2].textContent = p.text;
+  tr.querySelector('.pl').addEventListener('click', ()=>{ stage.scrollIntoView({behavior: REDUCED?'auto':'smooth', block:'start'}); showPart(p.id); });
+  $('#partsTable').appendChild(tr);
+});
+
+/* keyboard */
+document.addEventListener('keydown', e=>{
+  const tg = e.target;
+  if (tg.closest && tg.closest('input,textarea,select')) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const onPage = tg===document.body || tg===document.documentElement || (tg.closest && tg.closest('#stage') && !tg.closest('button,[role=slider]'));
+  if (e.key===' ' && onPage){ e.preventDefault(); $('#playBtn').click(); }
+  else if (e.key==='ArrowRight' && onPage){ if (e.shiftKey){ const k = chapterAt(TIME); if (k<CH.length-1) seek(CH[k+1].start+0.01); } else seek(TIME+5); }
+  else if (e.key==='ArrowLeft' && onPage){ if (e.shiftKey){ const k = chapterAt(TIME); seek(TIME-CH[k].start>2 ? CH[k].start+0.01 : CH[Math.max(0,k-1)].start+0.01); } else seek(TIME-5); }
+  else if (/^[cC]$/.test(e.key)) $('#bCut').click();
+  else if (/^[lL]$/.test(e.key)) $('#bLabels').click();
+  else if (/^[dD]$/.test(e.key)) $('#bDir').click();
+  else if (/^[tT]$/.test(e.key)) $('#bTrue').click();
+  else if (/^[sS]$/.test(e.key)) $('#bSpeed').click();
+  else if (e.key==='Escape' && !drawer.hidden) closeDrawer();
+});
+
+/* free camera: drag to orbit, wheel to zoom (only once in free mode) */
+let drag = null;
+canvas.addEventListener('pointerdown', e=>{
+  if (!renderer) return;
+  if (e.pointerType==='touch') { drag = {x:e.clientX, y:e.clientY, id:e.pointerId, pending:true}; return; }
+  drag = {x:e.clientX, y:e.clientY, id:e.pointerId}; canvas.setPointerCapture(e.pointerId); canvas.classList.add('dragging');
+  if (UI.director) setDirector(false);
+});
+canvas.addEventListener('pointermove', e=>{
+  if (!drag || e.pointerId!==drag.id) return;
+  const dx = e.clientX-drag.x, dy = e.clientY-drag.y;
+  if (drag.pending){ // touch: only take horizontal drags so vertical swipes still scroll the page
+    if (Math.abs(dx) < 8) return;
+    if (Math.abs(dy) > Math.abs(dx)) { drag=null; return; }
+    drag.pending = false; canvas.setPointerCapture(e.pointerId); if (UI.director) setDirector(false);
+  }
+  drag.x = e.clientX; drag.y = e.clientY;
+  if (e.shiftKey){ // pan
+    const f = W3.free, right = new THREE.Vector3(Math.cos(f.az),0,-Math.sin(f.az));
+    f.target.addScaledVector(right, -dx*f.r*0.0015); f.target.y = clamp(f.target.y + dy*f.r*0.0015, 0.2, 3);
+  } else {
+    W3.free.az -= dx*0.006; W3.free.el = clamp(W3.free.el + dy*0.005, -0.15, 1.45);
+  }
+});
+const endDrag = ()=>{ drag = null; canvas.classList.remove('dragging'); };
+canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+canvas.addEventListener('wheel', e=>{
+  if (UI.director || !renderer) return;
+  e.preventDefault();
+  W3.free.r = clamp(W3.free.r*Math.exp(e.deltaY*0.0012), 0.35, 22);
+}, {passive:false});
+
+/* ---------------- Director camera ---------------- */
+const _a = [0,0,0], _b=[0,0,0];
+function shotAt(t){
+  let i = 0; while (i < SHOTS.length-2 && t >= SHOTS[i+1][0]) i++;
+  const A = SHOTS[i], B = SHOTS[i+1], f = smooth((t-A[0])/(B[0]-A[0]));
+  for (let k=0;k<3;k++){ _a[k] = A[1][k]+(B[1][k]-A[1][k])*f; _b[k] = A[2][k]+(B[2][k]-A[2][k])*f; }
+  return [_a, _b];
+}
+
+/* ---------------- Telescope (vernier) view ---------------- */
+const scopeCv = $('#scopeCv'), sctx = scopeCv.getContext('2d');
+function drawScope(xIn){
+  const w = scopeCv.width, h = scopeCv.height, cx = w/2, pxPerIn = w/0.9; // window: ±0.45 in
+  sctx.clearRect(0,0,w,h);
+  const g = sctx.createRadialGradient(cx,h/2,10,cx,h/2,w*0.6); g.addColorStop(0,'#2a2418'); g.addColorStop(1,'#07090b');
+  sctx.fillStyle = g; sctx.fillRect(0,0,w,h);
+  // ivory scale strip
+  sctx.fillStyle = '#e9dfc6'; sctx.fillRect(0, 24, w, 70);
+  sctx.fillStyle = '#2a2016'; sctx.font = '500 20px "IBM Plex Mono", monospace'; sctx.textAlign='center';
+  for (let v=-0.45; v<=0.4501; v+=0.05){
+    const x = cx + v*pxPerIn, major = Math.abs(Math.round(v*10)-v*10) < 1e-6;
+    sctx.fillRect(x-1, 94-(major?40:24), 2, major?40:24);
+    if (major && Math.abs(v)<0.45) sctx.fillText((v<0?'−':'')+Math.abs(v).toFixed(1), x, 48);
+  }
+  // vernier slider on the arm (moves)
+  const px = cx + xIn*pxPerIn;
+  sctx.fillStyle = '#c9b98f'; sctx.fillRect(px-62, 98, 124, 60);
+  sctx.fillStyle = '#2a2016';
+  for (let k=0;k<=10;k++){ const x = px + (k-5)*(0.045*pxPerIn); sctx.fillRect(x-1, 98, 2, k===5?30:18); }
+  sctx.fillStyle = '#b53a1f'; sctx.fillRect(px-1.5, 60, 3, 98);
+  // eyepiece vignette
+  sctx.globalCompositeOperation = 'destination-in';
+  const v = sctx.createRadialGradient(cx,h/2,h*0.3,cx,h/2,w*0.55); v.addColorStop(0,'rgba(0,0,0,1)'); v.addColorStop(1,'rgba(0,0,0,0.15)');
+  sctx.fillStyle = v; sctx.fillRect(0,0,w,h);
+  sctx.globalCompositeOperation = 'source-over';
+}
+
+/* ---------------- Chart ---------------- */
+const chart = $('#chart'), cctx = chart.getContext('2d');
+let chartBase = null, chartBox = null;
+const C_T0 = T_RUN0, C_T1 = TOTAL, C_Y = 0.5;
+function tok(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function layoutChart(){
+  const dpr = Math.min(2, window.devicePixelRatio||1), w = chart.clientWidth, h = chart.clientHeight;
+  if (!w) return;
+  chart.width = Math.round(w*dpr); chart.height = Math.round(h*dpr);
+  chartBox = {w, h, dpr, l:44, r:28, t:10, b:28};
+  chartBase = document.createElement('canvas'); chartBase.width = chart.width; chartBase.height = chart.height;
+  const c = chartBase.getContext('2d'); c.scale(dpr,dpr);
+  const B = chartBox, X = t => B.l + (t-C_T0)/(C_T1-C_T0)*(w-B.l-B.r), Y = v => B.t + (C_Y - v)/(2*C_Y)*(h-B.t-B.b);
+  const ink = tok('--ink'), muted = tok('--muted'), rule = tok('--rule'), brass = tok('--brass'), ok = tok('--ok');
+  c.font = '11px "IBM Plex Mono", monospace'; c.fillStyle = muted; c.strokeStyle = rule; c.lineWidth = 1;
+  c.textAlign = 'right'; c.textBaseline = 'middle';
+  for (let v=-0.4; v<=0.4001; v+=0.2){ const y = Math.round(Y(v))+0.5; c.beginPath(); c.moveTo(B.l,y); c.lineTo(w-B.r,y); c.stroke(); c.fillText((v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1)+'"', B.l-6, y); }
+  c.textAlign = 'center'; c.textBaseline = 'top';
+  for (let m=0; m<=120; m+=30){ const x = X(C_T0+m); c.fillText(m+' min', x, h-B.b+8); }
+  // reversal marker
+  c.fillStyle = muted; c.textAlign='left'; c.textBaseline='top';
+  c.setLineDash([2,3]); c.beginPath(); c.moveTo(X(132)+.5,B.t); c.lineTo(X(132)+.5,h-B.b); c.stroke(); c.setLineDash([]);
+  c.fillText('weights reversed', X(132)+5, B.t+2);
+  // equilibrium
+  c.strokeStyle = muted; c.setLineDash([5,4]); c.lineWidth = 1.2; c.beginPath();
+  for (let t=C_T0; t<=C_T1; t+=0.1){ const x=X(t), y=Y(inchOf(sample(EQ,t))); t===C_T0?c.moveTo(x,y):c.lineTo(x,y); } c.stroke(); c.setLineDash([]);
+  // reading
+  c.strokeStyle = brass; c.lineWidth = 2; c.beginPath();
+  for (let t=C_T0; t<=C_T1; t+=0.05){ const x=X(t), y=Y(inchOf(sample(TH,t))); t===C_T0?c.moveTo(x,y):c.lineTo(x,y); } c.stroke();
+  c.fillStyle = ink; TURN.forEach(p=>{ c.beginPath(); c.arc(X(p.t), Y(p.x), 2.6, 0, 7); c.fill(); });
+  c.strokeStyle = ok; c.lineWidth = 3; REST.forEach(p=>{ const x=X(p.t), y=Y(p.x); c.beginPath(); c.moveTo(x-6,y); c.lineTo(x+6,y); c.stroke(); });
+  B.X = X; B.Y = Y;
+}
+function drawChart(){
+  if (!chartBase) return;
+  const B = chartBox;
+  cctx.setTransform(1,0,0,1,0,0); cctx.clearRect(0,0,chart.width,chart.height); cctx.drawImage(chartBase,0,0);
+  cctx.setTransform(B.dpr,0,0,B.dpr,0,0);
+  if (TIME >= C_T0){
+    const x = B.X(TIME), y = B.Y(inchOf(sample(TH,TIME)));
+    cctx.strokeStyle = tok('--ink'); cctx.globalAlpha = .35; cctx.lineWidth = 1;
+    cctx.beginPath(); cctx.moveTo(x+.5,B.t); cctx.lineTo(x+.5,B.h-B.b); cctx.stroke(); cctx.globalAlpha = 1;
+    cctx.fillStyle = tok('--brass'); cctx.beginPath(); cctx.arc(x,y,5,0,7); cctx.fill();
+    cctx.strokeStyle = tok('--paper'); cctx.lineWidth = 2; cctx.stroke();
+  } else {
+    cctx.fillStyle = tok('--muted'); cctx.font = '12px "IBM Plex Mono", monospace'; cctx.textAlign='left'; cctx.textBaseline='top';
+    cctx.textAlign='center'; cctx.fillText('The run starts when the weights move, at 0:58.', B.l+(B.w-B.l-B.r)/2, B.Y(0.25));
+  }
+}
+let chartDrag = false;
+function chartSeek(e){ if (!chartBox) return; const r = chart.getBoundingClientRect(); const f = clamp((e.clientX-r.left-chartBox.l)/(r.width-chartBox.l-chartBox.r),0,1); seek(C_T0 + f*(C_T1-C_T0)); }
+chart.addEventListener('pointerdown', e=>{ chartDrag = true; chartSeek(e); });
+chart.addEventListener('pointermove', e=>{ if (chartDrag) chartSeek(e); });
+addEventListener('pointerup', ()=> chartDrag=false);
+new ResizeObserver(()=>{ layoutChart(); drawChart(); }).observe(chart);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ layoutChart(); drawChart(); });
+new MutationObserver(()=>{ layoutChart(); drawChart(); }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+if (document.fonts) document.fonts.ready.then(()=>{ layoutChart(); drawChart(); });
+
+/* ---------------- Calculator ---------------- */
+const IN = {T:$('#iT'), D:$('#iD'), R:$('#iR'), M:$('#iM')};
+function calc(){
+  const T = parseFloat(IN.T.value)*60, d = parseFloat(IN.D.value)*0.0254, r = parseFloat(IN.R.value)/1000, Mb = parseFloat(IN.M.value);
+  if (!(T>0 && d>0 && r>0 && Mb>0)){ ['oG','oRho','oME','oF','oK'].forEach(id=>$('#'+id).textContent='—'); $('#cG').textContent='Enter positive numbers.'; return; }
+  const G = 4*Math.PI*Math.PI*r*r*d/(Mb*T*T);
+  const g = 9.81, R = 6.371e6;
+  const rho = 3*g/(4*Math.PI*G*R), ME = g*R*R/G, F = G*Mb*M_SMALL/(r*r);
+  const kappa = 2*Math.PI*Math.PI*M_SMALL*1.8*1.8/(T*T);
+  $('#oG').textContent = sci(G,2)+' m³/kg·s²';
+  const pct = (G/G_MOD-1)*100;
+  $('#cG').textContent = 'Modern value 6.674 × 10⁻¹¹ · '+(pct>=0?'+':'−')+Math.abs(pct).toFixed(1)+'%';
+  $('#mG b').style.left = clamp(50 + pct*5, 0, 100)+'%';
+  $('#oRho').textContent = (rho/1000).toFixed(3)+' × water';
+  $('#cRho').textContent = 'Cavendish: 5.448 · modern: 5.514';
+  $('#oME').textContent = sci(ME,2)+' kg';
+  $('#oF').textContent = sci(F,2)+' N';
+  $('#cF').textContent = 'The weight of '+(F/9.81*1e6).toFixed(3)+' mg';
+  $('#oK').textContent = sci(kappa,2)+' N·m/rad';
+}
+Object.values(IN).forEach(i=> i.addEventListener('input', calc));
+$('#calcReset').addEventListener('click', ()=>{ IN.T.value=15; IN.D.value=0.17; IN.R.value=225; IN.M.value=158; calc(); });
+calc();
+
+/* ---------------- Frame update ---------------- */
+const v3 = renderer ? new THREE.Vector3() : null;
+let lastCap = -1, lastCh = -1;
+function update(dt){
+  const th = sample(TH, TIME), beta = bigAngle(TIME);
+  const K = UI.trueMotion ? 1 : 4;
+  const chIdx = chapterAt(TIME);
+
+  // HUD
+  const xin = inchOf(th);
+  drawScope(xin);
+  $('#hRead').textContent = (xin<0?'−':'+')+Math.abs(xin).toFixed(3)+' in';
+  $('#hTwist').textContent = (th*180/Math.PI).toFixed(3)+'°';
+  const near = Math.min(Math.abs(beta-PHI), Math.abs(beta-(Math.PI-PHI)));
+  $('#hForce').textContent = near < 0.05 ? sci(F_PAIR,2)+' N' : (TIME<62 ? 'balanced' : 'changing');
+  if (TIME >= T_RUN0){ const m = Math.floor(TIME-T_RUN0); $('#hClock').textContent = Math.floor(m/60)+' h '+String(m%60).padStart(2,'0')+' min'; }
+  else $('#hClock').textContent = 'before run';
+
+  // captions & chapter
+  let ci = 0; for (let i=0;i<CAPS.length;i++) if (TIME >= CAPS[i][0]) ci = i;
+  if (ci !== lastCap){ $('#caption').textContent = CAPS[ci][1]; lastCap = ci; }
+  if (chIdx !== lastCh){
+    $('#chNum').textContent = String(chIdx+1).padStart(2,'0')+' / '+String(CH.length).padStart(2,'0');
+    $('#chName').textContent = CH[chIdx].name;
+    chRows.forEach((r,i)=> r.classList.toggle('cur', i===chIdx));
+    segEls.forEach((s,i)=> s.classList.toggle('cur', i===chIdx));
+    lastCh = chIdx;
+  }
+  CH.forEach((c,i)=>{ segFills[i].style.width = (clamp((TIME-c.start)/c.len,0,1)*100)+'%'; });
+  knob.style.left = (TIME/TOTAL*100)+'%';
+  $('#timeLbl').textContent = fmt(TIME)+' / '+fmt(TOTAL);
+  tlEl.setAttribute('aria-valuenow', String(Math.round(TIME)));
+  tlEl.setAttribute('aria-valuetext', fmt(TIME)+', '+CH[chIdx].name);
+  drawChart();
+
+  if (!renderer) return;
+  W3.arm.rotation.y = th*K;
+  W3.beam.rotation.y = beta;
+  W3.front.visible = W3.roof.visible = !UI.cut;
+  // rope from beam end to pulley
+  const end = new THREE.Vector3(R_ARM*0.98,0,0).applyAxisAngle(new THREE.Vector3(0,1,0), beta).setY(2.62);
+  const pos = W3.rope.geometry.attributes.position;
+  pos.setXYZ(0, end.x, end.y, end.z); pos.setXYZ(1, W3.pulley.x-0.04, W3.pulley.y, W3.pulley.z); pos.setXYZ(2, W3.pulley.x+0.3, W3.pulley.y-0.2, W3.pulley.z); pos.needsUpdate = true;
+  // sightlines in the shed chapter
+  const sOp = smooth((TIME-22)/3)*(1-smooth((TIME-35)/3));
+  W3.sight.forEach(l=>{ l.material.opacity = 0.75*sOp; l.visible = sOp>0.01; });
+  // force arrows
+  const showF = near < 0.05 && TIME >= 72;
+  W3.arrows.forEach((a,i)=>{
+    a.visible = showF;
+    if (!showF) return;
+    const s = new THREE.Vector3(i?-R_ARM:R_ARM,0,0).applyAxisAngle(new THREE.Vector3(0,1,0), th*K).setY(1.04);
+    const b = new THREE.Vector3(i?-R_ARM:R_ARM,0,0).applyAxisAngle(new THREE.Vector3(0,1,0), beta).setY(1.04);
+    const dir = b.clone().sub(s).normalize();
+    a.position.copy(s.clone().addScaledVector(dir, R_SMALL+0.004)); a.setDirection(dir);
+  });
+
+  // camera
+  let tp, tl;
+  if (UI.director){ const [p,l] = shotAt(TIME); tp = v3.set(...p).clone(); tl = new THREE.Vector3(...l); }
+  else {
+    const f = W3.free;
+    tl = f.target.clone();
+    tp = new THREE.Vector3(Math.sin(f.az)*Math.cos(f.el), Math.sin(f.el), Math.cos(f.az)*Math.cos(f.el)).multiplyScalar(f.r).add(tl);
+  }
+  const k = REDUCED ? 1 : 1-Math.exp(-dt*(UI.director?3.2:9));
+  W3.cam.pos.lerp(tp, k); W3.cam.look.lerp(tl, k);
+  camera.position.copy(W3.cam.pos); camera.lookAt(W3.cam.look);
+
+  renderer.render(scene, camera);
+
+  // labels
+  const w = stage.clientWidth, h = stage.clientHeight;
+  PARTS.forEach(p=>{
+    const el = LBL[p.id], a = W3.anchor[p.id]();
+    const dist = a.distanceTo(camera.position);
+    a.project(camera);
+    const vis = (UI.labels || UI.hotPart===p.id) && a.z < 1 && Math.abs(a.x) < 0.96 && Math.abs(a.y) < 0.92 && (dist <= p.max || UI.hotPart===p.id);
+    el.style.opacity = vis ? 1 : 0;
+    el.classList.toggle('hot', UI.hotPart===p.id);
+    if (vis) el.style.transform = 'translate('+Math.round((a.x*0.5+0.5)*w - 3.5)+'px,'+Math.round((-a.y*0.5+0.5)*h - 8)+'px)';
+  });
+}
+
+function resize(){
+  if (!renderer) return;
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w/h;
+  camera.fov = w < 720 ? 52 : 38; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage); resize();
+
+let last = performance.now();
+function frame(now){
+  const dt = Math.min(0.1, (now-last)/1000); last = now;
+  if (UI.playing && !scrubbing){
+    TIME += dt*SPEEDS[UI.speedIdx];
+    if (TIME >= TOTAL){ TIME = TOTAL; setPlaying(false); }
+  }
+  update(dt);
+  requestAnimationFrame(frame);
+}
+setPlaying(!REDUCED);
+requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>

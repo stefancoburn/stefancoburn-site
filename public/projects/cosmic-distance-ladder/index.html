@@ -1,0 +1,951 @@
+<!doctype html><html><head><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cosmic Distance Ladder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400;1,600&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: an observatory logbook. A ladder rail (rung 1 at the bottom) beside one lab bench at a time.
+   Deliberately single night-sky theme. Amber = your measurement, pale cyan = the true value. */
+:root{
+  --bg:#0a0f1d; --panel:#111a2e; --panel-2:#17223b; --line:#27345a; --grid:#1a2541;
+  --ink:#e7e9f1; --dim:#9aa6c4; --faint:#66739a;
+  --sun:#f3b64a; --truth:#86d6e8; --moon:#d9a3c0;
+  --good:#7bd4a0; --warn:#f0c868; --bad:#f07a73;
+  --f-display:"Spectral",Georgia,"Times New Roman",serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  background-image:radial-gradient(1200px 500px at 70% -10%, #16224099, transparent 70%);}
+.wrap{max-width:1260px;margin:0 auto;padding-inline:20px;padding-block:28px 64px}
+.top{display:grid;gap:10px;margin-bottom:26px;max-width:820px}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);margin:0}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(30px,4.6vw,50px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:italic;font-weight:400;color:var(--truth)}
+.top p.lede{color:var(--dim);margin:0;max-width:66ch;font-size:16px}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--f-mono);font-size:12px;color:var(--dim)}
+.key span{display:inline-flex;align-items:center;gap:7px}
+.key i{width:18px;height:3px;border-radius:2px;display:inline-block}
+
+.app{display:grid;grid-template-columns:270px minmax(0,1fr);gap:30px;align-items:start}
+/* ---- ladder rail ---- */
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);display:flex;flex-direction:column;gap:6px;padding:10px 14px;
+  border-left:2px solid var(--line);border-right:2px solid var(--line);border-radius:4px}
+.rail button{all:unset;cursor:pointer;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:2px 10px;align-items:center;
+  padding:8px 10px;border-radius:6px;border-top:1px solid var(--line);background:transparent;transition:background .15s}
+.rail button:hover{background:var(--panel)}
+.rail button:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.rail button[aria-current="true"]{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--sun)}
+.rail .n{font-family:var(--f-display);font-style:italic;font-size:20px;color:var(--faint);grid-row:span 2;text-align:center}
+.rail button[aria-current="true"] .n{color:var(--sun)}
+.rail .nm{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rail .sc{font-family:var(--f-mono);font-size:10.5px;color:var(--faint);text-align:right}
+.rail .vl{font-family:var(--f-mono);font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{font-family:var(--f-mono);font-size:10.5px;padding:1px 6px;border-radius:10px;justify-self:end;white-space:nowrap}
+.chip.good{color:var(--good);background:#7bd4a01c}.chip.warn{color:var(--warn);background:#f0c8681c}.chip.bad{color:var(--bad);background:#f07a731c}
+.railcap{font-family:var(--f-mono);font-size:10.5px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;padding:4px 10px}
+
+/* ---- stage ---- */
+.rung{display:grid;gap:18px;min-width:0}
+.rh{display:grid;gap:8px}
+.rh h2{font-family:var(--f-display);font-weight:600;font-size:clamp(26px,3.2vw,36px);line-height:1.1;margin:0;text-wrap:balance}
+.rh p.lede{margin:0;color:var(--dim);max-width:72ch}
+.inherit{font-family:var(--f-mono);font-size:12px;color:var(--truth);margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.inherit span{border:1px dashed #86d6e855;border-radius:4px;padding:3px 8px}
+.lab{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,1fr);gap:18px;align-items:start}
+.viz{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0;display:grid;gap:8px}
+.viz canvas{display:block;width:100%}
+.cap{font-size:12.5px;color:var(--faint);margin:0 4px 2px}
+.side{display:grid;gap:14px;min-width:0}
+.ctl{display:grid;gap:4px}
+.ctl label{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--dim)}
+.ctl output{font-family:var(--f-mono);color:var(--sun);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--sun);margin:2px 0}
+select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--sun)}
+.btn:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.btn.on{background:#f3b64a22;border-color:var(--sun);color:var(--sun)}
+.ro{display:grid;grid-template-columns:auto auto;gap:5px 14px;margin:0;font-size:13px}
+.ro dt{color:var(--dim)}
+.ro dd{margin:0;text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.result{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:2px}
+.result span{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.result b{font-family:var(--f-mono);font-size:24px;font-weight:600;color:var(--sun);font-variant-numeric:tabular-nums;line-height:1.2}
+.result em{font-style:normal;font-family:var(--f-mono);font-size:12px;color:var(--dim)}
+.result em .t{color:var(--truth)}
+.eq{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-family:var(--f-mono);font-size:13px;color:var(--dim);
+  display:grid;gap:4px;overflow-x:auto}
+.eq div{white-space:nowrap}
+.eq b{color:var(--sun);font-weight:600}.eq i{color:var(--truth);font-style:normal}
+.note{color:var(--dim);margin:0;max-width:78ch;font-size:14px}
+.note strong{color:var(--ink)}
+.carry{font-size:13.5px;color:var(--dim);margin:0;padding:10px 14px;border-left:2px solid var(--sun);background:#f3b64a0d;border-radius:0 6px 6px 0}
+.carry strong{color:var(--sun)}
+.pn{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.gchip{font:inherit;font-family:var(--f-mono);font-size:12px;color:var(--dim);background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:4px 10px;cursor:pointer}
+.gchip.done{color:var(--truth);border-color:#86d6e855}
+.gchip.sel{color:var(--bg);background:var(--sun);border-color:var(--sun)}
+.gchip:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.subhead{font-family:var(--f-display);font-style:italic;font-size:20px;margin:6px 0 0;color:var(--ink)}
+table.chain{border-collapse:collapse;width:100%;font-size:13px;min-width:560px}
+.tablebox{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+table.chain th,table.chain td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+table.chain th{font-weight:400;color:var(--faint);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em}
+table.chain td.m{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+table.chain td.y{color:var(--sun)} table.chain td.t{color:var(--truth)}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;flex-direction:row-reverse;justify-content:flex-end;overflow-x:auto;border:none;border-top:2px solid var(--line);border-bottom:2px solid var(--line);padding:8px 2px;border-radius:0}
+  .rail button{grid-template-columns:auto;min-width:118px;border-top:none;border-left:1px solid var(--line)}
+  .rail .n{grid-row:auto;text-align:left;font-size:16px}
+  .rail .sc{display:none}.rail .chip{justify-self:start}
+  .railcap{display:none}
+}
+@media (max-width:760px){ .lab{grid-template-columns:minmax(0,1fr)} .wrap{padding-inline:16px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">Nine rungs · from a stick's shadow to the cosmic horizon</p>
+    <h1>Climbing the Cosmic Distance Ladder, <em>one measurement at a time</em></h1>
+    <p class="lede">Each rung is a lab bench. Make the measurement yourself and its result becomes the ruler for the rung above. Nothing is looked up along the way, so an error at the bottom climbs all the way to the top. The ladder on the left keeps the ledger.</p>
+    <div class="key"><span><i style="background:var(--sun)"></i>your measurement</span><span><i style="background:var(--truth)"></i>modern value</span><span><i style="background:var(--good)"></i>within 2%</span><span><i style="background:var(--warn)"></i>within 10%</span><span><i style="background:var(--bad)"></i>off by more</span></div>
+  </header>
+
+  <div class="app">
+    <nav class="rail" id="rail" aria-label="Rungs of the ladder"></nav>
+    <main id="stage">
+
+<!-- ============ RUNG 1 ============ -->
+<section class="rung" id="r1" data-n="1" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 1 · Eratosthenes, Alexandria, c. 240 BC</p>
+    <h2>The size of the Earth</h2>
+    <p class="lede">At noon on the summer solstice the Sun shone straight down a well in Syene. At the same moment in Alexandria, a vertical stick cast a shadow. Sunlight arrives in parallel rays, so the shadow's angle is the angle between the two cities measured at Earth's centre.</p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c1"></canvas><p class="cap">The two marked angles are alternate angles cut by one sunbeam, so they are equal. Stick heights are exaggerated.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r1ang">Shadow angle in Alexandria <output id="o1ang"></output></label><input type="range" id="r1ang" min="1" max="30" step="0.1" value="7.2"></div>
+      <div class="ctl"><label for="r1dist">Syene to Alexandria <output id="o1dist"></output></label><input type="range" id="r1dist" min="3000" max="8000" step="50" value="5000"></div>
+      <div class="ctl"><label for="r1stad">Length of one stadion</label>
+        <select id="r1stad"><option value="157.5" selected>Egyptian stadion · 157.5 m</option><option value="176.4">Olympic-ish · 176.4 m</option><option value="185">Attic stadion · 185 m</option></select></div>
+      <dl class="ro"><dt>Fraction of a circle</dt><dd id="d1frac"></dd><dt>Circumference</dt><dd id="d1Cs"></dd><dt>Circumference</dt><dd id="d1Ck"></dd></dl>
+      <div class="result"><span>Earth's radius</span><b id="v1"></b><em id="e1"></em></div>
+    </div>
+  </div>
+  <div class="eq" id="eq1"></div>
+  <p class="note">The historical numbers (7.2° and 5,000 stadia) give a circumference of 250,000 stadia. How close that lands depends mostly on which stadion Eratosthenes meant, which historians still argue about. Try each one and watch the ledger.</p>
+  <p class="carry"><strong>Carries up:</strong> the Earth's radius sets the Moon's size in rung 2 and the Paris–Cayenne baseline for the Mars parallax in rung 3.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 2 ============ -->
+<section class="rung" id="r2" data-n="2" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 2 · Aristarchus and Hipparchus, 3rd–2nd century BC</p>
+    <h2>The Moon, measured by Earth's shadow</h2>
+    <p class="lede">During a lunar eclipse the Moon drifts through Earth's shadow at about one Moon-width per hour. Time the crossing and you learn how many Moons wide the shadow is. The shadow is a cone, and it narrows by exactly one Moon diameter on the way out, because the Sun and the Moon look the same size in our sky.</p>
+    <p class="inherit" id="in2"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c2a"></canvas>
+      <div class="btns"><button class="btn" id="r2play" type="button">Play eclipse</button></div>
+      <canvas id="c2b"></canvas><p class="cap">Side view, not to scale. The cone's edges converge at the Sun's angular size, about 0.5°.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r2t">Time since first contact <output id="o2t"></output></label><input type="range" id="r2t" min="-0.5" max="5" step="0.01" value="1.3"></div>
+      <div class="ctl"><label for="r2ratio">Shadow width (Moon diameters) <output id="o2ratio"></output></label><input type="range" id="r2ratio" min="1.8" max="3.6" step="0.05" value="2.7"></div>
+      <div class="ctl"><label for="r2th">Moon's angular size <output id="o2th"></output></label><input type="range" id="r2th" min="0.40" max="0.65" step="0.005" value="0.52"></div>
+      <dl class="ro"><dt>Earth diameter</dt><dd id="d2E"></dd><dt>Earth ÷ Moon</dt><dd id="d2rat"></dd><dt>Moon diameter</dt><dd id="d2M"></dd><dt>In Earth radii</dt><dd id="d2er"></dd></dl>
+      <div class="result"><span>Distance to the Moon</span><b id="v2"></b><em id="e2"></em></div>
+    </div>
+  </div>
+  <div class="eq" id="eq2"></div>
+  <p class="carry"><strong>Carries up:</strong> the Moon's distance is the short side of Aristarchus's triangle in rung 3. And the relation distance = size ÷ angle is the workhorse of every rung above.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 3 ============ -->
+<section class="rung" id="r3" data-n="3" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 3 · Aristarchus (c. 270 BC), Kepler (1619), Cassini and Richer (1672)</p>
+    <h2>The Sun, and the Astronomical Unit</h2>
+    <p class="lede">When the Moon is exactly half lit, the Sun–Moon–Earth angle is a right angle. Measure the angle between the Moon and the Sun in the sky, and the cosine gives the ratio of their distances. The method is sound, but near 90° it is ruthless.</p>
+    <p class="inherit" id="in3"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c3a"></canvas><canvas id="c3b"></canvas><p class="cap">Distance ratio on a log scale. A tenth of a degree near 90° is worth a factor of several.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r3ang">Moon–Sun angle at half Moon <output id="o3ang"></output></label><input type="range" id="r3ang" min="80" max="89.95" step="0.01" value="87"></div>
+      <dl class="ro"><dt>Sun ÷ Moon distance</dt><dd id="d3rat"></dd><dt>True ratio</dt><dd id="d3rt"></dd></dl>
+      <div class="result"><span>Aristarchus-style Sun distance</span><b id="v3a"></b><em id="e3a"></em></div>
+    </div>
+  </div>
+
+  <h3 class="subhead">The fix: one scale bar for Kepler's map</h3>
+  <p class="note">Kepler's third law (T² ∝ a³) maps the Solar System exactly, but only in AU. Mars's period of 1.881 years puts its orbit at 1.524 AU, and on the night of the 1672 opposition the map says Mars was <strong>0.381 AU</strong> from Earth. One distance in kilometres scales the whole map. Cassini in Paris and Richer in Cayenne observed Mars at the same time and saw it shifted against the stars. Blink between their views and measure the shift.</p>
+  <div class="lab">
+    <div class="viz"><canvas id="c3c"></canvas>
+      <div class="btns"><button class="btn" id="r3blink" type="button">Blink views</button><button class="btn" id="r3view" type="button">Show Cayenne</button></div>
+      <p class="cap">Background stars are effectively infinitely far, so they don't move. Only Mars shifts. Tick marks are 5 arcseconds apart.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r3p">Your measured shift <output id="o3p"></output></label><input type="range" id="r3p" min="15" max="35" step="0.1" value="25"></div>
+      <dl class="ro"><dt>Baseline (from your Earth)</dt><dd id="d3B"></dd><dt>Distance to Mars</dt><dd id="d3dm"></dd><dt>Mars that night</dt><dd>0.381 AU</dd></dl>
+      <div class="result"><span>1 Astronomical Unit</span><b id="v3"></b><em id="e3"></em></div>
+    </div>
+  </div>
+  <div class="eq" id="eq3"></div>
+  <p class="carry"><strong>Carries up:</strong> the AU is the baseline for stellar parallax. Any error here is copied into the length of the parsec and into every distance above it.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 4 ============ -->
+<section class="rung" id="r4" data-n="4" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 4 · Bessel (1838), Hipparcos (1989), Gaia (2013)</p>
+    <h2>Stellar parallax</h2>
+    <p class="lede">Earth's orbit gives a baseline of 2 AU. Over a year, a nearby star traces a tiny ellipse against far-off background stars. The parallax angle p is half the shift, and the distance in parsecs is simply 1/p in arcseconds.</p>
+    <p class="inherit" id="in4"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c4"></canvas>
+      <div class="btns"><button class="btn" id="r4play" type="button">Run the year</button></div>
+      <p class="cap">Left: the geometry, wildly exaggerated. Right: what the telescope sees, zoomed to fit. The fuzzy disk is the instrument's measurement error.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r4star">Target</label><select id="r4star"></select></div>
+      <div class="ctl"><label for="r4d">Or set a distance <output id="o4d"></output></label><input type="range" id="r4d" min="0" max="4.3" step="0.005" value="0.1"></div>
+      <div class="ctl"><label for="r4inst">Instrument</label>
+        <select id="r4inst"><option value="0.02">Bessel's heliometer, 1838 · ±0.02″</option><option value="0.001">Hipparcos satellite, 1993 · ±1 mas</option><option value="0.00002" selected>Gaia, 2013–25 · ±20 µas</option></select></div>
+      <div class="ctl"><label for="r4m">Month <output id="o4m"></output></label><input type="range" id="r4m" min="0" max="12" step="0.01" value="1.5"></div>
+      <dl class="ro"><dt>Parallax p</dt><dd id="d4p"></dd><dt>Signal ÷ error</dt><dd id="d4snr"></dd><dt>Instrument's reach (5σ)</dt><dd id="d4reach"></dd><dt>Distance</dt><dd id="d4pc"></dd></dl>
+      <div class="result"><span>1 parsec, in your units</span><b id="v4"></b><em id="e4"></em></div>
+    </div>
+  </div>
+  <div class="eq" id="eq4"></div>
+  <p class="carry"><strong>Carries up:</strong> parallax distances to thousands of nearby stars calibrate their true luminosities. That calibration is what rung 5 slides clusters against.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 5 ============ -->
+<section class="rung" id="r5" data-n="5" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 5 · Hertzsprung and Russell (1910s), main-sequence fitting</p>
+    <h2>Standard candles and the main sequence</h2>
+    <p class="lede">Light spreads over a sphere, so flux falls as 1/d². Plot nearby stars, whose parallax distances we know, by colour and true brightness, and most land on a narrow band: the main sequence. A distant cluster shows the same band, dimmed by its distance. Slide it up until it fits. The size of the slide is the distance.</p>
+    <p class="inherit" id="in5"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c5"></canvas><p class="cap">Cyan: nearby stars calibrated by parallax (absolute magnitude M). Amber: the cluster, plotted as apparent magnitude minus your distance modulus. Brighter is up.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r5cl">Cluster</label><select id="r5cl"></select></div>
+      <div class="ctl"><label for="r5mu">Your distance modulus m − M <output id="o5mu"></output></label><input type="range" id="r5mu" min="0" max="14" step="0.01" value="5.5"></div>
+      <div class="btns"><button class="btn" id="r5fit" type="button">Fit it for me</button></div>
+      <dl class="ro"><dt>Cluster vs calibrated band</dt><dd id="d5off"></dd><dt>Dimming factor</dt><dd id="d5dim"></dd><dt>Distance</dt><dd id="d5pc"></dd></dl>
+      <div class="result"><span>Distance to the cluster</span><b id="v5"></b><em id="e5"></em></div>
+    </div>
+  </div>
+  <div class="eq" id="eq5"></div>
+  <p class="note">Older clusters (M67, NGC 188) have lost their hot, bright stars and grown a branch of red giants. Fit the band, not the giants. Interstellar dust is ignored here; in real work it dims and reddens every cluster a little.</p>
+  <p class="carry"><strong>Carries up:</strong> some Cepheids live in clusters like these. Your cluster distances set the zero point of the Leavitt law in rung 6.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 6 ============ -->
+<section class="rung" id="r6" data-n="6" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 6 · Henrietta Swan Leavitt (1912), Edwin Hubble (1923)</p>
+    <h2>Cepheid variables</h2>
+    <p class="lede">Cepheids pulse like clockwork, and the brighter ones pulse more slowly. Measure the period, read the true brightness off the Leavitt law, compare with how bright the star looks, and out comes the distance. Here are Hubble-style observations of a Cepheid in Andromeda, taken on scattered nights. Find its period by folding the data.</p>
+    <p class="inherit" id="in6"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c6a"></canvas><p class="cap">Top: brightness on each night it was observed. Bottom: the same points folded at your trial period. At the right period, the scatter collapses into one sawtooth.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r6P">Trial period <output id="o6P"></output></label><input type="range" id="r6P" min="5" max="60" step="0.01" value="30"></div>
+      <div class="btns"><button class="btn" id="r6search" type="button">Search all periods</button></div>
+      <dl class="ro"><dt>Fold quality</dt><dd id="d6q"></dd><dt>Absolute mag M</dt><dd id="d6M"></dd><dt>Mean apparent mag m</dt><dd id="d6m"></dd><dt>Distance modulus</dt><dd id="d6mu"></dd></dl>
+      <div class="result"><span>Distance to Andromeda</span><b id="v6"></b><em id="e6"></em></div>
+    </div>
+  </div>
+  <div class="viz"><canvas id="c6b"></canvas><p class="cap">The Leavitt law. Dots are Cepheids in calibrated clusters, so they inherit your rung-5 distances. The dashed cyan line is the modern calibration.</p></div>
+  <div class="eq" id="eq6"></div>
+  <p class="carry"><strong>Carries up:</strong> Cepheids in nearby galaxies that also hosted a Type Ia supernova set the supernova brightness scale in rung 7.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 7 ============ -->
+<section class="rung" id="r7" data-n="7" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 7 · Phillips (1993), Riess, Perlmutter and Schmidt (1998)</p>
+    <h2>Type Ia supernovae</h2>
+    <p class="lede">A white dwarf that nears 1.4 solar masses detonates and briefly shines like five billion Suns. They aren't perfectly identical, but brighter ones fade more slowly. Stretch a template light curve to fit, and the stretch tells you the true peak brightness.</p>
+    <p class="inherit" id="in7"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c7a"></canvas><p class="cap">A supernova in a distant galaxy. Fit the amber template to the points: stretch sets its width, peak sets its height.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r7s">Stretch <output id="o7s"></output></label><input type="range" id="r7s" min="0.7" max="1.3" step="0.002" value="1"></div>
+      <div class="ctl"><label for="r7m">Peak apparent magnitude <output id="o7m"></output></label><input type="range" id="r7m" min="19.5" max="23" step="0.005" value="21.15"></div>
+      <div class="btns"><button class="btn" id="r7fit" type="button">Fit it for me</button></div>
+      <dl class="ro"><dt>Fit (χ² per point)</dt><dd id="d7chi"></dd><dt>Decline in 15 days</dt><dd id="d7dm"></dd><dt>Standardised peak M</dt><dd id="d7M"></dd></dl>
+      <div class="result"><span>Distance to the supernova</span><b id="v7"></b><em id="e7"></em></div>
+    </div>
+  </div>
+  <div class="viz"><canvas id="c7b"></canvas>
+    <div class="btns"><button class="btn" id="r7corr" type="button">Apply the width correction</button></div>
+    <p class="cap">Forty nearby supernovae with Cepheid-calibrated distances. Raw peaks scatter widely; correcting for decline rate tightens them into a precise standard candle.</p></div>
+  <div class="eq" id="eq7"></div>
+  <p class="carry"><strong>Carries up:</strong> supernova distances to galaxies hundreds of megaparsecs away are the x-axis of Hubble's law in rung 8.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 8 ============ -->
+<section class="rung" id="r8" data-n="8" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 8 · Slipher (1912), Hubble (1929)</p>
+    <h2>Redshift and Hubble's law</h2>
+    <p class="lede">Every element absorbs light at fixed wavelengths. In distant galaxies the same barcode appears, shifted red. Line up the lab wavelengths with each galaxy's dark lines to measure its redshift z, record it, and see velocity grow with distance.</p>
+    <p class="inherit" id="in8"></p>
+  </header>
+  <div class="chips" id="r8chips" role="group" aria-label="Galaxies"></div>
+  <div class="lab">
+    <div class="viz"><canvas id="c8a"></canvas><p class="cap">Galaxy spectrum with absorption lines. The cyan ticks are lab wavelengths for calcium, hydrogen, magnesium and sodium, shifted by your z. Faint grey ticks show the unshifted lab positions.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r8z">Redshift z for this galaxy <output id="o8z"></output></label><input type="range" id="r8z" min="0" max="0.1" step="0.0001" value="0"></div>
+      <div class="btns"><button class="btn" id="r8rec" type="button">Record this redshift</button></div>
+      <dl class="ro"><dt>Hα would sit at</dt><dd id="d8ha"></dd><dt>Velocity cz</dt><dd id="d8v"></dd><dt>SN distance</dt><dd id="d8d"></dd><dt>Galaxies measured</dt><dd id="d8n"></dd></dl>
+      <div class="result"><span>Your Hubble constant</span><b id="v8"></b><em id="e8"></em></div>
+    </div>
+  </div>
+  <div class="viz"><canvas id="c8b"></canvas><p class="cap">Hubble diagram. The amber line is the best fit through the origin to the galaxies you have recorded. Hollow ticks on the axis are galaxies still waiting for a redshift.</p></div>
+  <div class="eq" id="eq8"></div>
+  <p class="carry"><strong>Carries up:</strong> H₀ turns any redshift into a distance and sets the expansion rate used to integrate out to the edge in rung 9.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ RUNG 9 ============ -->
+<section class="rung" id="r9" data-n="9" hidden>
+  <header class="rh">
+    <p class="eyebrow">Rung 9 · Friedmann, Lemaître, and the cosmic microwave background</p>
+    <h2>The edge of the observable universe</h2>
+    <p class="lede">The universe is 13.8 billion years old, yet we see farther than 13.8 billion light years, because space kept stretching while the light travelled. Add up each step of the light's journey, each stretched by all the expansion that came after, and you get the distance to the source today.</p>
+    <p class="inherit" id="in9"></p>
+  </header>
+  <div class="lab">
+    <div class="viz"><canvas id="c9a"></canvas><canvas id="c9b"></canvas><p class="cap">Distance today versus redshift. The curve flattens toward a limit: the particle horizon, the farthest a signal could have come since the Big Bang.</p></div>
+    <div class="side">
+      <div class="ctl"><label for="r9src">Expansion rate H₀</label>
+        <select id="r9src"><option value="yours" selected>Yours, from rung 8</option><option value="cmb">CMB (Planck): 67.7</option><option value="shoes">Distance ladder (SH0ES): 73.0</option></select></div>
+      <div class="ctl"><label for="r9om">Matter fraction Ωm <output id="o9om"></output></label><input type="range" id="r9om" min="0.05" max="1" step="0.01" value="0.31"></div>
+      <div class="ctl"><label for="r9z">Light from redshift <output id="o9z"></output></label><input type="range" id="r9z" min="-2" max="3.0414" step="0.001" value="3.0414"></div>
+      <dl class="ro"><dt>Dark energy ΩΛ</dt><dd id="d9ol"></dd><dt>Age of the universe</dt><dd id="d9age"></dd><dt>Light travelled for</dt><dd id="d9tl"></dd><dt>Source distance today</dt><dd id="d9dc"></dd></dl>
+      <div class="result"><span>Radius of the observable universe</span><b id="v9"></b><em id="e9"></em></div>
+    </div>
+  </div>
+  <div class="eq" id="eq9"></div>
+  <p class="carry"><strong>The top of the ladder:</strong> a stick's shadow, an eclipse, a triangle across Earth's orbit, a pulsating star and a line in a spectrum, all multiplied together.</p>
+  <nav class="pn"></nav>
+</section>
+
+<!-- ============ SUMMIT ============ -->
+<section class="rung" id="r10" data-n="10" hidden>
+  <header class="rh">
+    <p class="eyebrow">The summit</p>
+    <h2>How your errors climbed the ladder</h2>
+    <p class="lede">Every rung's ruler came from the rung below. The table shows where each of your numbers landed and how far it drifted from the modern value.</p>
+  </header>
+  <div class="tablebox"><table class="chain" id="chain"></table></div>
+  <h3 class="subhead">The Hubble tension</h3>
+  <p class="note">Real astronomers face the same problem at higher precision. The Cepheid-and-supernova ladder gives H₀ ≈ 73, while the cosmic microwave background, read through the standard model of cosmology, predicts about 67. The error bars don't overlap. Either a rung hides a subtle error, or the disagreement points to new physics.</p>
+  <div class="viz"><canvas id="c10"></canvas><p class="cap">Measurements of H₀ in km/s/Mpc with 1σ error bars. The gravitational-wave standard siren (GW170817) needs no ladder at all.</p></div>
+  <div class="btns"><button class="btn" id="reset" type="button">Reset every rung to the historical values</button></div>
+  <nav class="pn"></nav>
+</section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(()=>{
+"use strict";
+// ---------------- constants & helpers ----------------
+const DEG=Math.PI/180, AS=Math.PI/648000, C_KMS=299792.458;
+const COL={bg:'#0a0f1d',panel:'#111a2e',panel2:'#17223b',line:'#27345a',grid:'#1a2541',ink:'#e7e9f1',dim:'#9aa6c4',faint:'#66739a',
+  sun:'#f3b64a',truth:'#86d6e8',moon:'#d9a3c0',good:'#7bd4a0',bad:'#f07a73',earth:'#17325a',earthEdge:'#3b5f94',copper:'#b4553a',mars:'#e06a4a'};
+const MONO='"JetBrains Mono",ui-monospace,Menlo,monospace', SERIF='"Spectral",Georgia,serif';
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r){let u=0;while(!u)u=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*r())}
+const nf=(x,d=0)=>Number(x).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const SUP='⁻⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sup=n=>String(n).replace(/[-0-9]/g,c=>SUP['-0123456789'.indexOf(c)]);
+function sci(x,d=2){if(!isFinite(x)||x===0)return String(x);const e=Math.floor(Math.log10(Math.abs(x)));return nf(x/10**e,d)+'×10'+sup(e)}
+function lyFmt(ly){if(ly<1e3)return nf(ly,ly<10?2:1)+' ly';if(ly<1e6)return nf(ly/1e3,ly<1e4?2:1)+' thousand ly';if(ly<1e9)return nf(ly/1e6,ly<1e7?2:1)+' million ly';return nf(ly/1e9,ly<1e10?2:1)+' billion ly'}
+function errStr(e){return (e>=0?'+':'−')+nf(Math.abs(e*100),1)+'%'}
+function chip(e){const a=Math.abs(e);return a<0.02?'good':a<0.1?'warn':'bad'}
+const $=id=>document.getElementById(id);
+const lerp=(a,b,t)=>a+(b-a)*t;
+
+// ---------------- canvas plumbing ----------------
+const CANV={};
+function makeCanvas(id,aspect,draw){
+  const cv=$(id),ctx=cv.getContext('2d');const o={cv,ctx,w:0,h:0,draw};
+  function size(force){const w=Math.floor(cv.parentElement.clientWidth-20);if(w<=0)return;if(w===o.w&&!force)return;
+    const a=typeof aspect==='function'?aspect(w):aspect;const h=Math.round(w*a);const dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);o.w=w;o.h=h;o.redraw();}
+  o.redraw=()=>{if(!o.w)return;ctx.clearRect(0,0,o.w,o.h);ctx.save();draw(ctx,o.w,o.h);ctx.restore();};
+  o.size=size;new ResizeObserver(()=>size()).observe(cv.parentElement);CANV[id]=o;return o;
+}
+function L(ctx,x1,y1,x2,y2){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
+function circ(ctx,x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,Math.max(r,0),0,2*Math.PI);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1;ctx.stroke()}}
+function T(ctx,s,x,y,o={}){ctx.font=(o.w||'400')+' '+(o.s||11)+'px '+(o.f||MONO);ctx.fillStyle=o.c||COL.dim;ctx.textAlign=o.a||'left';ctx.textBaseline=o.b||'alphabetic';ctx.fillText(s,x,y)}
+function plot(ctx,box,o){
+  const tx=o.xlog?Math.log10:v=>v,ty=o.ylog?Math.log10:v=>v;
+  const X=v=>box.x+(tx(v)-tx(o.x0))/(tx(o.x1)-tx(o.x0))*box.w;
+  const Y=v=>box.y+box.h-(ty(v)-ty(o.y0))/(ty(o.y1)-ty(o.y0))*box.h;
+  ctx.save();ctx.lineWidth=1;
+  (o.xt||[]).forEach(v=>{const x=X(v);ctx.strokeStyle=COL.grid;L(ctx,x,box.y,x,box.y+box.h);T(ctx,o.xf?o.xf(v):String(v),x,box.y+box.h+5,{a:'center',b:'top',c:COL.faint,s:10.5})});
+  (o.yt||[]).forEach(v=>{const y=Y(v);ctx.strokeStyle=COL.grid;L(ctx,box.x,y,box.x+box.w,y);T(ctx,o.yf?o.yf(v):String(v),box.x-6,y,{a:'right',b:'middle',c:COL.faint,s:10.5})});
+  ctx.strokeStyle=COL.line;ctx.strokeRect(box.x,box.y,box.w,box.h);
+  if(o.xl)T(ctx,o.xl,box.x+box.w/2,box.y+box.h+22,{a:'center',b:'top',c:COL.dim,s:11});
+  if(o.yl){ctx.save();ctx.translate(box.x-(o.ylOff||40),box.y+box.h/2);ctx.rotate(-Math.PI/2);T(ctx,o.yl,0,0,{a:'center',b:'middle',c:COL.dim,s:11});ctx.restore();}
+  ctx.restore();return{X,Y};
+}
+function clip(ctx,b){ctx.save();ctx.beginPath();ctx.rect(b.x,b.y,b.w,b.h);ctx.clip()}
+
+// ---------------- truths & fixed data ----------------
+const TRUE={R:6371,dMoon:384400,AU:1.495978707e8,lyKm:9.4607e12,pcLy:3.26156,andPc:7.65e5,snMpc:120,H0:70,Dobs:46.3};
+// Paris–Cayenne baseline as a chord of the Earth
+const CHORD=(()=>{const p1=48.85*DEG,l1=2.35*DEG,p2=4.93*DEG,l2=-52.33*DEG;const c=Math.acos(Math.sin(p1)*Math.sin(p2)+Math.cos(p1)*Math.cos(p2)*Math.cos(l1-l2));return 2*Math.sin(c/2)})();
+const MARS_AU=0.381;
+const P_MARS_TRUE=(CHORD*TRUE.R)/(MARS_AU*TRUE.AU)/AS; // arcsec
+
+// Main sequence (B-V -> M_V)
+const MS=[[-0.35,-4.4],[-0.30,-3.5],[-0.20,-1.6],[-0.10,-0.4],[0,0.6],[0.10,1.5],[0.20,2.1],[0.30,2.6],[0.40,3.0],[0.50,3.8],[0.60,4.5],[0.70,5.2],[0.80,5.9],[0.90,6.2],[1.00,6.6],[1.20,7.6],[1.40,9.0],[1.60,10.7],[1.80,12.5],[2.0,14.3]];
+function msM(bv){for(let i=1;i<MS.length;i++){if(bv<=MS[i][0]){const[a,b]=MS[i-1],[c,d]=MS[i];return lerp(b,d,(bv-a)/(c-a))}}return MS[MS.length-1][1]}
+const CALIB=(()=>{const r=rng(11),out=[];for(let i=0;i<190;i++){const bv=-0.3+r()*2.05;out.push({bv,M:msM(bv)+0.33*gauss(r)})}
+  for(let i=0;i<22;i++){const bv=0.9+r()*0.7;out.push({bv,M:0.9-(bv-0.9)*2.2+0.5*gauss(r),g:1})}return out})();
+const CLUSTERS={
+  hyades:{name:'Hyades · Taurus',mu:3.38,lo:0.05,hi:1.7,n:70,giants:3},
+  pleiades:{name:'Pleiades · Seven Sisters',mu:5.67,lo:-0.15,hi:1.7,n:90,giants:0},
+  praesepe:{name:'Praesepe · Beehive',mu:6.35,lo:0.0,hi:1.6,n:80,giants:4},
+  m67:{name:'M67 · old cluster in Cancer',mu:9.6,lo:0.55,hi:1.6,n:80,giants:12},
+  ngc188:{name:'NGC 188 · near Polaris',mu:11.3,lo:0.62,hi:1.5,n:70,giants:12}};
+Object.entries(CLUSTERS).forEach(([k,c],i)=>{const r=rng(100+i);c.stars=[];
+  for(let j=0;j<c.n*3&&c.stars.length<c.n;j++){const bv=c.lo+r()*(c.hi-c.lo);const M=msM(bv)+0.12*gauss(r);if(M+c.mu<19.5)c.stars.push({bv,m:M+c.mu})}
+  for(let j=0;j<c.giants;j++){const bv=0.95+r()*0.35;c.stars.push({bv,m:1.6-(bv-0.95)*3+0.25*gauss(r)+c.mu,g:1})}
+  const ms=c.stars.filter(s=>!s.g);c.best=ms.reduce((a,s)=>a+s.m-msM(s.bv),0)/ms.length;});
+
+// Cepheid V1 in Andromeda
+const P_TRUE=31.4, CEPH_M0=5*Math.log10(TRUE.andPc)-5-(2.43*(Math.log10(P_TRUE)-1)+4.05);
+function cephShape(ph){ph=((ph%1)+1)%1;const b=ph<0.18?Math.sin(Math.PI/2*ph/0.18)**2:Math.pow(1-(ph-0.18)/0.82,1.3);return b}
+const CEPH=(()=>{const r=rng(7),o=[];for(let i=0;i<64;i++){const t=r()*220;o.push({t,m:CEPH_M0+0.8*(0.5-cephShape(t/P_TRUE+0.3))+0.05*gauss(r)})}
+  const mean=o.reduce((a,p)=>a+p.m,0)/o.length;o.forEach(p=>p.m+=CEPH_M0-mean);return o.sort((a,b)=>a.t-b.t)})();
+const CEPH_MEAN=CEPH.reduce((a,p)=>a+p.m,0)/CEPH.length;
+function pdm(P){const nb=10,s=new Array(nb).fill(0),ss=new Array(nb).fill(0),n=new Array(nb).fill(0);let tot=0;
+  CEPH.forEach(p=>{const b=Math.floor(((p.t/P)%1)*nb);s[b]+=p.m;ss[b]+=p.m*p.m;n[b]++;tot+=(p.m-CEPH_MEAN)**2});
+  let w=0;for(let i=0;i<nb;i++)if(n[i])w+=ss[i]-s[i]*s[i]/n[i];return w/tot}
+const CEPH_CAL=(()=>{const r=rng(21),o=[];for(let i=0;i<16;i++){const lp=0.45+r()*1.15;o.push({lp,M:-2.43*(lp-1)-4.05+0.13*gauss(r)})}return o})();
+
+// Supernova
+function snf(x){return x<0?0.0065*x*x:0.9*(1-Math.exp(-x/10))/(1-Math.exp(-1.5))+0.02*x}
+const SN_S=0.88, SN_MTRUE=-19.3-1.5*(SN_S-1), SN_MPEAK=5*Math.log10(TRUE.snMpc*1e6)-5+SN_MTRUE;
+const SN=(()=>{const r=rng(5);return[-14,-10,-7,-4,-1,2,5,9,13,17,22,28,35,44,55].map(t=>({t,m:SN_MPEAK+snf(t/SN_S)+0.04*gauss(r)}))})();
+const SNS=(()=>{const r=rng(9),o=[];for(let i=0;i<40;i++){const s=0.75+r()*0.45;o.push({s,dm:snf(15/s),M:-19.3-1.5*(s-1)+0.11*gauss(r)})}return o})();
+function sdev(a){const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(a.length-1))}
+
+// Galaxies for Hubble's law
+const LINES=[['Ca K',393.4,.55],['Ca H',396.8,.5],['Hδ',410.2,.22],['Hγ',434.0,.28],['Hβ',486.1,.33],['Mg b',517.5,.3],['Na D',589.3,.3],['Hα',656.3,.45]];
+const GAL=(()=>{const r=rng(31);return[18,42,65,95,140,190,260,340].map((d,i)=>{const vp=250*gauss(r);const z=(TRUE.H0*d+vp)/C_KMS;const sc=1+0.06*gauss(r);
+  const spec=[];const rs=rng(200+i);for(let k=0;k<=700;k++){const lam=380+k*0.55;let f=0.62+0.32*Math.sin((lam-380)/380*Math.PI)+0.04*Math.sin(lam/7);
+    LINES.forEach(([n,l0,dp])=>{f*=1-dp*Math.exp(-((lam-l0*(1+z))**2)/(2*1.7*1.7))});spec.push([lam,f+0.025*gauss(rs)])}
+  return{name:'Galaxy '+'ABCDEFGH'[i],d,z,sc,spec}})})();
+
+// ---------------- state ----------------
+const DEF={r1:{ang:7.2,dist:5000,stad:157.5},r2:{ratio:2.7,th:0.52,t:1.3},r3:{ang:87,p:25,view:0},r4:{logd:Math.log10(1/0.7685),inst:0.00002,m:1.5,star:'proxima'},
+  r5:{cl:'pleiades',mu:5.5},r6:{P:30},r7:{s:1,m:21.15,mix:0,corr:0},r8:{sel:4,z:0,meas:[GAL[0].z,GAL[1].z,GAL[2].z,GAL[3].z,null,null,null,null]},r9:{src:'yours',om:0.31,lz:Math.log10(1100)}};
+let S=JSON.parse(JSON.stringify(DEF));
+const D={};
+
+function cosmo(H0,Om){const Or=9.1e-5,OL=1-Om-Or;const E=z=>Math.sqrt(Math.max(Or*(1+z)**4+Om*(1+z)**3+OL,1e-12));
+  const U=Math.log(1e8),n=5000,du=U/n;const u=[0],dc=[0],tl=[0];let fd0=1/E(0),ft0=1/E(0);
+  for(let i=1;i<=n;i++){const uu=i*du,z=Math.exp(uu)-1,e=E(z),fd=(1+z)/e,ft=1/e;dc.push(dc[i-1]+0.5*(fd+fd0)*du);tl.push(tl[i-1]+0.5*(ft+ft0)*du);u.push(uu);fd0=fd;ft0=ft}
+  const DH=C_KMS/H0,tH=977.79/H0;
+  const at=(arr,z)=>{const x=Math.log(1+z)/du;const i=Math.min(Math.floor(x),n-1);return lerp(arr[i],arr[i+1],x-i)};
+  return{OL,DH,tH,dc:z=>DH*at(dc,z),tl:z=>tH*at(tl,z),hor:DH*dc[n],age:tH*tl[n]}}
+const MPC_GLY=3.26156e-3;
+let COS=null,COSkey='';
+
+function compute(){
+  const s=S;
+  D.R=s.r1.dist*s.r1.stad/1000*(360/s.r1.ang)/(2*Math.PI); D.C=2*Math.PI*D.R;
+  D.Dmoon=2*D.R/(s.r2.ratio+1); D.dMoon=D.Dmoon/(s.r2.th*DEG);
+  D.ari=1/Math.cos(s.r3.ang*DEG); D.dSunAri=D.ari*D.dMoon;
+  D.B=CHORD*D.R; D.dMars=D.B/(s.r3.p*AS); D.AU=D.dMars/MARS_AU; D.kA=D.AU/TRUE.AU;
+  D.pcKm=206264.8*D.AU; D.pcLy=D.pcKm/TRUE.lyKm;
+  D.p4=1/10**s.r4.logd; D.star=10**s.r4.logd;
+  const cl=CLUSTERS[s.r5.cl]; D.cl=cl; D.clPc=10**(s.r5.mu/5+1); D.clLy=D.clPc*D.pcLy; D.clLyTrue=10**(cl.mu/5+1)*TRUE.pcLy; D.kC=10**((s.r5.mu-cl.mu)/5);
+  D.zp=-5*Math.log10(D.kC); // magnitude shift of every calibration that inherits rung 5
+  D.cephM=-2.43*(Math.log10(s.r6.P)-1)-4.05+D.zp; D.andMu=CEPH_MEAN-D.cephM; D.andPc=10**(D.andMu/5+1); D.andLy=D.andPc*D.pcLy; D.q=Math.max(0,1-pdm(s.r6.P));
+  D.dm15=snf(15/s.r7.s); D.snM=-19.3-1.5*(s.r7.s-1)+D.zp; D.snMu=s.r7.m-D.snM; D.snPc=10**(D.snMu/5+1); D.snLy=D.snPc*D.pcLy;
+  let chi=0;SN.forEach(p=>{chi+=((p.m-(s.r7.m+snf(p.t/s.r7.s)))/0.04)**2});D.chi=chi/SN.length;
+  // reported distances in standard Mpc (km-based), inheriting rung 5 zero point and rung 3 AU
+  D.gal=GAL.map((g,i)=>({d:g.d*g.sc*D.kC*D.kA,z:s.r8.meas[i]}));
+  let sxy=0,sxx=0,cnt=0;D.gal.forEach(g=>{if(g.z!=null){const v=C_KMS*g.z;sxy+=v*g.d;sxx+=g.d*g.d;cnt++}});D.H0=cnt?sxy/sxx:NaN;D.nGal=cnt;
+  D.H0use=s.r9.src==='yours'?D.H0:s.r9.src==='cmb'?67.7:73.0;
+  const key=D.H0use.toFixed(4)+'|'+s.r9.om;if(key!==COSkey){COS=cosmo(D.H0use,s.r9.om);COSkey=key}
+  D.hor=COS.hor*MPC_GLY; D.age=COS.age;
+}
+
+// ---------------- rung meta for the rail ----------------
+const RUNGS=[
+  {n:1,name:'Size of the Earth',sc:'~10⁷ m',val:()=>nf(D.R)+' km',err:()=>D.R/TRUE.R-1},
+  {n:2,name:'The Moon',sc:'~10⁸ m',val:()=>nf(D.dMoon/1000)+' thousand km',err:()=>D.dMoon/TRUE.dMoon-1},
+  {n:3,name:'The Sun · 1 AU',sc:'~10¹¹ m',val:()=>nf(D.AU/1e6,1)+' million km',err:()=>D.kA-1},
+  {n:4,name:'Stellar parallax',sc:'~10¹⁷ m',val:()=>'1 pc = '+nf(D.pcLy,2)+' ly',err:()=>D.pcLy/TRUE.pcLy-1},
+  {n:5,name:'Main sequence',sc:'~10¹⁹ m',val:()=>D.cl.name.split(' · ')[0]+' '+lyFmt(D.clLy),err:()=>D.clLy/D.clLyTrue-1},
+  {n:6,name:'Cepheids',sc:'~10²² m',val:()=>'Andromeda '+lyFmt(D.andLy),err:()=>D.andLy/(TRUE.andPc*TRUE.pcLy)-1},
+  {n:7,name:'Type Ia supernovae',sc:'~10²⁴ m',val:()=>lyFmt(D.snLy),err:()=>D.snLy/(TRUE.snMpc*1e6*TRUE.pcLy)-1},
+  {n:8,name:'Hubble’s law',sc:'~10²⁵ m',val:()=>'H₀ = '+(isFinite(D.H0)?nf(D.H0,1):'—'),err:()=>D.H0/TRUE.H0-1},
+  {n:9,name:'Observable universe',sc:'4×10²⁶ m',val:()=>nf(D.hor,1)+' billion ly',err:()=>D.hor/TRUE.Dobs-1},
+  {n:10,name:'Summit',sc:'',val:()=>'Error budget & tension',err:null}];
+const rail=$('rail');
+rail.innerHTML=RUNGS.slice().reverse().map(r=>`<button type="button" data-go="${r.n}"><span class="n">${r.n===10?'★':r.n}</span><span class="nm">${r.name}</span><span class="sc">${r.sc}</span><span class="vl" id="rv${r.n}"></span><span class="chip" id="rc${r.n}"></span></button>`).join('')+'<div class="railcap">↑ climb from rung 1</div>';
+rail.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(+b.dataset.go)});
+document.querySelectorAll('.pn').forEach(nv=>{const n=+nv.closest('.rung').dataset.n;
+  nv.innerHTML=(n>1?`<button class="btn" type="button" data-go="${n-1}">← ${n-1===10?'Summit':'Rung '+(n-1)}</button>`:'<span></span>')+(n<10?`<button class="btn" type="button" data-go="${n+1}">${n+1===10?'Summit':'Rung '+(n+1)} →</button>`:'<span></span>');
+  nv.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){go(+b.dataset.go);window.scrollTo({top:$('stage').offsetTop-20,behavior:reduce?'auto':'smooth'})}})});
+
+let active=1;
+function go(n){active=n;document.querySelectorAll('.rung').forEach(s=>s.hidden=+s.dataset.n!==n);
+  rail.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',+b.dataset.go===n?'true':'false'));
+  try{history.replaceState(null,'','#r'+n)}catch(e){}
+  try{localStorage.setItem('ladder-rung',String(n))}catch(e){}
+  requestAnimationFrame(()=>{Object.values(CANV).forEach(c=>{if(!c.cv.closest('.rung').hidden)c.size(true)})});
+}
+
+// ---------------- text updates ----------------
+function setText(id,v){const el=$(id);if(el)el.textContent=v}
+function setHTML(id,v){const el=$(id);if(el)el.innerHTML=v}
+function result(id,eid,valStr,err,trueStr){setText(id,valStr);setHTML(eid,`<span class="chip ${chip(err)}">${errStr(err)}</span> vs modern <span class="t">${trueStr}</span>`)}
+function updateText(){
+  const s=S;
+  // rail
+  RUNGS.forEach(r=>{setText('rv'+r.n,r.val());const c=$('rc'+r.n);if(r.err){const e=r.err();c.className='chip '+(isFinite(e)?chip(e):'bad');c.textContent=isFinite(e)?errStr(e):'—'}else{c.className='';c.textContent=''}});
+  // r1
+  setText('o1ang',nf(s.r1.ang,1)+'°');setText('o1dist',nf(s.r1.dist)+' stadia');
+  setText('d1frac','1/'+nf(360/s.r1.ang,1));setText('d1Cs',nf(s.r1.dist*360/s.r1.ang)+' stadia');setText('d1Ck',nf(D.C)+' km');
+  result('v1','e1',nf(D.R)+' km',D.R/TRUE.R-1,'6,371 km');
+  setHTML('eq1',`<div>angle ÷ 360° = ${nf(s.r1.ang,1)}° ÷ 360° = 1/${nf(360/s.r1.ang,2)} of a circle</div><div>C = ${nf(s.r1.dist)} stadia × ${nf(360/s.r1.ang,2)} = ${nf(s.r1.dist*360/s.r1.ang)} stadia × ${s.r1.stad} m = <b>${nf(D.C)} km</b></div><div>R = C ÷ 2π = <b>${nf(D.R)} km</b> &nbsp; <i>(modern: 6,371 km)</i></div>`);
+  // r2
+  setText('o2t',nf(s.r2.t,2)+' h');setText('o2ratio',nf(s.r2.ratio,2));setText('o2th',nf(s.r2.th,3)+'°');
+  setHTML('in2',`<span>From rung 1: Earth's radius ${nf(D.R)} km</span>`);
+  setText('d2E',nf(2*D.R)+' km');setText('d2rat',nf(s.r2.ratio+1,2)+' : 1');setText('d2M',nf(D.Dmoon)+' km');setText('d2er',nf(D.dMoon/D.R,1)+' R⊕');
+  result('v2','e2',nf(D.dMoon)+' km',D.dMoon/TRUE.dMoon-1,'384,400 km');
+  setHTML('eq2',`<div>D⊕ = shadow + 1 Moon = ${nf(s.r2.ratio,2)} + 1 = ${nf(s.r2.ratio+1,2)} D☾ &nbsp;→&nbsp; D☾ = ${nf(2*D.R)} km ÷ ${nf(s.r2.ratio+1,2)} = <b>${nf(D.Dmoon)} km</b></div><div>θ = ${nf(s.r2.th,3)}° = ${nf(s.r2.th*DEG,5)} rad &nbsp;→&nbsp; d = D ÷ θ = ${nf(D.Dmoon)} ÷ ${nf(s.r2.th*DEG,5)} = <b>${nf(D.dMoon)} km</b></div>`);
+  // r3
+  setHTML('in3',`<span>From rung 1: Earth's radius ${nf(D.R)} km</span><span>From rung 2: Moon distance ${nf(D.dMoon)} km</span>`);
+  setText('o3ang',nf(s.r3.ang,2)+'°');setText('d3rat',nf(D.ari,1)+' ×');setText('d3rt','≈ 389 × (89.853°)');
+  result('v3a','e3a',sci(D.dSunAri,2)+' km',D.dSunAri/TRUE.AU-1,'1.50×10⁸ km');
+  setText('o3p',nf(s.r3.p,1)+'″');setText('d3B',nf(D.B)+' km');setText('d3dm',sci(D.dMars,2)+' km');
+  result('v3','e3',nf(D.AU/1e6,1)+' million km',D.kA-1,'149.6 million km');
+  setHTML('eq3',`<div>Aristarchus: cos ${nf(s.r3.ang,2)}° = d☾/d☉ &nbsp;→&nbsp; d☉ = ${nf(D.ari,1)} × ${nf(D.dMoon)} km = ${sci(D.dSunAri,2)} km</div><div>Parallax: d♂ = B ÷ p = ${nf(D.B)} km ÷ (${nf(s.r3.p,1)}″ ÷ 206,265) = <b>${sci(D.dMars,3)} km</b></div><div>Kepler: 1 AU = d♂ ÷ 0.381 = <b>${nf(D.AU/1e6,1)} million km</b> &nbsp; <i>(true shift ≈ ${nf(P_MARS_TRUE,1)}″)</i></div>`);
+  // r4
+  setHTML('in4',`<span>From rung 3: 1 AU = ${nf(D.AU/1e6,1)} million km</span>`);
+  setText('o4d',nf(D.star,D.star<10?2:0)+' pc');setText('o4m',['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan'][Math.floor(s.r4.m)]);
+  const p=D.p4,sig=s.r4.inst;setText('d4p',p>=0.01?nf(p,4)+'″':p>=1e-4?nf(p*1000,3)+' mas':nf(p*1e6,1)+' µas');
+  const snr=p/sig;setHTML('d4snr',`<span class="chip ${snr>=5?'good':snr>=1?'warn':'bad'}">${snr>=100?nf(snr):nf(snr,1)}</span>`);
+  setText('d4reach',lyFmt(1/(5*sig)*D.pcLy));setText('d4pc',lyFmt(D.star*D.pcLy));
+  result('v4','e4',nf(D.pcLy,3)+' ly',D.pcLy/TRUE.pcLy-1,'3.262 ly');
+  setHTML('eq4',`<div>tan p = 1 AU ÷ d &nbsp;→&nbsp; d [pc] = 1 ÷ p [″] = 1 ÷ ${p>=0.001?nf(p,4):sci(p,2)} = <b>${nf(D.star,D.star<10?3:0)} pc</b></div><div>1 pc = 206,265 AU = 206,265 × ${nf(D.AU/1e6,1)} million km = ${sci(D.pcKm,3)} km = <b>${nf(D.pcLy,3)} ly</b></div>`);
+  // r5
+  setHTML('in5',`<span>From rung 4: nearby-star calibration, 1 pc = ${nf(D.pcLy,3)} ly</span>`);
+  setText('o5mu',nf(s.r5.mu,2));const off=D.cl.best-s.r5.mu;
+  setText('d5off',Math.abs(off)<0.03?'lined up':(off>0?'cluster too faint by ':'cluster too bright by ')+nf(Math.abs(off),2)+' mag');
+  setText('d5dim',nf(10**(0.4*s.r5.mu),0)+'× dimmer');setText('d5pc',nf(D.clPc)+' pc');
+  result('v5','e5',lyFmt(D.clLy),D.clLy/D.clLyTrue-1,lyFmt(D.clLyTrue));
+  setHTML('eq5',`<div>F = L ÷ 4πd² &nbsp;⇔&nbsp; m − M = 5 log₁₀(d ÷ 10 pc)</div><div>d = 10^((m − M + 5)/5) = 10^((${nf(s.r5.mu,2)} + 5)/5) = <b>${nf(D.clPc)} pc</b> = <b>${lyFmt(D.clLy)}</b></div><div>Every 5 magnitudes = 100× fainter = 10× farther</div>`);
+  // r6
+  setHTML('in6',`<span>From rung 5: cluster zero point shifts the Leavitt law by ${D.zp>=0?'+':'−'}${nf(Math.abs(D.zp),2)} mag</span>`);
+  setText('o6P',nf(s.r6.P,2)+' d');setHTML('d6q',`<span class="chip ${D.q>0.85?'good':D.q>0.5?'warn':'bad'}">${nf(D.q*100,0)}%</span>`);
+  setText('d6M',nf(D.cephM,2));setText('d6m',nf(CEPH_MEAN,2));setText('d6mu',nf(D.andMu,2));
+  result('v6','e6',lyFmt(D.andLy),D.andLy/(TRUE.andPc*TRUE.pcLy)-1,'2.5 million ly');
+  setHTML('eq6',`<div>M = −2.43 (log₁₀ P − 1) − 4.05 ${D.zp>=0?'+':'−'} ${nf(Math.abs(D.zp),2)} (your zero point) = −2.43 (${nf(Math.log10(s.r6.P),3)} − 1) − 4.05 ${D.zp>=0?'+':'−'} ${nf(Math.abs(D.zp),2)} = <b>${nf(D.cephM,2)}</b></div><div>m − M = ${nf(CEPH_MEAN,2)} − (${nf(D.cephM,2)}) = ${nf(D.andMu,2)} &nbsp;→&nbsp; d = <b>${nf(D.andPc/1000)} kpc</b> = <b>${lyFmt(D.andLy)}</b></div>`);
+  // r7
+  setHTML('in7',`<span>From rung 6: Cepheid zero point ${D.zp>=0?'+':'−'}${nf(Math.abs(D.zp),2)} mag</span><span>From rung 4: 1 pc = ${nf(D.pcLy,3)} ly</span>`);
+  setText('o7s',nf(s.r7.s,3));setText('o7m',nf(s.r7.m,2));setHTML('d7chi',`<span class="chip ${D.chi<2?'good':D.chi<10?'warn':'bad'}">${D.chi<100?nf(D.chi,1):nf(D.chi)}</span>`);
+  setText('d7dm',nf(D.dm15,2)+' mag');setText('d7M',nf(D.snM,2));
+  result('v7','e7',lyFmt(D.snLy),D.snLy/(TRUE.snMpc*1e6*TRUE.pcLy)-1,'391 million ly');
+  setHTML('eq7',`<div>M = −19.3 − 1.5 (s − 1) ${D.zp>=0?'+':'−'} ${nf(Math.abs(D.zp),2)} = −19.3 − 1.5 (${nf(s.r7.s,3)} − 1) ${D.zp>=0?'+':'−'} ${nf(Math.abs(D.zp),2)} = <b>${nf(D.snM,2)}</b> &nbsp;(≈ ${sci(10**(-0.4*(D.snM-4.83)),1)} Suns)</div><div>m − M = ${nf(s.r7.m,2)} − (${nf(D.snM,2)}) = ${nf(D.snMu,2)} &nbsp;→&nbsp; d = <b>${nf(D.snPc/1e6,1)} Mpc</b> = <b>${lyFmt(D.snLy)}</b></div>`);
+  setText('r7corr',s.r7.corr?'Show raw peaks':'Apply the width correction');$('r7corr').classList.toggle('on',!!s.r7.corr);
+  // r8
+  setHTML('in8',`<span>From rung 7: supernova distances, scaled by your zero point ×${nf(D.kC,3)} and AU ×${nf(D.kA,3)}</span>`);
+  const g=GAL[s.r8.sel],gd=D.gal[s.r8.sel];
+  setText('o8z',nf(s.r8.z,4));setText('d8ha',nf(656.3*(1+s.r8.z),1)+' nm');setText('d8v',nf(C_KMS*s.r8.z)+' km/s');setText('d8d',nf(gd.d,1)+' Mpc');setText('d8n',D.nGal+' of 8');
+  if(isFinite(D.H0))result('v8','e8',nf(D.H0,1)+' km/s/Mpc',D.H0/TRUE.H0-1,'70 in this simulation');else{setText('v8','—');setText('e8','Record at least one galaxy')}
+  setHTML('eq8',`<div>z = Δλ ÷ λ ≈ v ÷ c &nbsp;→&nbsp; v = ${nf(s.r8.z,4)} × 299,792 km/s = ${nf(C_KMS*s.r8.z)} km/s</div><div>v = H₀ d &nbsp;→&nbsp; best slope through ${D.nGal} galaxies: <b>H₀ = ${isFinite(D.H0)?nf(D.H0,1):'—'} km/s/Mpc</b></div><div>1 ÷ H₀ = 977.8 ÷ H₀ Gyr = <b>${isFinite(D.H0)?nf(977.8/D.H0,1):'—'} billion years</b> &nbsp;<i>(a first guess at the age of the universe)</i></div>`);
+  renderChips();
+  // r9
+  setHTML('in9',`<span>From rung 8: H₀ = ${isFinite(D.H0)?nf(D.H0,1):'—'} km/s/Mpc</span>`);
+  const z=10**s.r9.lz;setText('o9om',nf(s.r9.om,2));setText('o9z','z = '+(z<10?nf(z,2):nf(z,0)));
+  setText('d9ol',nf(COS.OL,2));setText('d9age',nf(D.age,2)+' billion yr');setText('d9tl',nf(COS.tl(z),2)+' billion yr');setText('d9dc',nf(COS.dc(z)*MPC_GLY,1)+' billion ly');
+  result('v9','e9',nf(D.hor,1)+' billion ly',D.hor/TRUE.Dobs-1,'≈ 46 billion ly');
+  setHTML('eq9',`<div>H(z)² = H₀² [ Ωr(1+z)⁴ + Ωm(1+z)³ + ΩΛ ] &nbsp; with H₀ = ${nf(D.H0use,1)}, Ωm = ${nf(s.r9.om,2)}, ΩΛ = ${nf(COS.OL,2)}</div><div>D = c ∫ dz ÷ H(z) &nbsp;→&nbsp; horizon radius <b>${nf(D.hor,1)} billion ly</b>, diameter <b>${nf(2*D.hor,0)} billion ly</b></div><div>1 + z = (size now) ÷ (size then) &nbsp; · &nbsp; the CMB has z ≈ 1,100</div>`);
+  // summit
+  const rows=[['1','Earth radius',nf(D.R)+' km','6,371 km',D.R/TRUE.R-1],['2','Moon distance',nf(D.dMoon)+' km','384,400 km',D.dMoon/TRUE.dMoon-1],
+    ['3','1 AU',nf(D.AU/1e6,1)+' M km','149.6 M km',D.kA-1],['4','1 parsec',nf(D.pcLy,3)+' ly','3.262 ly',D.pcLy/TRUE.pcLy-1],
+    ['5',D.cl.name.split(' · ')[0],lyFmt(D.clLy),lyFmt(D.clLyTrue),D.clLy/D.clLyTrue-1],['6','Andromeda',lyFmt(D.andLy),'2.5 million ly',D.andLy/(TRUE.andPc*TRUE.pcLy)-1],
+    ['7','Supernova host',lyFmt(D.snLy),'391 million ly',D.snLy/(TRUE.snMpc*1e6*TRUE.pcLy)-1],['8','H₀',isFinite(D.H0)?nf(D.H0,1):'—','70 (simulated)',D.H0/TRUE.H0-1],
+    ['9','Horizon radius',nf(D.hor,1)+' billion ly','≈ 46 billion ly',D.hor/TRUE.Dobs-1]];
+  setHTML('chain','<thead><tr><th>Rung</th><th>Quantity</th><th style="text-align:right">Yours</th><th style="text-align:right">Modern</th><th style="text-align:right">Error</th></tr></thead><tbody>'+
+    rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="m y">${r[2]}</td><td class="m t">${r[3]}</td><td class="m"><span class="chip ${isFinite(r[4])?chip(r[4]):'bad'}">${isFinite(r[4])?errStr(r[4]):'—'}</span></td></tr>`).join('')+'</tbody>');
+}
+
+// ---------------- drawings ----------------
+// R1 Eratosthenes
+makeCanvas('c1',w=>w<520?0.95:0.68,(ctx,w,h)=>{
+  const a=S.r1.ang*DEG;const R=Math.min(w*0.3,h*0.36),cx=w*0.37,cy=h*0.58;
+  ctx.strokeStyle='#f3b64a40';ctx.lineWidth=1;
+  for(let x=cx-R*1.3;x<=cx+R*1.35;x+=16){const dx=x-cx;const yEnd=Math.abs(dx)<R?cy-Math.sqrt(R*R-dx*dx):h;L(ctx,x,0,x,yEnd)}
+  T(ctx,'Sunlight: rays effectively parallel ↓',cx-R*1.25,16,{c:COL.sun,s:11});
+  circ(ctx,cx,cy,R,COL.earth,COL.earthEdge,1.5);
+  const sy={x:cx,y:cy-R},al={x:cx+R*Math.sin(a),y:cy-R*Math.cos(a)};const Ls=R*0.24;
+  // distance arc
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,R+1,-Math.PI/2,-Math.PI/2+a);ctx.stroke();
+  // lines to centre
+  ctx.setLineDash([4,4]);ctx.strokeStyle=COL.truth;ctx.lineWidth=1.2;L(ctx,cx,cy,sy.x,sy.y-Ls);L(ctx,cx,cy,al.x+Ls*Math.sin(a),al.y-Ls*Math.cos(a));ctx.setLineDash([]);
+  // centre angle
+  ctx.strokeStyle=COL.truth;ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,30,-Math.PI/2,-Math.PI/2+a);ctx.stroke();
+  T(ctx,nf(S.r1.ang,1)+'°',cx+8,cy-36,{c:COL.truth,s:12,w:'600'});
+  // sticks
+  ctx.strokeStyle=COL.ink;ctx.lineWidth=3;L(ctx,sy.x,sy.y,sy.x,sy.y-Ls);
+  const top={x:al.x+Ls*Math.sin(a),y:al.y-Ls*Math.cos(a)};L(ctx,al.x,al.y,top.x,top.y);
+  // shadow along tangent, away from Syene
+  const sl=Ls*Math.tan(a);const shEnd={x:al.x+sl*Math.cos(a),y:al.y+sl*Math.sin(a)};
+  ctx.strokeStyle='#000';ctx.lineWidth=4;L(ctx,al.x,al.y,shEnd.x,shEnd.y);
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=1.5;L(ctx,top.x,top.y-30,shEnd.x,shEnd.y);
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=2;ctx.beginPath();ctx.arc(top.x,top.y,20,-Math.PI/2,-Math.PI/2+a);ctx.stroke();
+  T(ctx,nf(S.r1.ang,1)+'°',top.x+10,top.y-24,{c:COL.sun,s:12,w:'600'});
+  T(ctx,'Syene',sy.x-8,sy.y-Ls-8,{a:'right',c:COL.ink,s:12});T(ctx,'no shadow',sy.x-8,sy.y-Ls+6,{a:'right',c:COL.faint,s:10});
+  T(ctx,'Alexandria',top.x+10,top.y+4,{c:COL.ink,s:12});
+  const mid=-Math.PI/2+a/2;T(ctx,nf(S.r1.dist)+' stadia',cx+(R+16)*Math.cos(mid)+4,cy+(R+16)*Math.sin(mid)-14,{c:COL.sun,s:11});
+  // inset gnomon
+  const k=Math.min(1,w/620),bw=150*k,bh=128*k,bx=w-bw-8,by=h-bh-8;
+  ctx.fillStyle=COL.panel2;ctx.strokeStyle=COL.line;ctx.lineWidth=1;ctx.fillRect(bx,by,bw,bh);ctx.strokeRect(bx,by,bw,bh);
+  T(ctx,'Stick in Alexandria',bx+8,by+15,{c:COL.dim,s:10});
+  const gx=bx+28*k,gy=by+bh-22*k,gh=62*k,gs=Math.min(gh*Math.tan(a),bw-46*k);
+  ctx.strokeStyle=COL.faint;ctx.lineWidth=1;L(ctx,bx+8,gy,bx+bw-8,gy);
+  ctx.strokeStyle='#000';ctx.lineWidth=4;L(ctx,gx,gy,gx+gs,gy);
+  ctx.strokeStyle=COL.ink;ctx.lineWidth=3;L(ctx,gx,gy,gx,gy-gh);
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=1.3;L(ctx,gx,gy-gh,gx+gs,gy);
+  T(ctx,'shadow ÷ stick',gx+gs+4>bx+bw-60?bx+8:gx+6,by+bh-6,{c:COL.faint,s:9.5});
+  T(ctx,'= tan '+nf(S.r1.ang,1)+'° = '+nf(Math.tan(a),3),bx+8,by+29,{c:COL.sun,s:10});
+});
+
+// R2 eclipse face-on
+makeCanvas('c2a',w=>w<520?0.6:0.4,(ctx,w,h)=>{
+  const ratio=S.r2.ratio,t=S.r2.t;const rm=Math.min(h*0.11,w/((ratio+4)*2.4));const Rs=ratio*rm,cx=w/2,cy=h*0.44;
+  circ(ctx,cx,cy,Rs+2*rm,'#2a2236');circ(ctx,cx,cy,Rs,'#3a1e1e',null);
+  ctx.strokeStyle='#6b3a3a';ctx.setLineDash([3,3]);circ(ctx,cx,cy,Rs,null,'#7a4040');ctx.setLineDash([]);
+  T(ctx,'umbra',cx,cy-Rs+14,{a:'center',c:'#c08080',s:10});T(ctx,'penumbra',cx,cy-Rs-2*rm+12,{a:'center',c:COL.faint,s:10});
+  // measuring bar
+  const by=cy+Rs+2*rm+10;ctx.strokeStyle=COL.sun;ctx.lineWidth=1.2;L(ctx,cx-Rs,by,cx+Rs,by);
+  for(let i=0;i<=Math.floor(ratio+1e-6);i++){const x=cx-Rs+i*2*rm;L(ctx,x,by-4,x,by+4)}L(ctx,cx+Rs,by-6,cx+Rs,by+6);
+  T(ctx,'shadow = '+nf(ratio,2)+' Moon diameters',cx,by+16,{a:'center',c:COL.sun,s:11});
+  // moon
+  const mx=cx-Rs-rm+2*rm*t;circ(ctx,mx,cy,rm,'#d8d3c8');
+  ctx.save();ctx.beginPath();ctx.arc(mx,cy,rm,0,2*Math.PI);ctx.clip();circ(ctx,cx,cy,Rs+2*rm,'rgba(30,20,40,0.35)');circ(ctx,cx,cy,Rs,COL.copper);ctx.restore();
+  circ(ctx,mx,cy,rm,null,'#00000055',1);
+  // contacts
+  const c=[[0,'C1'],[1,'C2'],[ratio,'C3'],[ratio+1,'C4']];
+  c.forEach(([tc,lab])=>{const x=cx-Rs-rm+2*rm*tc;ctx.strokeStyle=COL.faint;ctx.setLineDash([2,3]);L(ctx,x,cy-rm-4,x,cy-rm-14);ctx.setLineDash([]);T(ctx,lab,x,cy-rm-18,{a:'center',c:COL.faint,s:9.5})});
+  T(ctx,'t = '+nf(t,2)+' h',10,18,{c:COL.ink,s:12,w:'600'});
+  T(ctx,'C1→C4 took '+nf(ratio+1,2)+' h  ⇒  shadow '+nf(ratio,2)+' Moons wide',10,34,{c:COL.dim,s:10.5});
+});
+// R2 cone side view
+makeCanvas('c2b',w=>w<520?0.5:0.34,(ctx,w,h)=>{
+  const ratio=S.r2.ratio;const cy=h*0.5,re=Math.min(h*0.3,w*0.09),xe=w*0.24,xm=w*0.8;
+  // sun arc at left
+  circ(ctx,-h*1.6+w*0.05,cy,h*1.6,'#f3b64a22',COL.sun,1);T(ctx,'Sun',8,16,{c:COL.sun,s:11});
+  const E=2*re,Wm=E*ratio/(ratio+1),Dm=E/(ratio+1);
+  // cone
+  const slope=(re-Wm/2)/(xm-xe);const xa=xe+re/slope;
+  ctx.fillStyle='#00000066';ctx.beginPath();ctx.moveTo(xe,cy-re);ctx.lineTo(Math.min(xa,w),cy-re+slope*(Math.min(xa,w)-xe));ctx.lineTo(Math.min(xa,w),cy+re-slope*(Math.min(xa,w)-xe));ctx.lineTo(xe,cy+re);ctx.fill();
+  ctx.strokeStyle='#b4553a99';ctx.lineWidth=1;L(ctx,xe,cy-re,Math.min(xa,w),cy-re+slope*(Math.min(xa,w)-xe));L(ctx,xe,cy+re,Math.min(xa,w),cy+re-slope*(Math.min(xa,w)-xe));
+  // parallel ghost lines
+  ctx.setLineDash([3,4]);ctx.strokeStyle=COL.faint;L(ctx,xe,cy-re,xm+20,cy-re);L(ctx,xe,cy+re,xm+20,cy+re);ctx.setLineDash([]);
+  circ(ctx,xe,cy,re,COL.earth,COL.earthEdge,1.5);T(ctx,'Earth',xe,cy+re+16,{a:'center',c:COL.ink,s:11});
+  circ(ctx,xm,cy+Wm/2-Dm/2,Dm/2,COL.copper);T(ctx,'Moon',xm,cy+re+16,{a:'center',c:COL.ink,s:11});
+  // brackets
+  const bx=xm+Dm/2+14;ctx.strokeStyle=COL.sun;ctx.lineWidth=1.3;L(ctx,bx,cy-Wm/2,bx,cy+Wm/2);L(ctx,bx-4,cy-Wm/2,bx+4,cy-Wm/2);L(ctx,bx-4,cy+Wm/2,bx+4,cy+Wm/2);
+  T(ctx,nf(ratio,2)+' D☾',bx+6,cy+4,{c:COL.sun,s:11});
+  ctx.strokeStyle=COL.moon;L(ctx,bx,cy-re,bx,cy-Wm/2);L(ctx,bx-4,cy-re,bx+4,cy-re);
+  T(ctx,'+1 D☾ lost',bx+6,cy-re+Math.max((re-Wm/2)/2,6)+4,{c:COL.moon,s:10.5});
+  T(ctx,'Earth = '+nf(ratio+1,2)+' D☾',xe-re-6,cy-re-8,{a:'left',c:COL.truth,s:11});
+});
+
+// R3 Aristarchus triangle
+makeCanvas('c3a',w=>w<520?0.62:0.42,(ctx,w,h)=>{
+  const th=S.r3.ang*DEG;const ex=46,ey=h-34,dm=h*0.62;const mx=ex+dm*Math.cos(th),my=ey-dm*Math.sin(th);const sx=ex+dm/Math.cos(th);
+  const on=sx<w-30;const sxd=on?sx:w-22;
+  ctx.strokeStyle=COL.faint;ctx.lineWidth=1;L(ctx,ex,ey,sxd,ey);L(ctx,ex,ey,mx,my);
+  ctx.strokeStyle='#f3b64a88';L(ctx,mx,my,on?sx:mx+(sxd-mx),on?ey:my+(ey-my)*(sxd-mx)/(sx-mx));
+  // right angle marker
+  const u1=[(ex-mx)/dm,(ey-my)/dm],sl=Math.hypot(sx-mx,ey-my),u2=[(sx-mx)/sl,(ey-my)/sl],q=10;
+  ctx.strokeStyle=COL.truth;ctx.beginPath();ctx.moveTo(mx+u1[0]*q,my+u1[1]*q);ctx.lineTo(mx+u1[0]*q+u2[0]*q,my+u1[1]*q+u2[1]*q);ctx.lineTo(mx+u2[0]*q,my+u2[1]*q);ctx.stroke();
+  // angle at earth
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=2;ctx.beginPath();ctx.arc(ex,ey,40,-th,0);ctx.stroke();T(ctx,'θ = '+nf(S.r3.ang,2)+'°',ex+46,ey-12,{c:COL.sun,s:12,w:'600'});
+  circ(ctx,ex,ey,9,COL.earth,COL.earthEdge,1.5);T(ctx,'Earth',ex,ey+22,{a:'center',c:COL.ink,s:11});
+  // half moon: lit half faces the Sun
+  const ang=Math.atan2(ey-my,sx-mx);circ(ctx,mx,my,9,'#3a3a44');ctx.fillStyle='#e9e4d6';ctx.beginPath();ctx.arc(mx,my,9,ang-Math.PI/2,ang+Math.PI/2);ctx.fill();
+  T(ctx,'half Moon',mx+14,my-6,{c:COL.ink,s:11});
+  if(on){circ(ctx,sx,ey,14,'#f3b64a',null);T(ctx,'Sun',sx,ey+28,{a:'center',c:COL.sun,s:11})}
+  else{ctx.fillStyle=COL.sun;ctx.beginPath();ctx.moveTo(w-8,ey);ctx.lineTo(w-20,ey-7);ctx.lineTo(w-20,ey+7);ctx.fill();T(ctx,'Sun off-screen →',w-24,ey-12,{a:'right',c:COL.sun,s:11})}
+  T(ctx,'d☉ ÷ d☾ = 1 ÷ cos θ = '+nf(D.ari,1),w-10,18,{a:'right',c:COL.ink,s:12,w:'600'});
+});
+makeCanvas('c3b',w=>w<520?0.62:0.38,(ctx,w,h)=>{
+  const box={x:48,y:12,w:w-62,h:h-52};
+  const {X,Y}=plot(ctx,box,{x0:80,x1:90,y0:5,y1:2000,ylog:true,xt:[80,82,84,86,88,90],yt:[5,10,20,50,100,200,500,1000,2000],xf:v=>v+'°',yf:v=>v>=1000?nf(v/1000)+'k':v,xl:'Moon–Sun angle at half Moon',yl:'d☉ ÷ d☾',ylOff:38});
+  clip(ctx,box);ctx.strokeStyle=COL.dim;ctx.lineWidth=1.5;ctx.beginPath();for(let i=0;i<=400;i++){const t=80+i*(9.997/400);const y=Y(1/Math.cos(t*DEG));i?ctx.lineTo(X(t),y):ctx.moveTo(X(t),y)}ctx.stroke();
+  const pt=(t,c,lab,dy)=>{const r=1/Math.cos(t*DEG);circ(ctx,X(t),Y(r),5,c);T(ctx,lab,X(t)-8,Y(r)+dy,{a:'right',c,s:10.5})};
+  pt(87,COL.moon,'Aristarchus 87° → 19×',4);pt(89.853,COL.truth,'true 89.85° → 389×',4);pt(S.r3.ang,COL.sun,'',0);ctx.restore();
+});
+// R3 blink comparator
+const STARS3=(()=>{const r=rng(3),o=[];for(let i=0;i<70;i++)o.push({x:r(),y:r(),b:r()});return o})();
+makeCanvas('c3c',w=>w<520?0.7:0.42,(ctx,w,h)=>{
+  const fov=120,sc=w/fov;ctx.fillStyle='#05070f';ctx.fillRect(0,0,w,h);
+  STARS3.forEach(s=>circ(ctx,s.x*w,s.y*h,0.6+s.b*1.8,`rgba(220,228,255,${0.35+s.b*0.6})`));
+  const cx=w*0.36,cy=h*0.52,view=S.r3.view;const mx=cx+(view?P_MARS_TRUE*sc:0);
+  // ghost of other view
+  circ(ctx,cx+(view?0:P_MARS_TRUE*sc),cy,5,null,'#e06a4a44',1);
+  circ(ctx,mx,cy,6,COL.mars);circ(ctx,mx,cy,10,null,'#e06a4a66',1);
+  // ruler: your measurement
+  const ry=cy+28;ctx.strokeStyle=COL.sun;ctx.lineWidth=1.5;L(ctx,cx,ry,cx+S.r3.p*sc,ry);L(ctx,cx,ry-6,cx,ry+6);L(ctx,cx+S.r3.p*sc,ry-6,cx+S.r3.p*sc,ry+6);
+  T(ctx,'your shift: '+nf(S.r3.p,1)+'″',cx,ry+18,{c:COL.sun,s:11});
+  // scale ticks
+  ctx.strokeStyle=COL.faint;ctx.lineWidth=1;for(let a=0;a<=fov;a+=5){const x=cx+(a-30)*sc;if(x<0||x>w)continue;L(ctx,x,h-10,x,h-(a%10?4:1)-12)}
+  T(ctx,view?'Seen from Cayenne, French Guiana':'Seen from Paris',10,18,{c:COL.ink,s:12,w:'600'});
+  T(ctx,'Mars',mx+12,cy-10,{c:COL.mars,s:11});
+});
+
+// R4 parallax
+const STAR4=[['proxima','Proxima Centauri',0.7685],['barnard',"Barnard's Star",0.5468],['sirius','Sirius',0.3792],['61cyg','61 Cygni (Bessel, 1838)',0.2862],['vega','Vega',0.1302],['alcyone','Alcyone, in the Pleiades',0.00735],['gc','A star near the Galactic Centre',0.000122]];
+$('r4star').innerHTML=STAR4.map(s=>`<option value="${s[0]}">${s[1]} · ${s[2]>=0.01?s[2]+'″':nf(s[2]*1000,3)+' mas'}</option>`).join('')+'<option value="custom">Custom distance</option>';
+const BG4=(()=>{const r=rng(44),o=[];for(let i=0;i<40;i++)o.push({x:r(),y:r(),b:r()});return o})();
+makeCanvas('c4',w=>w<560?1.15:0.56,(ctx,w,h)=>{
+  const narrow=w<560;const lw=narrow?w:w*0.56,lh=narrow?h*0.55:h;
+  // left: geometry
+  const sx=lw*0.5,sy=lh*0.72,ro=Math.min(lw*0.22,lh*0.2),stY=lh*0.3;const ph=S.r4.m/12*2*Math.PI;
+  ctx.fillStyle='#05070f';ctx.fillRect(0,0,lw,26);BG4.forEach(s=>circ(ctx,s.x*lw,6+s.y*16,0.6+s.b*1.3,'#c8d2f0'));
+  T(ctx,'distant background stars',lw/2,38,{a:'center',c:COL.faint,s:10});
+  ctx.strokeStyle=COL.line;circ(ctx,sx,sy,ro,null,COL.line,1);
+  circ(ctx,sx,sy,9,'#f3b64a');T(ctx,'Sun',sx+12,sy+16,{c:COL.sun,s:10.5});
+  const ex=sx+ro*Math.cos(ph),ey=sy+ro*Math.sin(ph);
+  // sight lines from Jan and Jul extremes
+  [[sx-ro,sy],[sx+ro,sy]].forEach(([x,y])=>{ctx.setLineDash([3,4]);ctx.strokeStyle=COL.faint;const k=(26-y)/(stY-y);L(ctx,x,y,x+(sx-x)*k,26);ctx.setLineDash([])});
+  const k=(26-ey)/(stY-ey);const hx=ex+(sx-ex)*k;ctx.strokeStyle=COL.sun;ctx.lineWidth=1.3;L(ctx,ex,ey,hx,26);circ(ctx,hx,22,4,null,COL.sun,1.5);
+  ctx.strokeStyle=COL.truth;ctx.lineWidth=1;L(ctx,sx,sy,sx,stY);
+  circ(ctx,ex,ey,7,COL.earth,COL.earthEdge,1.5);T(ctx,'Earth',ex+10,ey+4,{c:COL.ink,s:10.5});
+  circ(ctx,sx,stY,5,'#fff3d6');T(ctx,'nearby star',sx+9,stY+4,{c:COL.ink,s:10.5});
+  // p angle at star between sun line and line to orbit edge
+  const ap=Math.atan2(ro,sy-stY);ctx.strokeStyle=COL.sun;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(sx,stY,26,Math.PI/2,Math.PI/2-ap,true);ctx.stroke();T(ctx,'p',sx+12,stY+40,{c:COL.sun,s:12,w:'600'});
+  ctx.strokeStyle=COL.moon;ctx.lineWidth=1.5;L(ctx,sx,sy,sx+ro,sy);T(ctx,'1 AU',sx+ro/2,sy-6,{a:'center',c:COL.moon,s:10.5});
+  T(ctx,'Exaggerated: really '+(D.star*206265>=1e6?sci(D.star*206265,1):nf(D.star*206265))+' AU away',8,lh-8,{c:COL.faint,s:10});
+  // right: sky view
+  const rx=narrow?0:lw+10,ry=narrow?lh+6:0,rw=narrow?w:w-lw-10,rh=narrow?h-lh-6:h;
+  ctx.fillStyle='#05070f';ctx.fillRect(rx,ry,rw,rh);
+  const p=D.p4,sig=S.r4.inst;const span=Math.max(p,2.2*sig);const pxa=(Math.min(rw,rh)*0.36)/span;const cx=rx+rw/2,cy=ry+rh/2+6;
+  BG4.forEach((s,i)=>{if(i%2)circ(ctx,rx+s.x*rw,ry+s.y*rh,0.6+s.b*1.2,'#9aa6c499')});
+  ctx.strokeStyle='#f3b64a66';ctx.setLineDash([3,3]);ctx.beginPath();ctx.ellipse(cx,cy,p*pxa,0.62*p*pxa,0,0,2*Math.PI);ctx.stroke();ctx.setLineDash([]);
+  const px=cx-p*pxa*Math.cos(ph),py=cy-0.62*p*pxa*Math.sin(ph);
+  const gr=ctx.createRadialGradient(px,py,0,px,py,Math.max(sig*pxa*2,3));gr.addColorStop(0,'rgba(134,214,232,0.45)');gr.addColorStop(1,'rgba(134,214,232,0)');ctx.fillStyle=gr;ctx.beginPath();ctx.arc(px,py,Math.max(sig*pxa*2,3),0,2*Math.PI);ctx.fill();
+  circ(ctx,px,py,sig*pxa,null,'#86d6e888',1);circ(ctx,px,py,3.2,'#fff3d6');
+  T(ctx,'What the telescope sees',rx+10,ry+18,{c:COL.ink,s:11.5,w:'600'});
+  // scale bar
+  const nice=[1e-6,2e-6,5e-6,1e-5,2e-5,5e-5,1e-4,2e-4,5e-4,1e-3,2e-3,5e-3,0.01,0.02,0.05,0.1,0.2,0.5,1,2];let sb=nice[0];nice.forEach(v=>{if(v*pxa<rw*0.4)sb=v});
+  const bx=rx+10,byy=ry+rh-14;ctx.strokeStyle=COL.dim;ctx.lineWidth=1.5;L(ctx,bx,byy,bx+sb*pxa,byy);L(ctx,bx,byy-4,bx,byy+4);L(ctx,bx+sb*pxa,byy-4,bx+sb*pxa,byy+4);
+  T(ctx,sb>=0.01?sb+'″':sb>=1e-4?nf(sb*1000,sb<1e-3?2:0)+' mas':nf(sb*1e6)+' µas',bx+sb*pxa+6,byy+4,{c:COL.dim,s:10});
+  T(ctx,'2p = '+(p>=0.01?nf(2*p,3)+'″':p>=1e-4?nf(2*p*1000,2)+' mas':nf(2*p*1e6,0)+' µas'),rx+rw-10,ry+18,{a:'right',c:COL.sun,s:11});
+});
+
+// R5 HR diagram
+const BVCOL=bv=>{const t=Math.max(0,Math.min(1,(bv+0.3)/2.0));const stops=[[155,176,255],[202,215,255],[255,244,234],[255,210,161],[255,163,90],[255,120,60]];const f=t*(stops.length-1),i=Math.min(Math.floor(f),stops.length-2),u=f-i;const c=stops[i].map((v,j)=>Math.round(lerp(v,stops[i+1][j],u)));return`rgb(${c})`};
+makeCanvas('c5',w=>w<520?1.05:0.72,(ctx,w,h)=>{
+  const box={x:52,y:12,w:w-66,h:h-66};
+  const {X,Y}=plot(ctx,box,{x0:-0.4,x1:2.0,y0:16,y1:-6,xt:[-0.4,0,0.4,0.8,1.2,1.6,2.0],yt:[-5,-2.5,0,2.5,5,7.5,10,12.5,15],xf:v=>nf(v,1),yf:v=>nf(v,1),xl:'Colour B − V  (hot, blue ← → cool, red)',yl:'Absolute magnitude M',ylOff:40});
+  // colour strip
+  for(let i=0;i<box.w;i+=2){ctx.fillStyle=BVCOL(-0.4+2.4*i/box.w);ctx.fillRect(box.x+i,box.y+box.h-4,2,4)}
+  clip(ctx,box);
+  CALIB.forEach(s=>circ(ctx,X(s.bv),Y(s.M),1.8,s.g?'#86d6e866':'#86d6e8aa'));
+  ctx.strokeStyle='#86d6e8';ctx.lineWidth=1.2;ctx.setLineDash([5,4]);ctx.beginPath();MS.forEach(([bv,M],i)=>i?ctx.lineTo(X(bv),Y(M)):ctx.moveTo(X(bv),Y(M)));ctx.stroke();ctx.setLineDash([]);
+  const mu=S.r5.mu;D.cl.stars.forEach(s=>circ(ctx,X(s.bv),Y(s.m-mu),2.6,s.g?'#f3b64a77':'#f3b64a',s.g?null:'#00000055',0.8));
+  circ(ctx,X(0.65),Y(4.83),5,null,'#ffffff',1.5);T(ctx,'Sun',X(0.65)+8,Y(4.83)-6,{c:COL.ink,s:10});
+  ctx.restore();
+  T(ctx,'main sequence (nearby stars)',box.x+box.w-8,box.y+16,{a:'right',c:COL.truth,s:10.5});
+  T(ctx,D.cl.name.split(' · ')[0]+', shifted by m − M = '+nf(mu,2),box.x+box.w-8,box.y+31,{a:'right',c:COL.sun,s:10.5});
+  if(D.cl.giants)T(ctx,'red giants',X(1.15)+6,Y(1.6+D.cl.mu-mu-0.6),{c:'#f3b64aaa',s:10});
+});
+
+// R6 Cepheid light curves
+let tAnim=0;
+makeCanvas('c6a',w=>w<520?1.0:0.62,(ctx,w,h)=>{
+  const P=S.r6.P;const b1={x:46,y:10,w:w-60,h:h*0.33},b2={x:46,y:h*0.33+44,w:w-60,h:h*0.67-84};
+  const ymin=CEPH_M0+0.75,ymax=CEPH_M0-0.75;
+  const p1=plot(ctx,b1,{x0:0,x1:220,y0:ymin,y1:ymax,xt:[0,50,100,150,200],yt:[Math.round((CEPH_M0-0.5)*10)/10,Math.round((CEPH_M0+0.5)*10)/10],yf:v=>nf(v,1),xl:'night of observation (days)',yl:'m',ylOff:36});
+  clip(ctx,b1);CEPH.forEach(p=>circ(ctx,p1.X(p.t),p1.Y(p.m),2.4,COL.truth));ctx.restore();
+  const p2=plot(ctx,b2,{x0:0,x1:2,y0:ymin,y1:ymax,xt:[0,0.5,1,1.5,2],xf:v=>nf(v,1),yt:[Math.round((CEPH_M0-0.5)*10)/10,CEPH_M0>0?Math.round(CEPH_M0*10)/10:0,Math.round((CEPH_M0+0.5)*10)/10],yf:v=>nf(v,1),xl:'phase at P = '+nf(P,2)+' days (two cycles)',yl:'m',ylOff:36});
+  clip(ctx,b2);CEPH.forEach(p=>{const ph=(p.t/P)%1;circ(ctx,p2.X(ph),p2.Y(p.m),2.6,COL.sun);circ(ctx,p2.X(ph+1),p2.Y(p.m),2.6,'#f3b64a66')});
+  // phase cursor + pulsing star
+  const ph=(tAnim%1);ctx.strokeStyle='#ffffff22';L(ctx,p2.X(ph),b2.y,p2.X(ph),b2.y+b2.h);ctx.restore();
+  const q=D.q;const bright=q>0.7?cephShape(ph+0.3):0.5;const sr=14+6*bright;
+  const sxp=b2.x+b2.w-sr-10,syp=b2.y+sr+10;const g=ctx.createRadialGradient(sxp,syp,0,sxp,syp,sr*1.8);g.addColorStop(0,`rgba(255,${200+Math.round(40*bright)},${120+Math.round(60*bright)},${0.5+0.5*bright})`);g.addColorStop(1,'rgba(255,200,120,0)');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(sxp,syp,sr*1.8,0,2*Math.PI);ctx.fill();circ(ctx,sxp,syp,sr*0.7,`rgb(255,${210+Math.round(40*bright)},${150+Math.round(80*bright)})`);
+  T(ctx,q>0.7?'pulsing at the folded rhythm':'no clean rhythm yet',sxp-sr-6,syp+4,{a:'right',c:COL.faint,s:10});
+});
+makeCanvas('c6b',w=>w<520?0.8:0.4,(ctx,w,h)=>{
+  const box={x:48,y:12,w:w-62,h:h-54};
+  const {X,Y}=plot(ctx,box,{x0:0.3,x1:1.9,y0:-1.5,y1:-8,xt:[0.4,0.6,0.8,1,1.2,1.4,1.6,1.8],yt:[-2,-3,-4,-5,-6,-7],xf:v=>nf(v,1),xl:'log₁₀ period (days)',yl:'Absolute magnitude M',ylOff:38});
+  clip(ctx,box);
+  ctx.strokeStyle=COL.truth;ctx.setLineDash([5,4]);ctx.lineWidth=1.3;L(ctx,X(0.3),Y(-2.43*(0.3-1)-4.05),X(1.9),Y(-2.43*(0.9)-4.05));ctx.setLineDash([]);
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=1.8;L(ctx,X(0.3),Y(-2.43*(0.3-1)-4.05+D.zp),X(1.9),Y(-2.43*0.9-4.05+D.zp));
+  CEPH_CAL.forEach(c=>circ(ctx,X(c.lp),Y(c.M+D.zp),3.2,COL.sun,'#00000066',1));
+  const lp=Math.log10(S.r6.P);ctx.strokeStyle='#ffffff77';ctx.setLineDash([3,3]);L(ctx,X(lp),box.y+box.h,X(lp),Y(D.cephM));L(ctx,box.x,Y(D.cephM),X(lp),Y(D.cephM));ctx.setLineDash([]);
+  circ(ctx,X(lp),Y(D.cephM),6,null,'#ffffff',2);ctx.restore();
+  T(ctx,'Andromeda V1: P = '+nf(S.r6.P,2)+' d → M = '+nf(D.cephM,2),box.x+10,box.y+16,{c:COL.ink,s:11});
+});
+
+// R7 supernova fit and scatter
+makeCanvas('c7a',w=>w<520?0.85:0.55,(ctx,w,h)=>{
+  const box={x:48,y:12,w:w-62,h:h-54};const top=Math.min(SN_MPEAK,S.r7.m)-0.4,bot=Math.max(SN_MPEAK,S.r7.m)+2.9;
+  const {X,Y}=plot(ctx,box,{x0:-20,x1:60,y0:bot,y1:top,xt:[-20,-10,0,10,20,30,40,50,60],yt:[Math.ceil(top*2)/2,Math.ceil(top*2)/2+1,Math.ceil(top*2)/2+2,Math.ceil(top*2)/2+3].filter(v=>v<bot),yf:v=>nf(v,1),xl:'days from peak',yl:'apparent magnitude',ylOff:38});
+  clip(ctx,box);
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=2;ctx.beginPath();for(let t=-20;t<=60;t+=0.5){const y=Y(S.r7.m+snf(t/S.r7.s));t>-20?ctx.lineTo(X(t),y):ctx.moveTo(X(t),y)}ctx.stroke();
+  ctx.strokeStyle='#ffffff33';ctx.setLineDash([3,3]);L(ctx,X(15),box.y,X(15),box.y+box.h);ctx.setLineDash([]);
+  SN.forEach(p=>{ctx.strokeStyle=COL.truth;L(ctx,X(p.t),Y(p.m-0.04),X(p.t),Y(p.m+0.04));circ(ctx,X(p.t),Y(p.m),3.2,COL.truth)});ctx.restore();
+  T(ctx,'day 15',X(15)+4,box.y+box.h-6,{c:COL.faint,s:10});
+});
+makeCanvas('c7b',w=>w<520?0.8:0.42,(ctx,w,h)=>{
+  const box={x:52,y:12,w:w-66,h:h-54};
+  const {X,Y}=plot(ctx,box,{x0:0.98,x1:1.48,y0:-18.5,y1:-20.1,xt:[1.0,1.1,1.2,1.3,1.4],yt:[-18.6,-19.0,-19.4,-19.8],xf:v=>nf(v,1),yf:v=>nf(v,1),xl:'decline in first 15 days, Δm₁₅ (mag)',yl:'peak absolute mag',ylOff:42});
+  const m=S.r7.mix;const ys=SNS.map(s=>s.M+m*1.5*(s.s-1)+D.zp);const sd=sdev(ys),mean=ys.reduce((a,b)=>a+b,0)/ys.length;
+  clip(ctx,box);ctx.fillStyle='#86d6e814';ctx.fillRect(box.x,Y(mean-sd),box.w,Y(mean+sd)-Y(mean-sd));
+  SNS.forEach((s,i)=>circ(ctx,X(s.dm),Y(ys[i]),3.4,m>0.5?COL.sun:COL.moon,'#00000066',1));ctx.restore();
+  T(ctx,(m>0.5?'corrected':'raw')+' scatter σ = '+nf(sd,2)+' mag ('+nf((10**(0.2*sd)-1)*100,0)+'% in distance)',box.x+10,box.y+16,{c:COL.ink,s:11});
+});
+
+// R8 spectrum and Hubble diagram
+function wl2rgb(l){let r=0,g=0,b=0;if(l<440){r=-(l-440)/60;b=1}else if(l<490){g=(l-440)/50;b=1}else if(l<510){g=1;b=-(l-510)/20}else if(l<580){r=(l-510)/70;g=1}else if(l<645){r=1;g=-(l-645)/65}else{r=1}
+  let f=l<420?0.3+0.7*(l-380)/40:l>700?0.3+0.7*(780-l)/80:1;return[r,g,b].map(v=>Math.round(255*Math.max(0,v)*f))}
+makeCanvas('c8a',w=>w<520?0.85:0.5,(ctx,w,h)=>{
+  const g=GAL[S.r8.sel],z=S.r8.z;const box={x:40,y:62,w:w-54,h:h-104};
+  const X=l=>box.x+(l-380)/(765-380)*box.w;
+  // colour strip
+  const sy=12,sh=34;for(let i=0;i<g.spec.length-1;i++){const[l,f]=g.spec[i];const c=wl2rgb(l);const k=Math.max(0,Math.min(1,f));ctx.fillStyle=`rgb(${c.map(v=>Math.round(v*k*0.95))})`;ctx.fillRect(X(l),sy,X(g.spec[i+1][0])-X(l)+0.6,sh)}
+  ctx.strokeStyle=COL.line;ctx.strokeRect(box.x,sy,box.w,sh);
+  const {Y}=plot(ctx,box,{x0:380,x1:765,y0:0,y1:1.2,xt:[400,450,500,550,600,650,700,750],xl:'wavelength (nm)'});
+  clip(ctx,box);ctx.strokeStyle=COL.ink;ctx.lineWidth=1.2;ctx.beginPath();g.spec.forEach(([l,f],i)=>i?ctx.lineTo(X(l),Y(f)):ctx.moveTo(X(l),Y(f)));ctx.stroke();
+  let aligned=Math.abs(z-g.z)<0.0005;
+  LINES.forEach(([n,l0])=>{ctx.strokeStyle='#9aa6c455';ctx.lineWidth=1;L(ctx,X(l0),box.y+box.h-10,X(l0),box.y+box.h);
+    const x=X(l0*(1+z));ctx.strokeStyle=aligned?COL.good:COL.truth;ctx.lineWidth=aligned?2:1.4;L(ctx,x,box.y,x,box.y+box.h*0.32)});
+  ctx.restore();
+  LINES.forEach(([n,l0],i)=>{if(i===1||i===0&&w<520)return;const x=X(l0*(1+z));T(ctx,i===0?'Ca H&K':n,x,box.y-4,{a:'center',c:aligned?COL.good:COL.truth,s:10})});
+  T(ctx,g.name+(aligned?'  ·  lines aligned':''),w-10,box.y+box.h-8,{a:'right',c:aligned?COL.good:COL.dim,s:11,w:'600'});
+});
+makeCanvas('c8b',w=>w<520?0.8:0.45,(ctx,w,h)=>{
+  const box={x:62,y:12,w:w-76,h:h-56};const dmax=Math.max(...D.gal.map(g=>g.d))*1.1;
+  const step=dmax>500?200:dmax>250?100:50;const xt=[];for(let v=0;v<=dmax;v+=step)xt.push(v);
+  const {X,Y}=plot(ctx,box,{x0:0,x1:dmax,y0:0,y1:30000,xt,yt:[0,10000,20000,30000],yf:v=>nf(v/1000)+'k',xl:'distance from supernovae (Mpc)',yl:'recession velocity cz (km/s)',ylOff:50});
+  clip(ctx,box);
+  if(isFinite(D.H0)){ctx.strokeStyle=COL.sun;ctx.lineWidth=1.8;L(ctx,X(0),Y(0),X(dmax),Y(D.H0*dmax))}
+  D.gal.forEach((g,i)=>{const sel=i===S.r8.sel;if(g.z==null){ctx.strokeStyle=sel?COL.sun:COL.faint;ctx.lineWidth=1.5;L(ctx,X(g.d),box.y+box.h,X(g.d),box.y+box.h-10)}
+    else circ(ctx,X(g.d),Y(C_KMS*g.z),sel?6:4.5,sel?COL.sun:COL.truth,'#00000066',1)});
+  ctx.restore();
+  if(isFinite(D.H0))T(ctx,'v = '+nf(D.H0,1)+' × d',box.x+10,box.y+16,{c:COL.sun,s:11.5,w:'600'});
+});
+function renderChips(){const el=$('r8chips');el.innerHTML=GAL.map((g,i)=>`<button type="button" class="gchip${S.r8.meas[i]!=null?' done':''}${i===S.r8.sel?' sel':''}" data-g="${i}">${g.name.replace('Galaxy ','')} · ${nf(D.gal[i].d,0)} Mpc${S.r8.meas[i]!=null?' ✓':''}</button>`).join('')}
+$('r8chips').addEventListener('click',e=>{const b=e.target.closest('[data-g]');if(!b)return;const i=+b.dataset.g;S.r8.sel=i;S.r8.z=S.r8.meas[i]!=null?S.r8.meas[i]:0;$('r8z').value=S.r8.z;update()});
+
+// R9 cosmology
+makeCanvas('c9a',w=>w<520?0.7:0.36,(ctx,w,h)=>{
+  const z=10**S.r9.lz;const dc=COS.dc(z)*MPC_GLY,dthen=dc/(1+z),tl=COS.tl(z);const max=Math.max(55,D.hor*1.08);
+  const x0=10,ww=w-20,X=v=>x0+v/max*ww;const rows=[['Light travel time × c (the naive answer)',tl,COL.dim],['Where the source was when the light left',dthen,COL.moon],['Where the source is today',dc,COL.sun]];
+  const rh=(h-40)/rows.length;rows.forEach(([lab,v,c],i)=>{const y=12+i*rh;T(ctx,lab,x0,y+11,{c:COL.dim,s:10.5});ctx.fillStyle=c;ctx.fillRect(x0,y+16,Math.max(X(v)-x0,1),rh*0.38);T(ctx,nf(v,v<1?2:1)+' Gly',Math.min(X(v)+6,w-60),y+16+rh*0.3,{c,s:11,w:'600'})});
+  ctx.strokeStyle=COL.truth;ctx.setLineDash([4,4]);L(ctx,X(D.hor),6,X(D.hor),h-18);ctx.setLineDash([]);T(ctx,'horizon '+nf(D.hor,1),X(D.hor)-4,h-6,{a:'right',c:COL.truth,s:10.5});
+  ctx.strokeStyle=COL.faint;L(ctx,X(D.age),h-22,X(D.age),h-14);T(ctx,nf(D.age,1)+' (age × c)',X(D.age)+4,h-6,{c:COL.faint,s:10});
+});
+makeCanvas('c9b',w=>w<520?0.75:0.42,(ctx,w,h)=>{
+  const box={x:48,y:12,w:w-62,h:h-54};const ymax=Math.ceil(D.hor/10)*10+5;
+  const {X,Y}=plot(ctx,box,{x0:0.01,x1:3000,xlog:true,y0:0,y1:ymax,xt:[0.01,0.1,1,10,100,1000],xf:v=>v<1?String(v):nf(v),yt:[0,10,20,30,40,50].filter(v=>v<=ymax),xl:'redshift z (log scale)',yl:'distance today (Gly)',ylOff:36});
+  clip(ctx,box);ctx.strokeStyle=COL.truth;ctx.setLineDash([4,4]);L(ctx,box.x,Y(D.hor),box.x+box.w,Y(D.hor));ctx.setLineDash([]);
+  ctx.strokeStyle=COL.sun;ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<=240;i++){const lz=-2+i*(Math.log10(3000)+2)/240,z=10**lz,y=Y(COS.dc(z)*MPC_GLY);i?ctx.lineTo(X(z),y):ctx.moveTo(X(z),y)}ctx.stroke();
+  [[1,'z = 1'],[14,'farthest galaxies'],[1100,'CMB']].forEach(([z,lab])=>{const y=Y(COS.dc(z)*MPC_GLY);circ(ctx,X(z),y,3.5,COL.moon);T(ctx,lab,X(z)-6,y+14,{a:'right',c:COL.moon,s:10})});
+  const z=10**S.r9.lz;circ(ctx,X(z),Y(COS.dc(z)*MPC_GLY),6,null,'#ffffff',2);ctx.restore();
+});
+
+// Summit: tension
+makeCanvas('c10',w=>w<520?0.7:0.32,(ctx,w,h)=>{
+  const box={x:150,y:10,w:w-170,h:h-44};if(w<520){box.x=118;box.w=w-130}
+  const pts=[['CMB (Planck)',67.4,0.5,0.5,COL.truth],['Ladder (SH0ES)',73.0,1.0,1.0,COL.moon],['Standard siren',70,8,12,COL.dim],['Yours',D.H0,0,0,COL.sun]];
+  const {X}=plot(ctx,box,{x0:55,x1:90,y0:0,y1:1,xt:[55,60,65,70,75,80,85,90],xl:'H₀ (km/s/Mpc)'});
+  const rh=box.h/pts.length;pts.forEach(([lab,v,lo,hi,c],i)=>{const y=box.y+rh*(i+0.5);T(ctx,lab,box.x-10,y+4,{a:'right',c,s:11});if(!isFinite(v))return;const vv=Math.max(55,Math.min(90,v));
+    ctx.strokeStyle=c;ctx.lineWidth=2;if(lo||hi){L(ctx,X(Math.max(55,v-lo)),y,X(Math.min(90,v+hi)),y);L(ctx,X(Math.max(55,v-lo)),y-5,X(Math.max(55,v-lo)),y+5);L(ctx,X(Math.min(90,v+hi)),y-5,X(Math.min(90,v+hi)),y+5)}
+    circ(ctx,X(vv),y,5,c);if(lab==='Yours')T(ctx,nf(v,1),X(vv)+9,y+4,{c,s:11,w:'600'})});
+});
+
+// ---------------- wiring ----------------
+function bind(id,fn,ev='input'){$(id).addEventListener(ev,e=>{fn(e.target.value);update()})}
+bind('r1ang',v=>S.r1.ang=+v);bind('r1dist',v=>S.r1.dist=+v);bind('r1stad',v=>S.r1.stad=+v,'change');
+bind('r2ratio',v=>{S.r2.ratio=+v;$('r2t').max=(+v+1.5).toFixed(2)});bind('r2th',v=>S.r2.th=+v);bind('r2t',v=>S.r2.t=+v);
+bind('r3ang',v=>S.r3.ang=+v);bind('r3p',v=>S.r3.p=+v);
+bind('r4d',v=>{S.r4.logd=+v;S.r4.star='custom';$('r4star').value='custom'});bind('r4inst',v=>S.r4.inst=+v,'change');bind('r4m',v=>S.r4.m=+v);
+bind('r4star',v=>{S.r4.star=v;const s=STAR4.find(x=>x[0]===v);if(s){S.r4.logd=Math.log10(1/s[2]);$('r4d').value=S.r4.logd}},'change');
+$('r5cl').innerHTML=Object.entries(CLUSTERS).map(([k,c])=>`<option value="${k}">${c.name}</option>`).join('');
+bind('r5cl',v=>{S.r5.cl=v;S.r5.mu=0;$('r5mu').value=0},'change');bind('r5mu',v=>S.r5.mu=+v);
+bind('r6P',v=>S.r6.P=+v);bind('r7s',v=>S.r7.s=+v);bind('r7m',v=>S.r7.m=+v);bind('r8z',v=>S.r8.z=+v);
+bind('r9src',v=>S.r9.src=v,'change');bind('r9om',v=>S.r9.om=+v);bind('r9z',v=>S.r9.lz=+v);
+
+function tween(get,set,to,ms,done){if(reduce){set(to);update();done&&done();return}const from=get(),t0=performance.now();
+  (function step(now){const k=Math.min(1,(now-t0)/ms),e=1-Math.pow(1-k,3);set(lerp(from,to,e));update();if(k<1)requestAnimationFrame(step);else done&&done()})(t0)}
+$('r5fit').addEventListener('click',()=>tween(()=>S.r5.mu,v=>{S.r5.mu=v;$('r5mu').value=v},D.cl.best,700));
+$('r6search').addEventListener('click',()=>{let best=5,bv=9;for(let P=5;P<=60;P+=0.01){const t=pdm(P);if(t<bv){bv=t;best=P}}tween(()=>S.r6.P,v=>{S.r6.P=v;$('r6P').value=v},best,900)});
+$('r7fit').addEventListener('click',()=>{let bs=1,bm=21,bc=1e9;for(let s=0.7;s<=1.3;s+=0.002){const m=SN.reduce((a,p)=>a+p.m-snf(p.t/s),0)/SN.length;const c=SN.reduce((a,p)=>a+(p.m-m-snf(p.t/s))**2,0);if(c<bc){bc=c;bs=s;bm=m}}
+  const s0=S.r7.s,m0=S.r7.m;tween(()=>0,k=>{S.r7.s=lerp(s0,bs,k);S.r7.m=lerp(m0,bm,k);$('r7s').value=S.r7.s;$('r7m').value=S.r7.m},1,700)});
+$('r7corr').addEventListener('click',()=>{S.r7.corr=S.r7.corr?0:1;const to=S.r7.corr;tween(()=>S.r7.mix,v=>S.r7.mix=v,to,800)});
+$('r8rec').addEventListener('click',()=>{S.r8.meas[S.r8.sel]=S.r8.z;const nxt=S.r8.meas.findIndex(v=>v==null);update()});
+$('r3view').addEventListener('click',()=>{S.r3.view=S.r3.view?0:1;$('r3view').textContent=S.r3.view?'Show Paris':'Show Cayenne';update()});
+let blinkOn=false,blinkT=0;$('r3blink').addEventListener('click',()=>{blinkOn=!blinkOn;$('r3blink').classList.toggle('on',blinkOn);$('r3blink').textContent=blinkOn?'Stop blinking':'Blink views'});
+let r2play=false;$('r2play').addEventListener('click',()=>{r2play=!r2play;if(r2play&&S.r2.t>=S.r2.ratio+1.4)S.r2.t=-0.5;$('r2play').classList.toggle('on',r2play);$('r2play').textContent=r2play?'Pause':'Play eclipse'});
+let r4play=false;$('r4play').addEventListener('click',()=>{r4play=!r4play;$('r4play').classList.toggle('on',r4play);$('r4play').textContent=r4play?'Pause':'Run the year'});
+$('reset').addEventListener('click',()=>{S=JSON.parse(JSON.stringify(DEF));syncInputs();update()});
+function syncInputs(){const m={r1ang:S.r1.ang,r1dist:S.r1.dist,r1stad:S.r1.stad,r2ratio:S.r2.ratio,r2th:S.r2.th,r2t:S.r2.t,r3ang:S.r3.ang,r3p:S.r3.p,r4d:S.r4.logd,r4inst:S.r4.inst,r4m:S.r4.m,r4star:S.r4.star,r5cl:S.r5.cl,r5mu:S.r5.mu,r6P:S.r6.P,r7s:S.r7.s,r7m:S.r7.m,r8z:S.r8.z,r9src:S.r9.src,r9om:S.r9.om,r9z:S.r9.lz};
+  Object.entries(m).forEach(([k,v])=>{$(k).value=v})}
+
+function update(){compute();updateText();Object.values(CANV).forEach(c=>{if(!c.cv.closest('.rung').hidden)c.redraw()})}
+
+// animation loop
+let last=performance.now();
+function loop(now){const dt=Math.min(0.1,(now-last)/1000);last=now;let dirty=false;
+  if(active===2&&r2play){S.r2.t+=dt*0.9;if(S.r2.t>S.r2.ratio+1.5){S.r2.t=S.r2.ratio+1.5;r2play=false;$('r2play').classList.remove('on');$('r2play').textContent='Play eclipse'}$('r2t').value=S.r2.t;dirty=true}
+  if(active===3&&blinkOn){blinkT+=dt;if(blinkT>0.55){blinkT=0;S.r3.view=S.r3.view?0:1;dirty=true}}
+  if(active===4&&r4play){S.r4.m=(S.r4.m+dt*2)%12;$('r4m').value=S.r4.m;dirty=true}
+  if(dirty)update();
+  if(active===6&&!reduce){tAnim+=dt*0.45;CANV.c6a.redraw()}
+  requestAnimationFrame(loop)}
+
+// boot
+syncInputs();compute();updateText();
+let start=1;const hm=/^#r(\d+)$/.exec(location.hash||'');if(hm&&+hm[1]>=1&&+hm[1]<=10)start=+hm[1];else{try{const s=+localStorage.getItem('ladder-rung');if(s>=1&&s<=10)start=s}catch(e){}}
+go(start);update();requestAnimationFrame(loop);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>update());
+})();
+</script>
+
+</body></html>
