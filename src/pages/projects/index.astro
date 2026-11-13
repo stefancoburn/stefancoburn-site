@@ -9,6 +9,10 @@ import { projects } from '../../data/projects';
 // converted to AVIF (+WebP fallback) and content-hashed at build time.
 const thumbs = import.meta.glob<{ default: ImageMetadata }>('../../images/projects/*.jpg', { eager: true });
 const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.default;
+
+// projects.ts lists projects oldest to newest (new ones are added at the end);
+// the page shows the newest first.
+const newestFirst = [...projects].reverse();
 ---
 <BaseLayout
   title="Projects — Stefan Coburn"
@@ -28,7 +32,7 @@ const thumb = (slug: string) => thumbs[`../../images/projects/${slug}.jpg`]?.def
     </p>
 
     <div class="project-grid">
-      {projects.map((p, i) => {
+      {newestFirst.map((p, i) => {
         const img = thumb(p.slug);
         return (
           <a class="project-card" href={`/projects/${p.slug}/`} data-astro-prefetch="false">

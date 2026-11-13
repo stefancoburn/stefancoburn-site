@@ -11,7 +11,7 @@
 //    self-hosted file at public/projects/{slug}/video.mp4.
 //
 // Both kinds need a card thumbnail at src/images/projects/{slug}.jpg.
-// To add one: drop in the files and add an entry here (order = display order).
+// To add one: drop in the files and add an entry at the END of the list. The page shows the list in reverse, newest first.
 export interface Project {
   slug: string;
   title: string;
