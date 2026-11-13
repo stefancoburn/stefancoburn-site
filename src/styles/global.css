@@ -514,3 +514,11 @@ p, li, figcaption, .desc { text-wrap: pretty; }
 @media (max-width: 720px) {
   .subscribe { padding: 22px 20px; }
 }
+
+/* ============ WIDER NAV (Nov 2026) ============ */
+/* With nine nav items the header no longer fits on one row below ~1000px,
+   so stack the brand above the nav a little earlier than the 720px rule. */
+@media (max-width: 1000px) {
+  .site-header { flex-direction: column; align-items: flex-start; }
+  .site-nav { flex-wrap: wrap; gap: 0 8px; }
+}

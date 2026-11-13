@@ -13,7 +13,7 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
-  active?: 'home' | 'bookshelf' | 'book-notes' | 'essays' | 'projects' | 'quotes' | 'now' | 'about';
+  active?: 'home' | 'bookshelf' | 'book-notes' | 'essays' | 'projects' | 'astrophotography' | 'quotes' | 'now' | 'about';
 }
 
 const {
@@ -69,6 +69,7 @@ const ogImageURL = ogImage
       <a href="/book-notes"  class={active === 'book-notes' ? 'active' : ''}>Book Notes</a>
       <a href="/essays"      class={active === 'essays'     ? 'active' : ''}>Essays</a>
       <a href="/projects"    class={active === 'projects'   ? 'active' : ''}>Projects</a>
+      <a href="/astrophotography" class={active === 'astrophotography' ? 'active' : ''}>Astrophotography</a>
       <a href="/quotes"      class={active === 'quotes'     ? 'active' : ''}>Quotes</a>
       <a href="/now"         class={active === 'now'        ? 'active' : ''}>Now</a>
       <a href="/about"       class={active === 'about'      ? 'active' : ''}>About</a>

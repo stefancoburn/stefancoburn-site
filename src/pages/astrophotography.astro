@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { astrophotos } from '../data/astrophotos';
+
+// Images live in src/images/astro/{slug}.jpg and go through the image pipeline
+// (resized, AVIF + WebP, content-hashed). Each also gets one large version to open.
+const files = import.meta.glob<{ default: ImageMetadata }>('../images/astro/*.jpg', { eager: true });
+const newestFirst = [...astrophotos].reverse();
+const photos = await Promise.all(
+  newestFirst
+    .filter((p) => files[`../images/astro/${p.slug}.jpg`])
+    .map(async (p) => {
+      const src = files[`../images/astro/${p.slug}.jpg`].default;
+      const full = await getImage({ src, width: Math.min(src.width, 2880), format: 'webp', quality: 'high' });
+      return { ...p, src, full: full.src, portrait: src.height > src.width };
+    })
+);
+---
+<BaseLayout
+  title="Astrophotography — Stefan Coburn"
+  description="Deep-sky photographs taken with a Seestar S50 Pro smart telescope, with notes on what each object is and how far away it lies."
+  ogImage="/og/astrophotography.png"
+  active="astrophotography"
+>
+  <main class="container-wide">
+    <div class="page-title">
+      <div>
+        <div class="eyebrow">/astrophotography</div>
+        <h1>Old light,<br><em>newly caught.</em></h1>
+      </div>
+    </div>
+    <p class="page-intro">
+      Galaxies, nebulae and star clusters photographed with a small smart telescope.
+      For each one: what it is, where it sits, and how far its light travelled to get here.
+    </p>
+
+    <div class="astro-grid">
+      {photos.map((p, i) => (
+        <article class:list={['astro-card', p.portrait ? 'is-portrait' : 'is-landscape']}>
+          <a class="astro-frame" href={p.full} target="_blank" rel="noopener" data-astro-prefetch="false" aria-label={`Open ${p.name} at full size`}>
+            <Picture
+              src={p.src}
+              widths={[480, 720, 1080, 1600]}
+              sizes={p.portrait ? '(max-width:760px) 100vw, 400px' : '(max-width:760px) 100vw, 640px'}
+              formats={['avif']}
+              fallbackFormat="webp"
+              alt={p.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+              quality="high"
+            />
+          </a>
+          <div class="astro-text">
+          {p.designation && <div class="astro-desig">{p.designation}</div>}
+          <h2 class="astro-name">{p.name}</h2>
+          <dl class="astro-facts">
+            <div><dt>Type</dt><dd>{p.type}</dd></div>
+            {p.constellation && <div><dt>Constellation</dt><dd>{p.constellation}</dd></div>}
+            {p.distance && <div><dt>Distance</dt><dd>{p.distance}</dd></div>}
+          </dl>
+          <p class="astro-about">{p.about}</p>
+          {p.capture && <p class="astro-capture">{p.capture} · Seestar S50 Pro</p>}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <section class="astro-how">
+      <h2>How these are made</h2>
+      <div class="astro-how-body">
+        <p>
+          Every image here was shot with a <strong>ZWO Seestar S50 Pro</strong>, a self-contained smart
+          telescope about the size of a loaf of bread. It is a 50&nbsp;mm apochromatic refractor with a
+          260&nbsp;mm focal length (f/5.2) feeding a 4K sensor, on a motorised mount that finds and
+          tracks its own targets.
+        </p>
+        <p>
+          Deep-sky objects are far too faint for a single exposure. The telescope takes a long run of
+          short ones instead. I stack those frames in
+          <strong>Stacking Wizard</strong>, which aligns them star for star and averages them, so the
+          random noise cancels while the faint signal builds up.
+        </p>
+        <p>
+          The stacked result goes into <strong>Astro Wizard</strong> for processing: removing the glow
+          of light pollution, stretching the faint detail into view, balancing colour and taming the
+          remaining noise.
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .astro-grid { margin-top: 56px; border-top: 1px solid var(--rule); }
+  .astro-card {
+    display: grid; gap: 48px; align-items: center;
+    padding: 56px 0; border-bottom: 1px solid var(--rule);
+  }
+  .astro-card.is-portrait  { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); }
+  .astro-card.is-landscape { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  @media (max-width: 760px) {
+    .astro-card.is-portrait, .astro-card.is-landscape { grid-template-columns: 1fr; gap: 8px; padding: 40px 0; }
+  }
+
+  .astro-frame {
+    display: block; background: #07090d; border-radius: 2px; overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,.18), 0 18px 34px -18px rgba(0,0,0,.5);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .astro-frame :global(img) { width: 100%; height: auto; display: block; }
+  .astro-frame:hover { transform: translateY(-4px); box-shadow: 0 4px 10px rgba(0,0,0,.22), 0 26px 40px -18px rgba(0,0,0,.55); }
+  @media (hover: none) { .astro-frame { transition: none; } }
+
+  .astro-desig { font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent-deep); margin-top: 20px; }
+  .astro-card .astro-text > :first-child { margin-top: 0; }
+  @media (max-width: 760px) { .astro-card .astro-text > :first-child { margin-top: 20px; } }
+  .astro-name { font-family: var(--display); font-weight: 500; font-size: 32px; line-height: 1.2; letter-spacing: -.01em; margin-top: 6px; }
+
+  .astro-facts { display: grid; gap: 10px; margin-top: 14px; padding: 12px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .astro-facts dt { font-family: var(--ui); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .astro-facts dd { font-family: var(--display); font-size: 16px; color: var(--ink); margin-top: 2px; }
+
+  .astro-about { font-family: var(--display); font-size: 16.5px; line-height: 1.6; color: var(--ink-soft); margin-top: 14px; max-width: 540px; }
+  .astro-capture { font-family: var(--ui); font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  .astro-how { margin-top: 88px; padding-top: 28px; border-top: 2px solid var(--ink); }
+  .astro-how h2 { font-family: var(--display); font-weight: 500; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; }
+  .astro-how-body { max-width: 680px; margin-top: 20px; }
+  .astro-how-body p { font-family: var(--display); font-size: 18px; line-height: 1.65; color: var(--ink-soft); margin-bottom: 20px; }
+  .astro-how-body strong { font-weight: 600; color: var(--ink); }
+</style>
