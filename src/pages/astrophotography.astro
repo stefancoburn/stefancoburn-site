@@ -7,9 +7,11 @@ import { astrophotos } from '../data/astrophotos';
 // Images live in src/images/astro/{slug}.jpg and go through the image pipeline
 // (resized, AVIF + WebP, content-hashed). Each also gets one large version to open.
 const files = import.meta.glob<{ default: ImageMetadata }>('../images/astro/*.jpg', { eager: true });
-const newestFirst = [...astrophotos].reverse();
+// Shown in the order listed in astrophotos.ts: oldest at the top, newest at the bottom.
+// (To flip to newest-first, change this to [...astrophotos].reverse().)
+const ordered = [...astrophotos];
 const photos = await Promise.all(
-  newestFirst
+  ordered
     .filter((p) => files[`../images/astro/${p.slug}.jpg`])
     .map(async (p) => {
       const src = files[`../images/astro/${p.slug}.jpg`].default;
