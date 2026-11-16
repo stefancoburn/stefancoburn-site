@@ -77,7 +77,7 @@ export const astrophotos: AstroPhoto[] = [
     constellation: 'Triangulum',
     distance: 'About 2.7 million light-years',
     about: 'The third-largest member of our Local Group of galaxies, after Andromeda and the Milky Way, and a close neighbour of Andromeda in the sky. It is a loosely wound spiral about 60,000 light-years across, with no bright central bulge, which makes its light faint and spread out. The small pink knots scattered along the arms are clouds of glowing hydrogen where new stars are forming; the largest of them, NGC 604, is one of the biggest stellar nurseries known in any nearby galaxy.',
-    alt: 'A soft, pale oval of spiral arms with a slightly brighter centre and a few tiny pink spots, tilted in the middle of a tall dark field of stars.',
+    alt: 'A soft, pale oval of spiral arms with a slightly brighter centre and a few tiny pink spots, tilted in the middle of a dark field of stars.',
     capture: 'Captured over two nights, 14 and 15 November 2026',
   },
   {
@@ -90,5 +90,16 @@ export const astrophotos: AstroPhoto[] = [
     about: 'One edge of the Cygnus Loop, the expanding wreckage of a massive star that blew itself apart somewhere between ten and twenty thousand years ago. The blast wave is still moving outward, and where it ploughs into the thin gas between the stars it heats it into these glowing filaments: red from hydrogen, blue-green from oxygen. The whole loop spans about six full Moons of sky, so this frame holds only its eastern arc. William Herschel discovered it in 1784.',
     alt: 'A long, curved ribbon of fine red filaments edged with faint teal, arcing from upper right to lower left across a dense field of stars.',
     capture: 'Captured over two nights, 14 and 15 November 2026',
+  },
+  {
+    slug: 'crab-nebula',
+    name: 'Crab Nebula',
+    designation: 'M1 · NGC 1952',
+    type: 'Supernova remnant',
+    constellation: 'Taurus',
+    distance: 'About 6,500 light-years',
+    about: 'The wreckage of a star whose explosion was seen from Earth in the year 1054. Chinese astronomers recorded a "guest star" bright enough to be visible in daylight for more than three weeks. Nearly a thousand years on, the debris has spread into a cloud about eleven light-years across, still expanding at around 1,500 kilometres a second, with red filaments of hydrogen threaded through it. At its centre sits the collapsed core of the star, a pulsar spinning thirty times a second. It is small in this frame because it is small in the sky, and it is the first entry in Charles Messier’s famous catalogue.',
+    alt: 'A small, pinkish oval cloud laced with fine red filaments, alone in the centre of a wide, dense field of stars.',
+    capture: 'Captured 14 November 2026',
   },
 ];
