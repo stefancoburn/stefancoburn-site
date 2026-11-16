@@ -118,4 +118,29 @@ export const projects: Project[] = [
     kind: 'Genealogy · Data visualization',
     summary: 'Seven generations and 127 direct ancestors, charted by where and when they were born, how far they travelled, and how two continents of people converged on Utah.',
   },
+  {
+    slug: 'hearing-spacetime',
+    title: 'Hearing Spacetime',
+    kind: 'Physics · Video',
+    summary: 'How LIGO detects gravitational waves: a four-kilometre ruler made of laser light, sensitive enough to notice its own length change by a small fraction of the width of a proton.',
+    video: {
+      youtube: 'EdGslf6bBjY',
+      duration: '27 min',
+      about: [
+        'On 14 September 2015, two detectors on opposite sides of the United States felt the same tremor: a ripple in spacetime from a pair of colliding black holes. It changed the length of LIGO\'s four-kilometre arms by about 4 × 10⁻¹⁸ metres, a small fraction of the width of a proton.',
+        'This video is about how you measure something that small. It starts with what a gravitational wave is and why spacetime is so hard to shake, then builds the detector piece by piece, and ends with how a signal is pulled out of the data and shown to be real.',
+      ],
+      covers: [
+        'What a gravitational wave is, and the binary pulsar that first gave them away',
+        'A ruler made of light: the laser interferometer',
+        'Folding the light to make four kilometres behave like a thousand',
+        'The noise budget: everything that shakes a mirror',
+        'Silencing the ground with stacked pendulums',
+        'The mirrors, hung on fibres of fused silica',
+        'The quantum limit, and squeezing light to get under it',
+        'Finding the signal with templates, and confirming it at two sites',
+        'What LIGO has found, and the detectors planned next',
+      ],
+    },
+  },
 ];
